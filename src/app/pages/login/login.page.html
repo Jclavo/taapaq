@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="dark">
     <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -7,8 +7,6 @@
 <ion-content class="ion-padding">
 
   <form #form="ngForm" (ngSubmit)="login()" method="post">
-
-
 
     <ion-card>
       <ion-item>
@@ -29,7 +27,7 @@
 
     <ion-row text-center>
       <ion-col col-6>
-        <ion-button expand="full" color="success" [disabled]="!form.valid">Sign in</ion-button>
+        <ion-button expand="full" type="submit" color="success" [disabled]="!form.valid">Sign in</ion-button>
       </ion-col>
       <ion-col col-6>
         <ion-button expand="full" color="danger" (click)="form.reset()">Reset
