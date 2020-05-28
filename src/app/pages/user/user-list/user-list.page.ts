@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 //Models
 import { User } from "src/app/models/user.model";
@@ -19,11 +18,9 @@ export class UserListPage implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router,
   ) { }
 
   ngOnInit() {
-    
   }
 
   ionViewDidEnter(){

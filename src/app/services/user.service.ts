@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 
-import { ToastController } from '@ionic/angular';
+//Models
 import { User } from "src/app/models/user.model";
 import { Response } from "src/app/models/response.model";
 
-
+//Env
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -17,7 +17,6 @@ export class UserService {
 
   private apiURL: string = environment.apiURL + 'users';
   private resultRAW: any;
-  // private resultObservable: Observable<User[]>;
 
   constructor(private httpClient: HttpClient) { }
 
