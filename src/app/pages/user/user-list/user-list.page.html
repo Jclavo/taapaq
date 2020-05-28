@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="secondary">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Users List</ion-title>
+    <ion-buttons slot="primary">
+      <ion-icon name="people" slot="end"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+      <ion-item *ngFor="let user of users" lines="none">
+        <ion-card>
+
+          <ion-item lines="none">
+            <ion-icon name="person-circle" slot="start"></ion-icon>
+            <ion-label>{{ user.name }}</ion-label>
+            <ion-button fill="outline" slot="end" (click)="update(user.id)" color="success">Edit</ion-button>
+          </ion-item>
+
+          <ion-card-header>
+            <ion-card-subtitle>{{ user.email }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away.
+            Keep close to Nature's heart... and break clear away.
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+  </ion-list>
+
+</ion-content>

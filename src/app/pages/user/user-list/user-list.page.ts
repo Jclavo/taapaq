@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 //Models
-import { User } from 'src/app/models/user.model';
+import { User } from "src/app/models/user.model";
 import { Response } from "src/app/models/response.model";
 
 //Services
 import { UserService } from "src/app/services/user.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-user-list',
+  templateUrl: './user-list.page.html',
+  styleUrls: ['./user-list.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class UserListPage implements OnInit {
 
-  public user = new User();
+  private users: Array<User> = [];
 
   constructor(
     private userService: UserService,
@@ -23,15 +23,15 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getAll();
   }
 
-  login() {
-    console.log(this.user);
+  getAll(){
     this.userService.getAll().subscribe((data: Response) => {
       console.log(data.message);
       if (data.status) {
         // console.log('logged');
-        this.router.navigate(['/user-list']);
+        this.users = data.result;
       }
     },
       error => { console.log('Received an error') }
