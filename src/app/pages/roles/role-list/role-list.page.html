@@ -15,9 +15,9 @@
   <ion-list>
     <ion-card *ngFor="let role of roles">
 
-      <ion-item href="#" class="ion-activated">
+      <ion-item class="ion-activated">
         <ion-icon name="wifi" slot="start"></ion-icon>
-        <ion-label>{{role.name}}</ion-label>
+        <ion-label routerLink='/role-permission/{{role.id}}'>{{role.name}}</ion-label>
         <ion-button fill="outline" slot="end" (click)="update(role.id)" color="success">Edit</ion-button>
       </ion-item>
 
