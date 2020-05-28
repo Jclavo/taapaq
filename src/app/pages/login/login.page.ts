@@ -8,6 +8,8 @@ import { Response } from "src/app/models/response.model";
 //Services
 import { UserService } from "src/app/services/user.service";
 
+//Env
+import { environment } from "src/environments/environment";
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -16,6 +18,7 @@ import { UserService } from "src/app/services/user.service";
 export class LoginPage implements OnInit {
 
   public user = new User();
+  public appName = environment.appName;
 
   constructor(
     private userService: UserService,
