@@ -26,13 +26,13 @@ export class UserService {
     let apiURL = environment.apiURL + 'login';
     let response = new Response();
 
-    return this.httpClient.post(apiURL,user).pipe(map(res => {
+    return this.httpClient.post(apiURL, user).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      if(this.resultRAW.data){
+      if (this.resultRAW.data) {
         let user = new User();
         user.id = this.resultRAW.data.id;
         user.name = this.resultRAW.data.name;
@@ -61,8 +61,29 @@ export class UserService {
         user.email = item.email;
 
         return user;
-        
+
       });
+
+      return response;
+
+    }));
+  }
+
+  create(user: User): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.post(this.apiURL, user).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      if (this.resultRAW.data) {
+        let user = new User();
+        user.id = this.resultRAW.data.id;
+        user.name = this.resultRAW.data.name;
+        user.email = this.resultRAW.data.email;
+      }
 
       return response;
 
