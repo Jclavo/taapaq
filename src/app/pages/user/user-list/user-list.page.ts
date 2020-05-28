@@ -23,6 +23,10 @@ export class UserListPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    
+  }
+
+  ionViewDidEnter(){
     this.getAll();
   }
 
