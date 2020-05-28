@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'user-list',
     loadChildren: () => import('./pages/user/user-list/user-list.module').then( m => m.UserListPageModule)
+  },  {
+    path: 'role-list',
+    loadChildren: () => import('./roles/role-list/role-list.module').then( m => m.RoleListPageModule)
   }
+
 ];
 
 @NgModule({
