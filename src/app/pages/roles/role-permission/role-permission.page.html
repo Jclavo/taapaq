@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Role has permissions</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="briefcase" slot="end"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-item>
+      <ion-icon name="briefcase" slot="start"></ion-icon>
+      <ion-label><strong>Role:</strong> {{ role.name?.toUpperCase()}}</ion-label>
+    </ion-item>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let permission of permissions">
+      <ion-label><strong>{{permission.name}}</strong></ion-label>
+      <ion-toggle [(ngModel)]="permission.roleHasPermission"
+        (click)="changePermission(permission.id, permission.roleHasPermission)"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" (click)='getAllPermissionsByRole(role.id)'>
+      <ion-icon name="refresh"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
