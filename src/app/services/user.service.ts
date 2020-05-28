@@ -15,7 +15,7 @@ import { environment } from "src/environments/environment";
 })
 export class UserService {
 
-  private apiURL: string = environment.apiURL;
+  private apiURL: string = environment.apiURL + 'users';
   private resultRAW: any;
   // private resultObservable: Observable<User[]>;
 
@@ -29,7 +29,6 @@ export class UserService {
     return this.httpClient.post(apiURL,user).pipe(map(res => {
 
       this.resultRAW = res;
-
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
@@ -43,6 +42,30 @@ export class UserService {
       return response;
 
     }));
+  }
 
+  getAll(): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.get(this.apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let user = new User();
+        user.id = item.id;
+        user.name = item.name;
+        user.email = item.email;
+
+        return user;
+        
+      });
+
+      return response;
+
+    }));
   }
 }
