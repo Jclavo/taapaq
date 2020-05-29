@@ -12,6 +12,8 @@ import { environment } from "src/environments/environment";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
+import { MessageUtils } from "src/app/utils/message-utils";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -25,7 +27,8 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private authUtils: AuthUtils
+    private authUtils: AuthUtils,
+    private messageUtils: MessageUtils
   ) { }
 
   ngOnInit() {
@@ -38,16 +41,19 @@ export class LoginPage implements OnInit {
 
   login() {
     console.log(this.user);
-    this.userService.getAll().subscribe((response: Response) => {
+    this.userService.login(this.user).subscribe((response: Response) => {
       console.log(response.message);
+     
       if (response.status) {
-        // console.log('logged');
+        this.messageUtils.showToastOK(response.message);
         this.authUtils.setLoggedIn(true);
         this.authUtils.setUser(response.result);
         this.router.navigate(['/user-list']);
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+      error => { this.messageUtils.showToastError('Received an error')}
     );
   }
 
