@@ -9,6 +9,7 @@ import { Role } from "src/app/models/role.model";
 //Services
 import { UserService } from "src/app/services/user.service";
 import { RoleService } from "src/app/services/role.service";
+import { AuthService } from "src/app/services/auth.service";
 
 
 @Component({
@@ -30,26 +31,17 @@ export class UserListPage implements OnInit {
   constructor(
     private userService: UserService,
     private roleService: RoleService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
   }
 
   ionViewDidEnter(){
-    // this. getAllRoles();
+   !this.authService.isAuthenticated() ? this.authService.closeSession() : null; //It should be at any page to control session
+
     this.getAllWithRoles();
   }
-
-  // getAllRoles(){
-  //   this.roleService.getAll().subscribe((data: Response) => {
-  //     console.log(data.message);
-  //     if (data.status) {
-  //       this.roles = data.result;
-  //     }
-  //   },
-  //     error => { console.log('Received an error') }
-  //   );
-  // }
 
   getAllWithRoles(){
     this.userService.getAllWithRoles().subscribe((data: Response) => {
