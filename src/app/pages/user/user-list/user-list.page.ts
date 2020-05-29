@@ -6,6 +6,7 @@ import { Response } from "src/app/models/response.model";
 
 //Services
 import { UserService } from "src/app/services/user.service";
+import { UserRole } from 'src/app/models/user-role.mode';
 
 @Component({
   selector: 'app-user-list',
@@ -32,15 +33,22 @@ export class UserListPage implements OnInit {
       console.log(data.message);
       if (data.status) {
         this.users = data.result;
-        console.log(this.users);
       }
     },
       error => { console.log('Received an error') }
     );
   }
 
-  deleteRole(){
-    console.log('delete');
+  removeRole(user_id: number, role_id: number){
+    this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((data: Response) => {
+      console.log(data.message);
+      if (data.status) {
+        this.getAllWithRoles();
+      }
+    },
+      error => { console.log('Received an error') }
+    );
+    
   }
 
   addRole(){

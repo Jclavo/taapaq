@@ -30,7 +30,7 @@
 
             <ion-chip *ngFor="let role of user.roles" color="success">
               <ion-label color="dark">{{role.name}}</ion-label>
-              <ion-icon name="close" color="dark" (click)="deleteRole()"></ion-icon>
+              <ion-icon name="close" color="dark" (click)="removeRole(user.id,role.id)"></ion-icon>
             </ion-chip>
 
             <ion-button fill="clear" color="success" (click)="addRole()">

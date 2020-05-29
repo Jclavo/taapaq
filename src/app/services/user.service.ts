@@ -6,6 +6,7 @@ import { map } from "rxjs/operators";
 //Models
 import { Response } from "src/app/models/response.model";
 import { User } from "src/app/models/user.model";
+import { UserRole } from "src/app/models/user-role.mode";
 import { Role } from "src/app/models/role.model";
 
 //Env
@@ -123,5 +124,22 @@ export class UserService {
       return response;
 
     }));
+  }
+
+  removeRole(userRole: UserRole){
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'removeRole';
+
+    return this.httpClient.post(apiURL, userRole).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+
+
   }
 }
