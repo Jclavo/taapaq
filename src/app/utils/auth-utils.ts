@@ -4,18 +4,20 @@ import { Router } from '@angular/router';
 import { User } from "src/app/models/user.model";
 
 @Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
+    providedIn: 'root'
+  })
+  
+export class AuthUtils{
 
-  private isLogged = false;
+  public isLogged = false;
   public  user = new User();
 
   constructor(private router: Router) {}
 
-  setLoggedIn(_value) {
+   setLoggedIn(_value) {
     this.isLogged = _value;
   }
+
   isAuthenticated(): boolean {
     return this.isLogged;
   }
@@ -30,4 +32,6 @@ export class AuthService {
     this.setLoggedIn(false);
     this.router.navigate(['/login']);
   }
+
+
 }

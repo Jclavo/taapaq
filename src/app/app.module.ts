@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -22,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AuthUtils
   ],
   bootstrap: [AppComponent]
 })

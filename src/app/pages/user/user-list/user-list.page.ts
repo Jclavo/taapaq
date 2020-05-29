@@ -9,8 +9,9 @@ import { Role } from "src/app/models/role.model";
 //Services
 import { UserService } from "src/app/services/user.service";
 import { RoleService } from "src/app/services/role.service";
-import { AuthService } from "src/app/services/auth.service";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
 
 @Component({
   selector: 'app-user-list',
@@ -31,14 +32,14 @@ export class UserListPage implements OnInit {
   constructor(
     private userService: UserService,
     private roleService: RoleService,
-    private authService: AuthService
+    private authUtils: AuthUtils
   ) { }
 
   ngOnInit() {
   }
 
   ionViewDidEnter(){
-   !this.authService.isAuthenticated() ? this.authService.closeSession() : null; //It should be at any page to control session
+   !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
     this.getAllWithRoles();
   }

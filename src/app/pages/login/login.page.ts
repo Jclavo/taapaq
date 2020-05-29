@@ -7,9 +7,11 @@ import { Response } from "src/app/models/response.model";
 
 //Services
 import { UserService } from "src/app/services/user.service";
-import { AuthService } from "src/app/services/auth.service";
 //Env
 import { environment } from "src/environments/environment";
+
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -23,7 +25,7 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private authService: AuthService,
+    private authUtils: AuthUtils
   ) { }
 
   ngOnInit() {
@@ -31,7 +33,7 @@ export class LoginPage implements OnInit {
 
   ionViewDidEnter()
   {
-    this.authService.setLoggedIn(false);
+    this.authUtils.setLoggedIn(false);
   }
 
   login() {
@@ -40,8 +42,8 @@ export class LoginPage implements OnInit {
       console.log(response.message);
       if (response.status) {
         // console.log('logged');
-        this.authService.setLoggedIn(true);
-        this.authService.setUser(response.result);
+        this.authUtils.setLoggedIn(true);
+        this.authUtils.setUser(response.result);
         this.router.navigate(['/user-list']);
       }
     },
