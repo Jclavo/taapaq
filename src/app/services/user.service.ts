@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 
 //Models
-import { User } from "src/app/models/user.model";
 import { Response } from "src/app/models/response.model";
+import { User } from "src/app/models/user.model";
+import { Role } from "src/app/models/role.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -15,7 +16,7 @@ import { environment } from "src/environments/environment";
 })
 export class UserService {
 
-  private apiURL: string = environment.apiURL + 'users';
+  private apiURL: string = environment.apiURL + 'users/';
   private resultRAW: any;
 
   constructor(private httpClient: HttpClient) { }
@@ -58,6 +59,41 @@ export class UserService {
         user.id = item.id;
         user.name = item.name;
         user.email = item.email;
+
+        return user;
+
+      });
+
+      return response;
+
+    }));
+  }
+
+  getAllWithRoles(): Observable<Response> {
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'withRoles';
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let user = new User();
+        user.id = item.id;
+        user.name = item.name;
+        user.email = item.email;
+
+        user.roles = item.roles.map(itemRole => {
+          let role = new Role();
+          role.id = itemRole.id;
+          role.name = itemRole.name;
+          return role;
+
+        });
 
         return user;
 
