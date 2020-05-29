@@ -94,4 +94,30 @@ export class RoleService {
 
     }));
   }
+
+  missingToUser(user_id: number): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + 'missingToUser/' + user_id ;
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let role = new Role();
+        role.id = item.id;
+        role.name = item.name;
+        return role;
+
+      });
+
+      return response;
+
+    }));
+  }
+
+
 }
