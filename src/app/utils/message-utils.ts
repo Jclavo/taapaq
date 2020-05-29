@@ -20,6 +20,33 @@ export class MessageUtils {
         await alert.present();
     }
 
+    async showAlertOption(message: string) {
+        
+        let resolveFunction: (confirm: boolean) => void;
+        const promise = new Promise<boolean>(resolve => {
+            resolveFunction = resolve;
+        });
+        const alert = await this.alertController.create({
+            header: 'Confirm!',
+            message,
+            backdropDismiss: false,
+            buttons: [
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => resolveFunction(false)
+                },
+                {
+                    text: 'Okay',
+                    handler: () => resolveFunction(true)
+                }
+            ]
+        });
+        await alert.present();
+        return promise;
+    }
+
     async showToastOK(customMessage: string) {
 
         const toast = await this.toastController.create({
