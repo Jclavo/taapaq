@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MessageUtils {
 
-    constructor(private alertController: AlertController,
-        private toastController: ToastController) { }
+    constructor(
+        private alertController: AlertController,
+        private toastController: ToastController,
+        private loadingController: LoadingController
+    ) { }
 
     async showAlert() {
         const alert = await this.alertController.create({
@@ -21,7 +24,7 @@ export class MessageUtils {
     }
 
     async showAlertOption(message: string) {
-        
+
         let resolveFunction: (confirm: boolean) => void;
         const promise = new Promise<boolean>(resolve => {
             resolveFunction = resolve;
@@ -65,5 +68,14 @@ export class MessageUtils {
             keyboardClose: true,
         });
         toast.present();
+    }
+
+    createLoader(): Promise<HTMLIonLoadingElement> {
+        const loading = this.loadingController.create({
+            message: 'Loading'
+            //duration: 2000
+        });
+
+        return loading;
     }
 }
