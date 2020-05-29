@@ -127,7 +127,6 @@ export class UserService {
   }
 
   removeRole(userRole: UserRole){
-
     let response = new Response();
     let apiURL = this.apiURL + 'removeRole';
 
@@ -139,7 +138,19 @@ export class UserService {
       return response;
 
     }));
+  }
 
+  assignRole(userRole: UserRole){
+    let response = new Response();
+    let apiURL = this.apiURL + 'assignRole';
 
+    return this.httpClient.post(apiURL, userRole).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
   }
 }
