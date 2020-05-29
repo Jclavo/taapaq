@@ -27,24 +27,31 @@ export class RoleListPage implements OnInit {
   ) { }
 
   ngOnInit() {
-  } 
+  }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
     this.getAll();
   }
 
-  getAll(){
+  async getAll() {
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
     this.roleService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.roles = response.result;
       }
-      else{
+      else {
         this.messageUtils.showToastError(response.message);
       }
+      loading.dismiss();// close loading
     },
-    error => { this.messageUtils.showToastError(error.message)}
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
     );
   }
 

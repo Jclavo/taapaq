@@ -68,15 +68,23 @@ export class RolePermissionPage implements OnInit {
     }
   }
 
-  getAllPermissionsByRole(role_id: number) {
+  async getAllPermissionsByRole(role_id: number) {
+    
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+    
     this.permissionService.getAllPermissionsByRole(role_id).subscribe((response: Response) => {
       if (response.status) {
         this.permissions = response.result;
       }else{
         this.messageUtils.showToastError(response.message);
       }
+      loading.dismiss();// close loading
     },
-      error => { this.messageUtils.showToastError(error.message)}
+      error => { 
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
     );
   }
 

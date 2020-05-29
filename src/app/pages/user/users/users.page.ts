@@ -41,7 +41,10 @@ export class UsersPage implements OnInit {
 
   }
 
-  create(user: User){
+  async create(user: User){
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+    
     this.userService.create(user).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
@@ -49,8 +52,12 @@ export class UsersPage implements OnInit {
       }else{
         this.messageUtils.showToastError(response.message);
       }
+      loading.dismiss();// close loading
     },
-      error => { this.messageUtils.showToastError(error.message)}
+      error => { 
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
     );
   }
  

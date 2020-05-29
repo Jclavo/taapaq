@@ -39,11 +39,12 @@ export class LoginPage implements OnInit {
     this.authUtils.setLoggedIn(false);
   }
 
-  login() {
-    console.log(this.user);
-    this.userService.login(this.user).subscribe((response: Response) => {
-      console.log(response.message);
-     
+  async login() {
+
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.userService.login(this.user).subscribe((response: Response) => {     
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
         this.authUtils.setLoggedIn(true);
@@ -53,8 +54,12 @@ export class LoginPage implements OnInit {
       else{
         this.messageUtils.showToastError(response.message);
       }
+      loading.dismiss();// close loading
     },
-      error => { this.messageUtils.showToastError(error.message)}
+      error => { 
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
     );
   }
 

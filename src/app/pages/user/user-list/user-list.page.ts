@@ -44,7 +44,10 @@ export class UserListPage implements OnInit {
     this.getAllWithRoles();
   }
 
-  getAllWithRoles(){
+  async getAllWithRoles(){
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+    
     this.userService.getAllWithRoles().subscribe((response: Response) => {
       if (response.status) {
         this.users = response.result;
@@ -52,8 +55,12 @@ export class UserListPage implements OnInit {
       else{
         this.messageUtils.showToastError(response.message);
       }
+      loading.dismiss();// close loading
     },
-     error => { this.messageUtils.showToastError(error.message)}
+     error => { 
+       this.messageUtils.showToastError(error.message);
+       loading.dismiss();// close loading
+      }
     );
   }
 
