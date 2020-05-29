@@ -10,7 +10,7 @@ import { User } from "src/app/models/user.model";
 export class AuthUtils{
 
   public isLogged = false;
-  public  user = new User();
+  public user = new User();
 
   constructor(private router: Router) {}
 
@@ -20,6 +20,7 @@ export class AuthUtils{
 
   isAuthenticated(): boolean {
     return this.isLogged;
+    // return true;
   }
 
   setUser(_user: User)
