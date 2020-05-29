@@ -49,11 +49,12 @@ export class LoginPage implements OnInit {
         this.authUtils.setLoggedIn(true);
         this.authUtils.setUser(response.result);
         this.router.navigate(['/user-list']);
-      }else{
+      }
+      else{
         this.messageUtils.showToastError(response.message);
       }
     },
-      error => { this.messageUtils.showToastError('Received an error')}
+      error => { this.messageUtils.showToastError(error.message)}
     );
   }
 

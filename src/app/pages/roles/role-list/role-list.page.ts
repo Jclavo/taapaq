@@ -7,6 +7,10 @@ import { Response } from "src/app/models/response.model";
 //Services
 import { RoleService } from "src/app/services/role.service";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+import { MessageUtils } from "src/app/utils/message-utils";
+
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.page.html',
@@ -16,24 +20,31 @@ export class RoleListPage implements OnInit {
 
   public roles: Array<Role> = [];
 
-  constructor(private roleService: RoleService) { }
+  constructor(
+    private roleService: RoleService,
+    private authUtils: AuthUtils,
+    private messageUtils: MessageUtils
+  ) { }
 
   ngOnInit() {
   } 
 
   ionViewDidEnter(){
+    !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
+
     this.getAll();
   }
 
   getAll(){
-    this.roleService.getAll().subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
-        // console.log('logged');
-        this.roles = data.result;
+    this.roleService.getAll().subscribe((response: Response) => {
+      if (response.status) {
+        this.roles = response.result;
+      }
+      else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+    error => { this.messageUtils.showToastError(error.message)}
     );
   }
 

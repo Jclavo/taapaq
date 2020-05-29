@@ -12,6 +12,7 @@ import { RoleService } from "src/app/services/role.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
+import { MessageUtils } from "src/app/utils/message-utils";
 
 @Component({
   selector: 'app-user-list',
@@ -24,15 +25,14 @@ export class UserListPage implements OnInit {
   public users: Array<User> = [];
   public roles: Array<Role> = [];
   public rolesMissingToUser: Array<Role> = [];
-  // private user_id: number = 0;
-  // private user
   private userRole = new UserRole(0,0);
 
 
   constructor(
     private userService: UserService,
     private roleService: RoleService,
-    private authUtils: AuthUtils
+    private authUtils: AuthUtils,
+    private messageUtils: MessageUtils
   ) { }
 
   ngOnInit() {
@@ -45,24 +45,28 @@ export class UserListPage implements OnInit {
   }
 
   getAllWithRoles(){
-    this.userService.getAllWithRoles().subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
-        this.users = data.result;
+    this.userService.getAllWithRoles().subscribe((response: Response) => {
+      if (response.status) {
+        this.users = response.result;
+      }
+      else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+     error => { this.messageUtils.showToastError(error.message)}
     );
   }
 
   removeRole(user_id: number, role_id: number){
-    this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
+    this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
         this.getAllWithRoles();
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+     error => { this.messageUtils.showToastError(error.message)}
     );
     
   }
@@ -71,41 +75,40 @@ export class UserListPage implements OnInit {
     this.userRole = new UserRole(0,0);
     this.userRole.user_id = user_id;
 
-    this.roleService.missingToUser(user_id).subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
-        this.roles = data.result;
+    this.roleService.missingToUser(user_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.roles = response.result;
         if(this.roles.length > 0){
           this.selectRolesElement.open();
         }
         else{
-          console.log('User has all the roles');
+          this.messageUtils.showToastOK('User has all the roles.');
         }
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
-      this.selectRolesElement.value = 0;
+      // this.selectRolesElement.value = 0;
     },
-      error => { console.log('Received an error') }
+     error => { this.messageUtils.showToastError(error.message)}
     );
 
-
-    // this.selectRolesElement.open();
   }
 
   assignRole(){
     if(this.userRole.role_id == 0) return; // This validation is when the select is cleaned
 
-    this.userService.assignRole(this.userRole).subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
+    this.userService.assignRole(this.userRole).subscribe((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
         this.getAllWithRoles();
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
       this.selectRolesElement.value = 0;
     },
-      error => { console.log('Received an error') }
+     error => { this.messageUtils.showToastError(error.message)}
     );
     
   }
-
-
 
 }

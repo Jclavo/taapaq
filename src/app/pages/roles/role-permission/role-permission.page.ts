@@ -11,6 +11,10 @@ import { Permission } from "src/app/models/permission.model";
 import { RoleService } from "src/app/services/role.service";
 import { PermissionService } from "src/app/services/permission.service";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+import { MessageUtils } from "src/app/utils/message-utils";
+
 @Component({
   selector: 'app-role-permission',
   templateUrl: './role-permission.page.html',
@@ -24,7 +28,9 @@ export class RolePermissionPage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private permissionService: PermissionService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private authUtils: AuthUtils,
+    private messageUtils: MessageUtils
   ) { }
 
   ngOnInit() {
@@ -32,6 +38,8 @@ export class RolePermissionPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
+
     this.role.id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     if (this.role.id > 0) {
       this.getRoleById(this.role.id);
@@ -40,19 +48,19 @@ export class RolePermissionPage implements OnInit {
   }
 
   getRoleById(role_id: number) {
-    this.roleService.getById(role_id).subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
-        this.role = data.result;
+    this.roleService.getById(role_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.role = response.result;
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+      error => { this.messageUtils.showToastError(error.message)}
     );
   }
 
   changePermission(permission_id: number, roleHasPermission: boolean) {
 
-    console.log(roleHasPermission);
     if (roleHasPermission) {
       this.revokePermissionTo(this.role.id, permission_id);
     } else {
@@ -61,31 +69,40 @@ export class RolePermissionPage implements OnInit {
   }
 
   getAllPermissionsByRole(role_id: number) {
-    this.permissionService.getAllPermissionsByRole(role_id).subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
-        this.permissions = data.result;
+    this.permissionService.getAllPermissionsByRole(role_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.permissions = response.result;
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+      error => { this.messageUtils.showToastError(error.message)}
     );
   }
 
   givePermissionTo(role_id: number, permission_id: number) {
 
-    this.roleService.givePermissionTo(new RolePermission(role_id, permission_id)).subscribe((data: Response) => {
-      console.log(data.message);
+    this.roleService.givePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
+      }else{
+        this.messageUtils.showToastError(response.message);
+      }
     },
-      error => { console.log('Received an error') }
+      error => { this.messageUtils.showToastError(error.message)}
     );
   }
 
   revokePermissionTo(role_id: number, permission_id: number) {
 
-    this.roleService.revokePermissionTo(new RolePermission(role_id, permission_id)).subscribe((data: Response) => {
-      console.log(data.message);
+    this.roleService.revokePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
+      }else{
+        this.messageUtils.showToastError(response.message);
+      }
     },
-      error => { console.log('Received an error') }
+      error => { this.messageUtils.showToastError(error.message)}
     );
   }
 

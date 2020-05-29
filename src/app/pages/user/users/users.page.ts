@@ -8,6 +8,9 @@ import { Response } from "src/app/models/response.model";
 //Services
 import { UserService } from "src/app/services/user.service";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+import { MessageUtils } from "src/app/utils/message-utils";
 
 @Component({
   selector: 'app-users',
@@ -21,6 +24,8 @@ export class UsersPage implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
+    private authUtils: AuthUtils,
+    private messageUtils: MessageUtils
   ) { }
 
   ngOnInit() {
@@ -37,13 +42,15 @@ export class UsersPage implements OnInit {
   }
 
   create(user: User){
-    this.userService.create(user).subscribe((data: Response) => {
-      console.log(data.message);
-      if (data.status) {
+    this.userService.create(user).subscribe((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
         this.router.navigate(['/user-list']);
+      }else{
+        this.messageUtils.showToastError(response.message);
       }
     },
-      error => { console.log('Received an error') }
+      error => { this.messageUtils.showToastError(error.message)}
     );
   }
  
