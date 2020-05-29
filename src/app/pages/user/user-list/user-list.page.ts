@@ -57,7 +57,12 @@ export class UserListPage implements OnInit {
     );
   }
 
-  removeRole(user_id: number, role_id: number){
+  async removeRole(user_id: number, role_id: number){
+
+    if(!await this.messageUtils.showAlertOption('Are you sure to delete the role?')){
+      return;
+    }
+
     this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
