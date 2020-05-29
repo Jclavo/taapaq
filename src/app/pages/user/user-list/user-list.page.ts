@@ -24,19 +24,27 @@ export class UserListPage implements OnInit {
   }
 
   ionViewDidEnter(){
-    this.getAll();
+    this.getAllWithRoles();
   }
 
-  getAll(){
-    this.userService.getAll().subscribe((data: Response) => {
+  getAllWithRoles(){
+    this.userService.getAllWithRoles().subscribe((data: Response) => {
       console.log(data.message);
       if (data.status) {
-        // console.log('logged');
         this.users = data.result;
+        console.log(this.users);
       }
     },
       error => { console.log('Received an error') }
     );
+  }
+
+  deleteRole(){
+    console.log('delete');
+  }
+
+  addRole(){
+    console.log('add');
   }
 
 }
