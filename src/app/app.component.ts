@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
     //   icon: 'warning'
     // }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  public labels = ['Close session'];
 
   constructor(
     private platform: Platform,
@@ -81,5 +81,10 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+    console.log(this.authUtils.user.name);
+  }
+
+  closeSession(){
+    this.authUtils.closeSession();
   }
 }
