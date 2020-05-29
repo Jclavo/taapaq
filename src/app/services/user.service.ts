@@ -33,11 +33,13 @@ export class UserService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      if (this.resultRAW.data) {
+      if (this.resultRAW.result) {
         let user = new User();
-        user.id = this.resultRAW.data.id;
-        user.name = this.resultRAW.data.name;
-        user.email = this.resultRAW.data.email;
+        user.id = this.resultRAW.result.id;
+        user.name = this.resultRAW.result.name;
+        user.email = this.resultRAW.result.email;
+
+        response.result = user;
       }
 
       return response;
