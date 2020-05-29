@@ -4,6 +4,9 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+//Service
+import { AuthService } from "src/app/services/auth.service";
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -58,8 +61,11 @@ export class AppComponent implements OnInit {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private authService: AuthService
   ) {
+    //Validate Session
+    !this.authService.isAuthenticated() ? this.authService.closeSession() : null;
     this.initializeApp();
   }
 
