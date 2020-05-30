@@ -31,9 +31,9 @@ export class AppComponent implements OnInit {
       icon: 'key'
     },
     {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane'
+      title: 'Project',
+      url: '/project-list',
+      icon: 'rocket'
     },
     // {
     //   title: 'Favorites',
