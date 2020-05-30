@@ -23,7 +23,7 @@ export class MessageUtils {
         await alert.present();
     }
 
-    async showAlertOption(message: string) {
+    async showAlertOption(_message: string, _value: string = null) {
 
         let resolveFunction: (confirm: boolean) => void;
         const promise = new Promise<boolean>(resolve => {
@@ -31,7 +31,7 @@ export class MessageUtils {
         });
         const alert = await this.alertController.create({
             header: 'Confirm!',
-            message,
+            message: _value == null ? _message : _message + ' <strong>' + _value + '</strong>',
             backdropDismiss: false,
             buttons: [
                 {
