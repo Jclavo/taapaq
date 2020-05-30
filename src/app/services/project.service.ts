@@ -1,0 +1,73 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from "rxjs/operators";
+
+//Models
+import { Response } from "src/app/models/response.model";
+import { Project } from "src/app/models/project.model";
+
+//Env
+import { environment } from "src/environments/environment";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProjectService {
+
+  private apiURL: string = environment.apiURL + 'projects/';
+  private resultRAW: any;
+
+  constructor(private httpClient: HttpClient) { }
+
+  getAll(): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.get(this.apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let project = new Project();
+        project.id = item.id;
+        project.name = item.name;
+        return project;
+
+      });
+
+      return response;
+
+    }));
+  }
+
+  create(project: Project): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.post(this.apiURL, project).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+  }
+
+  delete(id: number): Observable<Response> {
+
+    let response = new Response();
+
+    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+    
+  }
+} 
