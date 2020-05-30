@@ -67,4 +67,17 @@ export class PermissionService {
 
     }));
   }
+
+  create(permission: Permission): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.post(this.apiURL, permission).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+  }
 }

@@ -38,6 +38,10 @@ const routes: Routes = [
   {
     path: 'permission-list',
     loadChildren: () => import('./pages/permissions/permission-list/permission-list.module').then( m => m.PermissionListPageModule)
+  },
+  {
+    path: 'permission',
+    loadChildren: () => import('./pages/permissions/permission/permission.module').then( m => m.PermissionPageModule)
   }
 ];
 
