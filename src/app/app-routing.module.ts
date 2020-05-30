@@ -30,8 +30,11 @@ const routes: Routes = [
   {
     path: 'role-permission/:id',
     loadChildren: () => import('./pages/roles/role-permission/role-permission.module').then( m => m.RolePermissionPageModule)
+  },
+  {
+    path: 'role',
+    loadChildren: () => import('./pages/roles/role/role.module').then( m => m.RolePageModule)
   }
-
 ];
 
 @NgModule({
