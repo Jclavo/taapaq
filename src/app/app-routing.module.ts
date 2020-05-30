@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'role',
     loadChildren: () => import('./pages/roles/role/role.module').then( m => m.RolePageModule)
+  },
+  {
+    path: 'permission-list',
+    loadChildren: () => import('./pages/permissions/permission-list/permission-list.module').then( m => m.PermissionListPageModule)
   }
 ];
 

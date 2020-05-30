@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Permissions List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-card *ngFor="let permission of permissions">
+
+      <ion-item class="ion-activated">
+        <ion-icon name="key" slot="start"></ion-icon>
+        <ion-label>{{permission.name}}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="update(permission.id)" color="success">Edit</ion-button>
+      </ion-item>
+
+    </ion-card>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" routerLink='/permission'>
+      <ion-icon name="key"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+

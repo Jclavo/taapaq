@@ -44,4 +44,27 @@ export class PermissionService {
 
     }));
   }
+
+  getAll(): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.get(this.apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let permission = new Permission();
+        permission.id = item.id;
+        permission.name = item.name;
+        return permission;
+
+      });
+
+      return response;
+
+    }));
+  }
 }

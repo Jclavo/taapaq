@@ -26,9 +26,9 @@ export class AppComponent implements OnInit {
       icon: 'bookmarks'
     },
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail'
+      title: 'Permissions',
+      url: '/permission-list',
+      icon: 'key'
     },
     {
       title: 'Outbox',
