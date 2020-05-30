@@ -15,7 +15,12 @@
       <ion-item class="ion-activated">
         <ion-icon name="wifi" slot="start"></ion-icon>
         <ion-label routerLink='/role-permission/{{role.id}}'>{{role.name}}</ion-label>
-        <ion-button fill="outline" slot="end" (click)="update(role.id)" color="success">Edit</ion-button>
+        <ion-button fill="outline" slot="end" (click)="update(role.id)" color="success">
+          <ion-icon name="create"></ion-icon>  
+        </ion-button>
+        <ion-button fill="outline" slot="end" (click)="delete(role.id,role.name)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
       </ion-item>
 
     </ion-card>

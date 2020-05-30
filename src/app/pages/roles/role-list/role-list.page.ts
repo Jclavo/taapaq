@@ -55,4 +55,25 @@ export class RoleListPage implements OnInit {
     );
   }
 
+  async delete(id: number, role: string){
+
+    if(!await this.messageUtils.showAlertOption('You are sure to delete the role: ', role)){
+      return;
+    }
+
+    this.roleService.delete(id).subscribe((response: Response) => {
+      if (response.status) {
+        this.getAll();
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+      }
+    );
+
+  }
+
 }
