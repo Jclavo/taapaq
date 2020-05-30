@@ -1,20 +1,17 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-toolbar color="dark">
-      <ion-buttons slot="secondary">
+      <ion-buttons slot="start">
         <ion-back-button></ion-back-button>
       </ion-buttons>
       <ion-title>User</ion-title>
-      <ion-buttons slot="primary">
-        <ion-icon name="person" slot="end"></ion-icon>
-      </ion-buttons>
     </ion-toolbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <form #form="ngForm" (ngSubmit)="save()" method="post">
+  <form #form="ngForm" (ngSubmit)="save(form)" method="post">
 
     <ion-card>
       <ion-item>
