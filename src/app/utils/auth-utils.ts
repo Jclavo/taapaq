@@ -19,8 +19,8 @@ export class AuthUtils{
   }
 
   isAuthenticated(): boolean {
-    return this.isLogged;
-    // return true;
+    // return this.isLogged;
+    return true;
   }
 
   setUser(_user: User)
