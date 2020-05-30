@@ -31,6 +31,10 @@ export class UsersPage implements OnInit {
   ngOnInit() {
   }
 
+  ionViewDidEnter(){
+    !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
+  }
+
   save(){
 
     if(this.user.id > 0){
