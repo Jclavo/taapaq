@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Project List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-card *ngFor="let project of projects">
+
+      <ion-item class="ion-activated">
+        <ion-icon name="rocket" slot="start"></ion-icon>
+        <ion-label>{{project.name}}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="update(project.id)" color="success">
+          <ion-icon name="create"></ion-icon>  
+        </ion-button>
+        <ion-button fill="outline" slot="end" (click)="delete(project.id,project.name)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+    </ion-card>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" routerLink='/project'>
+      <ion-icon name="rocket"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
