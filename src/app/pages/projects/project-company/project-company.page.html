@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Project - Company</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form #form="ngForm" (ngSubmit)="save()" method="post">
+
+    <ion-card>
+      <ion-select [(ngModel)]="project_company.project_id" name="project_id" placeholder="Project">
+        <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
+          {{project.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-card>
+
+    <ion-card>
+      <ion-select [(ngModel)]="project_company.company_id" name="company_id" placeholder="Company">
+        <ion-select-option *ngFor="let company of companies" value="{{company.id}}">
+          {{company.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-card>
+
+    <ion-row text-center>
+      <ion-col col-6>
+        <ion-button expand="full" type="submit" color="dark" [disabled]="!form.valid">Save</ion-button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-button expand="full" color="danger" (click)="form.reset()">Reset
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+</ion-content>

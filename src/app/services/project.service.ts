@@ -8,6 +8,7 @@ import { Response } from "src/app/models/response.model";
 import { Project } from "src/app/models/project.model";
 import { Module } from "src/app/models/module.model";
 import { Resource } from "src/app/models/resource.model";
+import { ProjectCompany } from "src/app/models/project-company.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -71,6 +72,22 @@ export class ProjectService {
 
     }));
     
+  }
+
+  assignCompany(project_company: ProjectCompany){
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'assignCompany';
+
+    return this.httpClient.post(apiURL, project_company).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+
   }
 
   getModulesResourcesByProject(project_id: number){

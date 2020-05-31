@@ -45,6 +45,11 @@ export class AppComponent implements OnInit {
       url: '/company-list',
       icon: 'business'
     },
+    {
+      title: 'Project - Company',
+      url: '/project-company',
+      icon: 'link'
+    },
     // {
     //   title: 'Archived',
     //   url: '/folder/Archived',
