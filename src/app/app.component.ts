@@ -35,6 +35,11 @@ export class AppComponent implements OnInit {
       url: '/project-list',
       icon: 'rocket'
     },
+    {
+      title: 'Modules',
+      url: '/module-list',
+      icon: 'globe'
+    },
     // {
     //   title: 'Favorites',
     //   url: '/folder/Favorites',

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Module List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-label><strong>Project</strong></ion-label>
+  <ion-card>
+    <ion-select name="project_id" placeholder="Select..." (ionChange)="getModules($event)">
+      <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
+        {{project.name}}
+      </ion-select-option>
+    </ion-select>
+</ion-card>
+
+  <ion-list>
+    <ion-card *ngFor="let module of project.modules">
+
+      <ion-item lines="none">
+        <ion-icon name="rocket" slot="start"></ion-icon>
+        <!-- <ion-label>{{project.name}}</ion-label> -->
+        <ion-button fill="outline" slot="end" (click)="update(module.id)" color="success">
+          <ion-icon name="create"></ion-icon>  
+        </ion-button>
+        <ion-button fill="outline" slot="end" (click)="delete(module.id,module.name)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-card-header>
+        <ion-card-title>{{ module.name }}</ion-card-title>
+        <ion-card-subtitle>{{ module.url }}</ion-card-subtitle>
+      </ion-card-header>
+
+
+
+    </ion-card>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" routerLink='/module'>
+      <ion-icon name="globe"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
