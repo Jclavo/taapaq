@@ -54,6 +54,14 @@ const routes: Routes = [
   {
     path: 'module-list',
     loadChildren: () => import('./pages/modules/module-list/module-list.module').then( m => m.ModuleListPageModule)
+  },
+  // {
+  //   path: 'module/:project_id',
+  //   loadChildren: () => import('./pages/modules/module/module.module').then( m => m.ModulePageModule)
+  // },
+  {
+    path: 'module',
+    loadChildren: () => import('./pages/modules/module/module.module').then( m => m.ModulePageModule)
   }
 ];
 

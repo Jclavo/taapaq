@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 //Models
 import { Response } from "src/app/models/response.model";
-import { Project } from "src/app/models/project.model";
 import { Module } from "src/app/models/module.model";
+import { Project } from "src/app/models/project.model";
 
 //Services
 import { ProjectService } from "src/app/services/project.service";
@@ -14,29 +15,31 @@ import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
 
 @Component({
-  selector: 'app-module-list',
-  templateUrl: './module-list.page.html',
-  styleUrls: ['./module-list.page.scss'],
+  selector: 'app-module',
+  templateUrl: './module.page.html',
+  styleUrls: ['./module.page.scss'],
 })
-export class ModuleListPage implements OnInit {
+export class ModulePage implements OnInit {
 
   public projects: Array<Project> = [];
-  public project = new Project();
-  public modules: Array<Module> = [];
+  public module = new Module();
 
   constructor(
-    private projectService: ProjectService,
     private authUtils: AuthUtils,
     private messageUtils: MessageUtils,
-    private moduleService: ModuleService
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private moduleService: ModuleService,
+    private projectService: ProjectService,
   ) { }
 
   ngOnInit() {
-  } 
+  }
 
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
-
+  
+    // this.module.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.getAllProjects();
   }
 
@@ -60,25 +63,25 @@ export class ModuleListPage implements OnInit {
     );
   }
 
-  getModules(event){
-    this.project.id = event.target.value;
-    this.getModulesByProject(this.project.id);
-  }
- 
-  async getModulesByProject(project_id: number){
+  save() {
 
+    if (this.module.id > 0) {
+      //update
+    } else {
+      this.create(this.module);
+    }
+  }
+
+  async create(module: Module) {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.projectService.getModulesByProject(project_id).subscribe((response: Response) => {
+    this.moduleService.create(module).subscribe((response: Response) => {
       if (response.status) {
-        this.project = response.result;
-        
-        if(this.project.modules.length == 0){
-          this.messageUtils.showToastOK("The current project does not have modules yet.");
-        }
-      }
-      else {
+        this.messageUtils.showToastOK(response.message);
+        this.module = new Module(); // clean model
+        this.router.navigate(['/module-list']);
+      } else {
         this.messageUtils.showToastError(response.message);
       }
       loading.dismiss();// close loading
@@ -90,24 +93,4 @@ export class ModuleListPage implements OnInit {
     );
   }
 
-  async delete(id: number, project: string){
-
-    if(!await this.messageUtils.showAlertOption('You are sure to delete the project: ', project)){
-      return;
-    }
-
-    this.moduleService.delete(id).subscribe((response: Response) => {
-      if (response.status) {
-        this.getModulesByProject(this.project.id);
-      }
-      else {
-        this.messageUtils.showToastError(response.message);
-      }
-    },
-      error => {
-        this.messageUtils.showToastError(error.message);
-      }
-    );
-  }
-  
 }
