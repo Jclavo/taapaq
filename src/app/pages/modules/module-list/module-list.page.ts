@@ -75,10 +75,9 @@ export class ModuleListPage implements OnInit {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.projectService.getModulesByProject(project_id).subscribe((response: Response) => {
+    this.projectService.getModulesResourcesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
         this.project = response.result;
-        
         if(this.project.modules.length == 0){
           this.messageUtils.showToastOK("The current project does not have modules yet.");
         }

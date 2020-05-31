@@ -6,7 +6,8 @@ import { map } from "rxjs/operators";
 //Models
 import { Response } from "src/app/models/response.model";
 import { Project } from "src/app/models/project.model";
-import { Module } from '../models/module.model';
+import { Module } from "src/app/models/module.model";
+import { Resource } from "src/app/models/resource.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -72,10 +73,10 @@ export class ProjectService {
     
   }
 
-  getModulesByProject(project_id: number){
+  getModulesResourcesByProject(project_id: number){
 
     let response = new Response();
-    let apiURL = this.apiURL + 'withModules/' + project_id;
+    let apiURL = this.apiURL + project_id + '/modules/resources';
 
     return this.httpClient.get(apiURL).pipe(map(res => {
 
@@ -89,12 +90,25 @@ export class ProjectService {
         project.id = this.resultRAW.result.id;
         project.name = this.resultRAW.result.name;
 
-        project.modules = this.resultRAW.result.modules?.map(item => {
+        project.modules = this.resultRAW.result.modules?.map(responseItem => {
+          
             let module = new Module();
-            module.id = item.id;
-            module.name = item.name;
-            module.url = item.url;
-            module.project_id = item.project;
+            module.id = responseItem.id;
+            module.name = responseItem.name;
+            module.url = responseItem.url;
+            module.project_id = responseItem.project;
+
+            module.resources = responseItem.resources?.map(responseResource => {
+
+              let resource = new Resource();
+              resource.id = responseResource.id;
+              resource.name = responseResource.name;
+              resource.module_id = responseResource.module_id;
+
+              return resource;
+
+            });
+
             return module;
         });
 
