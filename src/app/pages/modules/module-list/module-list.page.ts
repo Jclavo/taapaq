@@ -127,7 +127,6 @@ export class ModuleListPage implements OnInit {
     this.resourceService.delete(id).subscribe((response: Response) => {
       if (response.status) {
         this.getModulesByProject(this.project.id);
-        this.getModulesByProject(this.project.id);
       }
       else {
         this.messageUtils.showToastError(response.message);
