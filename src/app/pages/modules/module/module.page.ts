@@ -23,6 +23,7 @@ export class ModulePage implements OnInit {
 
   public projects: Array<Project> = [];
   public module = new Module();
+  public project_id: string = "0";
 
   constructor(
     private authUtils: AuthUtils,
@@ -39,7 +40,7 @@ export class ModulePage implements OnInit {
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
   
-    // this.module.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
+    this.module.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.getAllProjects();
   }
 
@@ -50,6 +51,8 @@ export class ModulePage implements OnInit {
     this.projectService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
+
+        this.module.project_id > 0 ? this.project_id = this.module.project_id.toString() : null;
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -65,6 +68,12 @@ export class ModulePage implements OnInit {
 
   save() {
 
+    if(this.project_id == "0"){
+      this.messageUtils.showToastError("Select a project.");
+      return;
+    }
+
+    this.module.project_id = Number(this.project_id);
     if (this.module.id > 0) {
       //update
     } else {
@@ -80,7 +89,7 @@ export class ModulePage implements OnInit {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
         this.module = new Module(); // clean model
-        this.router.navigate(['/module-list']);
+        this.router.navigate(['/module-list',this.project_id]);
       } else {
         this.messageUtils.showToastError(response.message);
       }

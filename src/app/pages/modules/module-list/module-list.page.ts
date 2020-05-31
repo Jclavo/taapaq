@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 //Models
 import { Response } from "src/app/models/response.model";
@@ -23,10 +24,12 @@ export class ModuleListPage implements OnInit {
   public projects: Array<Project> = [];
   public project = new Project();
   public modules: Array<Module> = [];
+  public project_id: string = "0";
 
   constructor(
     private projectService: ProjectService,
     private authUtils: AuthUtils,
+    private activatedRoute: ActivatedRoute,
     private messageUtils: MessageUtils,
     private moduleService: ModuleService
   ) { }
@@ -37,6 +40,7 @@ export class ModuleListPage implements OnInit {
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
+    this.project.id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.getAllProjects();
   }
 
@@ -47,6 +51,7 @@ export class ModuleListPage implements OnInit {
     this.projectService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
+        this.project.id > 0 ? this.project_id = this.project.id.toString() : null;
       }
       else {
         this.messageUtils.showToastError(response.message);

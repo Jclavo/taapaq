@@ -11,7 +11,7 @@
 
   <ion-label><strong>Project</strong></ion-label>
   <ion-card>
-    <ion-select name="project_id" placeholder="Select..." (ionChange)="getModules($event)">
+    <ion-select [(ngModel)]="project_id" name="project_id" placeholder="Select..." (ionChange)="getModules($event)">
       <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
         {{project.name}}
       </ion-select-option>
@@ -37,13 +37,11 @@
         <ion-card-subtitle>{{ module.url }}</ion-card-subtitle>
       </ion-card-header>
 
-
-
     </ion-card>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="dark" routerLink='/module'>
+    <ion-fab-button color="dark" routerLink='/module/{{project.id}}'>
       <ion-icon name="globe"></ion-icon>
     </ion-fab-button>
   </ion-fab>
