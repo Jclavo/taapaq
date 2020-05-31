@@ -40,11 +40,11 @@ export class AppComponent implements OnInit {
       url: '/module-list',
       icon: 'globe'
     },
-    // {
-    //   title: 'Favorites',
-    //   url: '/folder/Favorites',
-    //   icon: 'heart'
-    // },
+    {
+      title: 'Companies',
+      url: '/company-list',
+      icon: 'business'
+    },
     // {
     //   title: 'Archived',
     //   url: '/folder/Archived',
