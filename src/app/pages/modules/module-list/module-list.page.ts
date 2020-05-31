@@ -9,6 +9,7 @@ import { Module } from "src/app/models/module.model";
 //Services
 import { ProjectService } from "src/app/services/project.service";
 import { ModuleService } from "src/app/services/module.service";
+import { ResourceService } from "src/app/services/resource.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -31,7 +32,8 @@ export class ModuleListPage implements OnInit {
     private authUtils: AuthUtils,
     private activatedRoute: ActivatedRoute,
     private messageUtils: MessageUtils,
-    private moduleService: ModuleService
+    private moduleService: ModuleService,
+    private resourceService: ResourceService
   ) { }
 
   ngOnInit() {
@@ -115,5 +117,28 @@ export class ModuleListPage implements OnInit {
       }
     );
   }
+
+  async deleteResource(id: number, project: string){
+
+    if(!await this.messageUtils.showAlertOption('You are sure to delete the resource: ', project)){
+      return;
+    }
+
+    this.resourceService.delete(id).subscribe((response: Response) => {
+      if (response.status) {
+        this.getModulesByProject(this.project.id);
+        this.getModulesByProject(this.project.id);
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+      }
+    );
+  }
+
+
   
 }
