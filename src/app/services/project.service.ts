@@ -9,6 +9,7 @@ import { Project } from "src/app/models/project.model";
 import { Module } from "src/app/models/module.model";
 import { Resource } from "src/app/models/resource.model";
 import { ProjectCompany } from "src/app/models/project-company.model";
+import { Company } from "src/app/models/company.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -131,6 +132,42 @@ export class ProjectService {
 
         response.result = project;
       }
+      return response;
+
+    }));
+
+  }
+
+  getProjectsCompanies(){
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'companies'
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(responseProjects => {
+
+        let project = new Project();
+        project.id = responseProjects.id;
+        project.name = responseProjects.name;
+        
+        project.companies = responseProjects.companies.map(responseCompanies => {
+
+          let company = new Company();
+          company.id = responseCompanies.id;
+          company.name = responseCompanies.name;
+          
+          return company;
+        });
+
+        return project;
+
+      });
+
       return response;
 
     }));

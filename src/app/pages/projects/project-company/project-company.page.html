@@ -12,7 +12,7 @@
   <form #form="ngForm" (ngSubmit)="save()" method="post">
 
     <ion-card>
-      <ion-select [(ngModel)]="project_company.project_id" name="project_id" placeholder="Project">
+      <ion-select [(ngModel)]="project_id" name="project_id" placeholder="Project">
         <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
           {{project.name}}
         </ion-select-option>

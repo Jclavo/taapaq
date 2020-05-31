@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 //Models
 import { Response } from "src/app/models/response.model";
@@ -25,9 +25,11 @@ export class ProjectCompanyPage implements OnInit {
   public projects: Array<Project> = [];
   public companies: Array<Company> = [];
   public project_company = new ProjectCompany();
+  public project_id: string = "0";
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private companyService: CompanyService,
     private projectService: ProjectService,
     private authUtils: AuthUtils,
@@ -39,6 +41,8 @@ export class ProjectCompanyPage implements OnInit {
 
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
+
+    this.project_company.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
 
     this.getAllCompanies();
     this.getAllProjects();
@@ -71,6 +75,8 @@ export class ProjectCompanyPage implements OnInit {
     this.projectService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
+        // Number(this.project_id) > 0 ? this.project_company.project_id = Number(this.project_id) : null;
+        this.project_company.project_id > 0 ? this.project_id = this.project_company.project_id.toString() : null;
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -85,6 +91,8 @@ export class ProjectCompanyPage implements OnInit {
   }
 
   async save(){
+
+    this.project_company.project_id = Number(this.project_id);
 
     if(this.project_company.project_id == 0 && this.project_company.company_id == 0){
       this.messageUtils.showToastError("Select a value.");

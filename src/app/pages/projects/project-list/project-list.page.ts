@@ -32,14 +32,14 @@ export class ProjectListPage implements OnInit {
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.getAll();
+    this.getProjectsCompanies();
   }
 
-  async getAll() {
+  async getProjectsCompanies() {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.projectService.getAll().subscribe((response: Response) => {
+    this.projectService.getProjectsCompanies().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
       }
@@ -63,7 +63,7 @@ export class ProjectListPage implements OnInit {
 
     this.projectService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getAll();
+        this.getProjectsCompanies();
       }
       else {
         this.messageUtils.showToastError(response.message);
