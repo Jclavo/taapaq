@@ -62,6 +62,7 @@ export class UserService {
         user.id = item.id;
         user.name = item.name;
         user.email = item.email;
+        user.login = item.login;
 
         return user;
 
@@ -89,6 +90,7 @@ export class UserService {
         user.id = item.id;
         user.name = item.name;
         user.email = item.email;
+        user.login = item.login;
 
         user.roles = item.roles.map(itemRole => {
           let role = new Role();
@@ -121,6 +123,7 @@ export class UserService {
         user.id = this.resultRAW.data.id;
         user.name = this.resultRAW.data.name;
         user.email = this.resultRAW.data.email;
+        user.login = this.resultRAW.data.login;
       }
 
       return response;

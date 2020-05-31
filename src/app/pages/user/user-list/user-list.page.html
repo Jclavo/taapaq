@@ -25,7 +25,8 @@
 
           <ion-item lines="none">
             <ion-icon name="person-circle" slot="start"></ion-icon>
-            <ion-label>{{ user.name }}</ion-label>
+            <!-- <ion-label>{{ user.name }}</ion-label> -->
+            <ion-label>{{ user.login }}</ion-label>
             <ion-button fill="outline" slot="end" (click)="update(user.id)" color="success">Edit</ion-button>
           </ion-item>
 

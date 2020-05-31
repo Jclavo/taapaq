@@ -10,10 +10,10 @@
 
     <ion-card>
       <ion-item>
-        <ion-input position="floating" [(ngModel)]="user.email" type="email" placeholder="Email" name="name" 
+        <ion-input position="floating" [(ngModel)]="user.login" type="text" placeholder="Login" name="login" 
           maxLength="45" required>
         </ion-input>
-        <ion-icon name="mail" item-start color="dark"></ion-icon>
+        <ion-icon name="key" item-start color="dark"></ion-icon>
       </ion-item>
     </ion-card>
 
@@ -22,7 +22,7 @@
         <ion-input position="floating" [(ngModel)]="user.password" type="password" placeholder="Password"
           name="password" maxLength="45" required>
         </ion-input>
-        <ion-icon name="key" item-start color="dark"></ion-icon>
+        <ion-icon name="eye" item-start color="dark"></ion-icon>
       </ion-item>
     </ion-card>
 

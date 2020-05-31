@@ -2,9 +2,10 @@ import { Role } from "./role.model";
 
 export class User{
     id: number = 0;
+    login: string = '';
+    password: string = '';
     name: string = '';
     email: string = '';
-    password: string = '';
     roles: Array<Role> = [];
 
     static fromData(_id,_name,_email){
