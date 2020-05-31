@@ -9,10 +9,13 @@ import { Project } from "src/app/models/project.model";
 //Services
 import { ProjectService } from "src/app/services/project.service";
 import { ModuleService } from "src/app/services/module.service";
+import { ResourceCommonService } from "src/app/services/resource-common.service";
+import { ResourceService } from "src/app/services/resource.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
+import { Resource } from 'src/app/models/resource.model';
 
 @Component({
   selector: 'app-module',
@@ -22,6 +25,7 @@ import { MessageUtils } from "src/app/utils/message-utils";
 export class ModulePage implements OnInit {
 
   public projects: Array<Project> = [];
+  public resourcesCommons: Array<Resource> = [];
   public module = new Module();
   public project_id: string = "0";
 
@@ -32,6 +36,8 @@ export class ModulePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private moduleService: ModuleService,
     private projectService: ProjectService,
+    private resourceCommonService: ResourceCommonService,
+    private resourceService: ResourceService,
   ) { }
 
   ngOnInit() {
@@ -39,9 +45,10 @@ export class ModulePage implements OnInit {
 
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
-  
+
     this.module.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.getAllProjects();
+    this.getAlResourcesCommons();
   }
 
   async getAllProjects() {
@@ -66,9 +73,31 @@ export class ModulePage implements OnInit {
     );
   }
 
+  async getAlResourcesCommons() {
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.resourceCommonService.getAll().subscribe((response: Response) => {
+      if (response.status) {
+        this.resourcesCommons = response.result;
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
+  }
+
+
+
   save() {
 
-    if(this.project_id == "0"){
+    if (this.project_id == "0") {
       this.messageUtils.showToastError("Select a project.");
       return;
     }
@@ -87,9 +116,12 @@ export class ModulePage implements OnInit {
 
     this.moduleService.create(module).subscribe((response: Response) => {
       if (response.status) {
+        this.module = response.result;
+        this.createResourceCommons(this.module.id);
+
         this.messageUtils.showToastOK(response.message);
         this.module = new Module(); // clean model
-        this.router.navigate(['/module-list',this.project_id]);
+        this.router.navigate(['/module-list', this.project_id]);
       } else {
         this.messageUtils.showToastError(response.message);
       }
@@ -101,5 +133,31 @@ export class ModulePage implements OnInit {
       }
     );
   }
+
+  createResourceCommons(module_id: number) {
+
+    for (let index = 0; index < this.resourcesCommons.length; index++) {
+      this.resourcesCommons[index].module_id = module_id;
+      if (this.resourcesCommons[index].isChecked) {
+        this.createResource(this.resourcesCommons[index]);
+      }
+    }
+
+  }
+
+  createResource(resource: Resource) {
+    this.resourceService.create(resource).subscribe((response: Response) => {
+      if (response.status) {
+        // this.messageUtils.showToastOK(response.message);
+      } else {
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+      }
+    );
+  }
+
 
 }
