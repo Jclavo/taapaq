@@ -28,6 +28,13 @@ export class ModuleService {
       this.resultRAW = res;
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
+      if(this.resultRAW.result){
+        let module = new Module();
+        module.id = this.resultRAW.result.id;
+        module.name = this.resultRAW.result.name;
+
+        response.result = module;
+      }
       return response;
 
     }));
