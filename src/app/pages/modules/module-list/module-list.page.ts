@@ -7,6 +7,7 @@ import { Module } from "src/app/models/module.model";
 
 //Services
 import { ProjectService } from "src/app/services/project.service";
+import { ModuleService } from "src/app/services/module.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -26,7 +27,8 @@ export class ModuleListPage implements OnInit {
   constructor(
     private projectService: ProjectService,
     private authUtils: AuthUtils,
-    private messageUtils: MessageUtils
+    private messageUtils: MessageUtils,
+    private moduleService: ModuleService
   ) { }
 
   ngOnInit() {
@@ -85,6 +87,26 @@ export class ModuleListPage implements OnInit {
         loading.dismiss();// close loading
       }
     );
-
   }
+
+  async delete(id: number, project: string){
+
+    if(!await this.messageUtils.showAlertOption('You are sure to delete the project: ', project)){
+      return;
+    }
+
+    this.moduleService.delete(id).subscribe((response: Response) => {
+      if (response.status) {
+        this.getModulesByProject(this.project.id);
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+      }
+    );
+  }
+  
 }
