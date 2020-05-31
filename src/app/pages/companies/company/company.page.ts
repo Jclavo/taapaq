@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 //Models
 import { Response } from "src/app/models/response.model";
@@ -12,68 +13,56 @@ import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
 
 @Component({
-  selector: 'app-company-list',
-  templateUrl: './company-list.page.html',
-  styleUrls: ['./company-list.page.scss'],
+  selector: 'app-company',
+  templateUrl: './company.page.html',
+  styleUrls: ['./company.page.scss'],
 })
-export class CompanyListPage implements OnInit {
+export class CompanyPage implements OnInit {
 
-  public companies: Array<Company> = [];
+  public company = new Company();
 
   constructor(
     private companyService: CompanyService,
     private authUtils: AuthUtils,
-    private messageUtils: MessageUtils
+    private messageUtils: MessageUtils,
+    private router: Router
   ) { }
-
+ 
   ngOnInit() {
   }
 
-  ionViewDidEnter() {
+  ionViewDidEnter(){
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
-
-    this.getAll();
   }
 
-  async getAll() {
+  save(){
+
+    if(this.company.id > 0){
+      //update
+    }else{
+      this.create(this.company);
+    }
+  }
+
+  async create(company: Company){
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
-
-    this.companyService.getAll().subscribe((response: Response) => {
+    
+    this.companyService.create(company).subscribe((response: Response) => {
       if (response.status) {
-        this.companies = response.result;
-      }
-      else {
+        this.messageUtils.showToastOK(response.message);
+        this.company = new Company(); // clean model
+        this.router.navigate(['/company-list']);
+      }else{
         this.messageUtils.showToastError(response.message);
       }
       loading.dismiss();// close loading
     },
-      error => {
+      error => { 
         this.messageUtils.showToastError(error.message);
         loading.dismiss();// close loading
       }
     );
-  }
-
-  async delete(id: number, role: string){
-
-    if(!await this.messageUtils.showAlertOption('You are sure to delete the company: ', role)){
-      return;
-    }
-
-    this.companyService.delete(id).subscribe((response: Response) => {
-      if (response.status) {
-        this.getAll();
-      }
-      else {
-        this.messageUtils.showToastError(response.message);
-      }
-    },
-      error => {
-        this.messageUtils.showToastError(error.message);
-      }
-    );
-
   }
 
 }

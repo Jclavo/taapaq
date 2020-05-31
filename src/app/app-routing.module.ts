@@ -70,6 +70,10 @@ const routes: Routes = [
   {
     path: 'company-list',
     loadChildren: () => import('./pages/companies/company-list/company-list.module').then( m => m.CompanyListPageModule)
+  },
+  {
+    path: 'company',
+    loadChildren: () => import('./pages/companies/company/company.module').then( m => m.CompanyPageModule)
   }
 ];
 
