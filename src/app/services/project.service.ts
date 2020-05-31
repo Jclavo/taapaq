@@ -6,6 +6,7 @@ import { map } from "rxjs/operators";
 //Models
 import { Response } from "src/app/models/response.model";
 import { Project } from "src/app/models/project.model";
+import { Module } from '../models/module.model';
 
 //Env
 import { environment } from "src/environments/environment";
@@ -69,5 +70,39 @@ export class ProjectService {
 
     }));
     
+  }
+
+  getModulesByProject(project_id: number){
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'withModules/' + project_id;
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      if(this.resultRAW.result){
+
+        let project = new Project();
+        project.id = this.resultRAW.result.id;
+        project.name = this.resultRAW.result.name;
+
+        project.modules = this.resultRAW.result.modules?.map(item => {
+            let module = new Module();
+            module.id = item.id;
+            module.name = item.name;
+            module.url = item.url;
+            module.project_id = item.project;
+            return module;
+        });
+
+        response.result = project;
+      }
+      return response;
+
+    }));
+
   }
 } 
