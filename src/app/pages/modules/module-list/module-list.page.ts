@@ -41,6 +41,8 @@ export class ModuleListPage implements OnInit {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
     this.project.id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
+    this.project.id > 0 ? this.getModulesByProject(this.project.id) : null;
+    
     this.getAllProjects();
   }
 
