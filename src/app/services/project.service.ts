@@ -86,9 +86,21 @@ export class ProjectService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
       return response;
-
     }));
+  }
 
+  removeCompany(project_company: ProjectCompany){
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'removeCompany';
+
+    return this.httpClient.post(apiURL, project_company).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+    }));
   }
 
   getModulesResourcesByProject(project_id: number){

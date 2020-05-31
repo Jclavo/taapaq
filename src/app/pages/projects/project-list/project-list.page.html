@@ -28,7 +28,7 @@
         <ion-chip *ngFor="let company of project.companies" color="success">
           <!-- <ion-icon name="business" slot="start"></ion-icon> -->
           <ion-label color="dark">{{company.name}}</ion-label>
-          <ion-icon name="close" color="dark" (click)="deleteCompany(company.id,company.name)"></ion-icon>
+          <ion-icon name="close" color="dark" (click)="deleteCompany(company.id,company.name,project.id)"></ion-icon>
         </ion-chip>
 
         <ion-button fill="clear" color="success" routerLink='/project-company/{{project.id}}'>
