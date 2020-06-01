@@ -36,8 +36,10 @@ export class UserService {
       if (this.resultRAW.result) {
         let user = new User();
         user.id = this.resultRAW.result.id;
-        user.name = this.resultRAW.result.name;
-        user.email = this.resultRAW.result.email;
+        user.login = this.resultRAW.result.login;
+
+        user.company_id = this.resultRAW.result.company_project.company_id;
+        user.project_id = this.resultRAW.result.company_project.project_id;
 
         response.result = user;
       }
