@@ -6,6 +6,8 @@ export class User{
     password: string = '';
     name: string = '';
     email: string = '';
+    company_id: number = 0;
+    project_id: number = 0;
     roles: Array<Role> = [];
 
     static fromData(_id,_name,_email){
