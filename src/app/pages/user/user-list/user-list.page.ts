@@ -120,7 +120,26 @@ export class UserListPage implements OnInit {
     },
      error => { this.messageUtils.showToastError(error.message)}
     );
-    
+  }
+
+  async delete(id: number, user: string){
+
+    if(!await this.messageUtils.showAlertOption('You are sure to delete the user: ', user)){
+      return;
+    }
+
+    this.userService.delete(id).subscribe((response: Response) => {
+      if (response.status) {
+        this.getAllWithRoles();
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+      }
+    );
   }
 
 }
