@@ -12,6 +12,14 @@
   <form #form="ngForm" (ngSubmit)="save()" method="post">
 
     <ion-card>
+      <ion-select [(ngModel)]="role.project_id" name="project_id" placeholder="Project">
+        <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
+          {{project.name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-card>
+
+    <ion-card>
       <ion-item>
         <ion-input position="floating" [(ngModel)]="role.name" type="text" placeholder="Name" 
           name="name" maxLength="45" required>
