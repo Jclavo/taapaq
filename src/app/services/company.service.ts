@@ -5,7 +5,8 @@ import { map } from "rxjs/operators";
 
 //Models
 import { Response } from "src/app/models/response.model";
-import { Company } from "src/app/models/company.model"
+import { Company } from "src/app/models/company.model";
+import { Project } from "src/app/models/project.model"
 
 //Env
 import { environment } from "src/environments/environment";
@@ -69,5 +70,37 @@ export class CompanyService {
 
     }));
     
+  }
+
+  getProjectByCompany(company_id: number){
+    let response = new Response();
+    let apiURL = this.apiURL + company_id + '/projects'
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      if(this.resultRAW.result){
+        let company = new Company();
+        company.id = this.resultRAW.result.id;
+        company.name = this.resultRAW.result.name;
+
+        company.projects = this.resultRAW.result.projects.map(responseProject => {
+
+          let project = new Project();
+          project.id = responseProject.id;
+          project.name = responseProject.name;
+          return project;
+  
+        });
+
+        response.result = company;
+      }
+
+      return response;
+
+    }));
   }
 }
