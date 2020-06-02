@@ -6,7 +6,9 @@ import { map } from "rxjs/operators";
 //Models
 import { Response } from "src/app/models/response.model";
 import { Company } from "src/app/models/company.model";
-import { Project } from "src/app/models/project.model"
+import { Project } from "src/app/models/project.model";
+import { User } from "src/app/models/user.model";
+import { Role } from "src/app/models/role.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -69,10 +71,10 @@ export class CompanyService {
       return response;
 
     }));
-    
+
   }
 
-  getProjectByCompany(company_id: number){
+  getProjectByCompany(company_id: number) {
     let response = new Response();
     let apiURL = this.apiURL + company_id + '/projects'
 
@@ -82,7 +84,7 @@ export class CompanyService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      if(this.resultRAW.result){
+      if (this.resultRAW.result) {
         let company = new Company();
         company.id = this.resultRAW.result.id;
         company.name = this.resultRAW.result.name;
@@ -93,10 +95,54 @@ export class CompanyService {
           project.id = responseProject.id;
           project.name = responseProject.name;
           return project;
-  
+
         });
 
         response.result = company;
+      }
+
+      return response;
+
+    }));
+  }
+
+  getUserRolesByCompany(company_id: number) {
+
+    let response = new Response();
+    let apiURL = this.apiURL + company_id + '/users/roles'
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      if (this.resultRAW.result) {
+
+        let company = new Company();
+        company.id = this.resultRAW.result.id;
+        company.name = this.resultRAW.result.name;
+
+        company.users = this.resultRAW.result.users.map(responseUser => {
+
+          let user = new User();
+          user.id = responseUser.id;
+          user.login = responseUser.login;
+
+          user.roles = responseUser.roles.map(responseRole => {
+
+            let role = new Role();
+            role.id = responseRole.id;
+            role.name = responseRole.name;
+            return role;
+
+          });
+          return user;
+
+        });
+
+        response.result = company;
+
       }
 
       return response;

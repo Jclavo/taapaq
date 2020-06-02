@@ -9,6 +9,7 @@ import { Role } from "src/app/models/role.model";
 //Services
 import { UserService } from "src/app/services/user.service";
 import { RoleService } from "src/app/services/role.service";
+import { CompanyService } from "src/app/services/company.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -32,7 +33,8 @@ export class UserListPage implements OnInit {
     private userService: UserService,
     private roleService: RoleService,
     private authUtils: AuthUtils,
-    private messageUtils: MessageUtils
+    private messageUtils: MessageUtils,
+    private companyService: CompanyService
   ) { }
 
   ngOnInit() {
@@ -41,16 +43,16 @@ export class UserListPage implements OnInit {
   ionViewDidEnter(){
    !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.getAllWithRoles();
+    this.getUserRolesByCompany(this.authUtils.user.company_id);
   }
 
-  async getAllWithRoles(){
+  async getUserRolesByCompany(company_id: number){
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
     
-    this.userService.getAllWithRoles().subscribe((response: Response) => {
+    this.companyService.getUserRolesByCompany(company_id).subscribe((response: Response) => {
       if (response.status) {
-        this.users = response.result;
+        this.users = response.result?.users;
       }
       else{
         this.messageUtils.showToastError(response.message);
@@ -73,7 +75,7 @@ export class UserListPage implements OnInit {
     this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
-        this.getAllWithRoles();
+        this.getUserRolesByCompany(this.authUtils.user.company_id);
       }else{
         this.messageUtils.showToastError(response.message);
       }
@@ -112,7 +114,7 @@ export class UserListPage implements OnInit {
     this.userService.assignRole(this.userRole).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
-        this.getAllWithRoles();
+        this.getUserRolesByCompany(this.authUtils.user.company_id);
       }else{
         this.messageUtils.showToastError(response.message);
       }
@@ -130,7 +132,7 @@ export class UserListPage implements OnInit {
 
     this.userService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getAllWithRoles();
+        this.getUserRolesByCompany(this.authUtils.user.company_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
