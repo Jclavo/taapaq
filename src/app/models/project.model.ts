@@ -1,5 +1,6 @@
 import { Module } from "src/app/models/module.model";
 import { Company } from "src/app/models/company.model";
+import { Role } from "src/app/models/role.model";
 
 export class Project{
 
@@ -8,4 +9,5 @@ export class Project{
 
     modules: Array<Module> = [];
     companies: Array<Company> = [];
+    roles: Array<Role> = [];
 }
