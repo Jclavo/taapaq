@@ -6,6 +6,7 @@ export class User{
     password: string = '';
     name: string = '';
     email: string = '';
+    isSuper: boolean = true;
     company_id: number = 0;
     project_id: number = 0;
     roles: Array<Role> = [];
