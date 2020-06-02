@@ -89,6 +89,11 @@ export class UserListPage implements OnInit {
     this.userRole = new UserRole(0,0);
     this.userRole.user_id = user_id;
 
+    if(this.roles.length == 0){
+      this.messageUtils.showToastError('There are no roles in the project.');
+      return;
+    }
+
     this.roleService.missingToUser(user_id).subscribe((response: Response) => {
       if (response.status) {
         this.roles = response.result;
@@ -101,7 +106,6 @@ export class UserListPage implements OnInit {
       }else{
         this.messageUtils.showToastError(response.message);
       }
-      // this.selectRolesElement.value = 0;
     },
      error => { this.messageUtils.showToastError(error.message)}
     );
