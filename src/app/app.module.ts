@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -20,7 +21,8 @@ import { AuthUtils } from "src/app/utils/auth-utils";
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicSelectableModule
   ],
   providers: [
     StatusBar,
