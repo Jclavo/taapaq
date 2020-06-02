@@ -38,8 +38,8 @@ export class UserService {
         user.id = this.resultRAW.result.id;
         user.login = this.resultRAW.result.login;
 
-        user.company_id = this.resultRAW.result.company_project.company_id;
-        user.project_id = this.resultRAW.result.company_project.project_id;
+        user.company_id = this.resultRAW.result.company_project?.company_id;
+        user.project_id = this.resultRAW.result.company_project?.project_id;
 
         response.result = user;
       }
