@@ -11,6 +11,7 @@ import { ProjectService } from "src/app/services/project.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
+import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-role-list',
@@ -20,6 +21,8 @@ import { MessageUtils } from "src/app/utils/message-utils";
 export class RoleListPage implements OnInit {
 
   public roles: Array<Role> = [];
+  public rolesBackup: Array<Role> = [];
+  public searchValue: string = '';
 
   constructor(
     private roleService: RoleService,
@@ -37,6 +40,20 @@ export class RoleListPage implements OnInit {
     this.getRolesByProject(this.authUtils.user.project_id);
   }
 
+  search(){
+    console.log(this.searchValue);
+    if(!this.searchValue){
+      this.roles = this.rolesBackup;
+      return;
+    }
+    if(this.roles.length == 0) {
+      this.roles = this.rolesBackup;
+    }
+
+    // this.roles = this.roles.filter(value => value.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1);
+    this.roles = Utils.findValueInCollection(this.roles,this.searchValue);
+  }
+
   async getRolesByProject(project_id: number) {
 
     const loading = await this.messageUtils.createLoader();
@@ -45,6 +62,7 @@ export class RoleListPage implements OnInit {
     this.projectService.getRolesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
         this.roles = response.result?.roles;
+        this.rolesBackup = this.roles;
       }
       else {
         this.messageUtils.showToastError(response.message);
