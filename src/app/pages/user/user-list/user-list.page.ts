@@ -14,6 +14,7 @@ import { CompanyService } from "src/app/services/company.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
+import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-user-list',
@@ -24,10 +25,11 @@ export class UserListPage implements OnInit {
 
   @ViewChild('selectRoles') selectRolesElement: HTMLIonSelectElement;
   public users: Array<User> = [];
+  public usersBackup: Array<User> = [];
   public roles: Array<Role> = [];
   public rolesMissingToUser: Array<Role> = [];
   private userRole = new UserRole(0,0);
-
+  public searchValue: string = '';
 
   constructor(
     private userService: UserService,
@@ -46,6 +48,16 @@ export class UserListPage implements OnInit {
     this.getUserRolesByCompany(this.authUtils.user.company_id);
   }
 
+  search(){
+    if(!this.searchValue){
+      this.users = this.usersBackup;
+      return;
+    }
+    this.users.length == 0 ? this.users = this.usersBackup : null;
+
+    this.users = Utils.findValueInCollection(this.users,this.searchValue);
+  }
+
   async getUserRolesByCompany(company_id: number){
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -53,6 +65,7 @@ export class UserListPage implements OnInit {
     this.companyService.getUserRolesByCompany(company_id).subscribe((response: Response) => {
       if (response.status) {
         this.users = response.result?.users;
+        this.usersBackup = this.users;
       }
       else{
         this.messageUtils.showToastError(response.message);

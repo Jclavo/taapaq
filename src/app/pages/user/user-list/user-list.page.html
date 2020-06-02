@@ -19,6 +19,8 @@
     </ion-select>
   </ion-item>
 
+  <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
+
   <ion-list>
       <ion-item *ngFor="let user of users" lines="none">
         <ion-card style="width: 100% !important;">
