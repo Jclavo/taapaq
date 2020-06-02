@@ -10,6 +10,7 @@ import { Module } from "src/app/models/module.model";
 import { Resource } from "src/app/models/resource.model";
 import { ProjectCompany } from "src/app/models/project-company.model";
 import { Company } from "src/app/models/company.model";
+import { Role } from "src/app/models/role.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -183,6 +184,36 @@ export class ProjectService {
       return response;
 
     }));
+  }
 
+  getRolesByProject(project_id: number): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + project_id + '/roles';
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      if(this.resultRAW.result){
+
+        let project = new Project();
+        project.id = this.resultRAW.result.id;
+        project.name = this.resultRAW.result.name;
+
+        project.roles = this.resultRAW.result.roles.map(item => {
+
+          let role = new Role();
+          role.id = item.id;
+          role.name = item.name;
+          return role;
+        });
+
+        response.result = project;
+      }
+      return response;
+
+    }));
   }
 } 

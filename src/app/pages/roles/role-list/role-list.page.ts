@@ -6,6 +6,7 @@ import { Response } from "src/app/models/response.model";
 
 //Services
 import { RoleService } from "src/app/services/role.service";
+import { ProjectService } from "src/app/services/project.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -23,7 +24,8 @@ export class RoleListPage implements OnInit {
   constructor(
     private roleService: RoleService,
     private authUtils: AuthUtils,
-    private messageUtils: MessageUtils
+    private messageUtils: MessageUtils,
+    private projectService: ProjectService
   ) { }
 
   ngOnInit() {
@@ -32,16 +34,17 @@ export class RoleListPage implements OnInit {
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.getAll();
+    this.getRolesByProject(this.authUtils.user.project_id);
   }
 
-  async getAll() {
+  async getRolesByProject(project_id: number) {
+
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.roleService.getAll().subscribe((response: Response) => {
+    this.projectService.getRolesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
-        this.roles = response.result;
+        this.roles = response.result?.roles;
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -63,7 +66,7 @@ export class RoleListPage implements OnInit {
 
     this.roleService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getAll();
+        this.getRolesByProject(this.authUtils.user.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
