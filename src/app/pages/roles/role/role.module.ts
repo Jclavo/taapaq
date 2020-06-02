@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { RolePageRoutingModule } from './role-routing.module';
 
 import { RolePage } from './role.page';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RolePageRoutingModule
+    RolePageRoutingModule,
+    IonicSelectableModule
   ],
   declarations: [RolePage]
 })

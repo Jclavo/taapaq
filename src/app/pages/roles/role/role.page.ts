@@ -23,7 +23,6 @@ export class RolePage implements OnInit {
   
   public role = new Role();
   public projects: Array<Project> = [];
-  public project_id : string = "0";
 
   constructor(
     private roleService: RoleService,
@@ -50,7 +49,6 @@ export class RolePage implements OnInit {
     this.projectService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
-        this.project_id = this.role.project_id.toString(); // assigned project
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -65,8 +63,6 @@ export class RolePage implements OnInit {
   }
 
   save(){
-
-    this.role.project_id = Number(this.project_id);
 
     if(this.role.project_id == 0){
       this.messageUtils.showToastError("Select a value.");
