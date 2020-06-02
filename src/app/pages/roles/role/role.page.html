@@ -10,14 +10,15 @@
 <ion-content>
 
   <form #form="ngForm" (ngSubmit)="save()" method="post">
-
+    <div [hidden]="authUtils.user.project_id > 0">
     <ion-card>
-      <ion-select [(ngModel)]="role.project_id" name="project_id" placeholder="Project">
+      <ion-select [(ngModel)]="project_id" name="project_id" placeholder="Project">
         <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
           {{project.name}}
         </ion-select-option>
       </ion-select>
     </ion-card>
+  </div>
 
     <ion-card>
       <ion-item>
