@@ -23,9 +23,8 @@ import { MessageUtils } from "src/app/utils/message-utils";
 export class ModuleListPage implements OnInit {
 
   public projects: Array<Project> = [];
-  public project = new Project();
   public modules: Array<Module> = [];
-  public project_id: string = "0";
+  public project_id: number = 0;
 
   constructor(
     private projectService: ProjectService,
@@ -42,8 +41,10 @@ export class ModuleListPage implements OnInit {
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.project.id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
-    this.project.id > 0 ? this.getModulesByProject(this.project.id) : null;
+    this.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
+    this.project_id == 0 ? this.project_id = this.authUtils.user.project_id : null;
+    
+    this.getModulesByProject(this.project_id);
     
     this.getAllProjects();
   }
@@ -55,7 +56,6 @@ export class ModuleListPage implements OnInit {
     this.projectService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
-        this.project.id > 0 ? this.project_id = this.project.id.toString() : null;
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -69,9 +69,8 @@ export class ModuleListPage implements OnInit {
     );
   }
 
-  getModules(event){
-    this.project.id = event.target.value;
-    this.getModulesByProject(this.project.id);
+  onChangeProject(){
+    this.getModulesByProject(this.project_id);
   }
  
   async getModulesByProject(project_id: number){
@@ -81,8 +80,8 @@ export class ModuleListPage implements OnInit {
 
     this.projectService.getModulesResourcesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
-        this.project = response.result;
-        if(this.project.modules.length == 0){
+        this.modules = response.result?.modules;
+        if(this.modules.length == 0){
           this.messageUtils.showToastOK("The current project does not have modules yet.");
         }
       }
@@ -106,7 +105,7 @@ export class ModuleListPage implements OnInit {
 
     this.moduleService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getModulesByProject(this.project.id);
+        this.getModulesByProject(this.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -126,7 +125,7 @@ export class ModuleListPage implements OnInit {
 
     this.resourceService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getModulesByProject(this.project.id);
+        this.getModulesByProject(this.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
