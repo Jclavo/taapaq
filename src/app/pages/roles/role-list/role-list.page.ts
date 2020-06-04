@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicSelectableComponent } from 'ionic-selectable';
 
 //Models
 import { Response } from "src/app/models/response.model";
@@ -47,6 +46,23 @@ export class RoleListPage implements OnInit {
     
   }
 
+  onChangeProject(){
+    this.getRolesByProject(this.project_id);
+  }
+
+  search(){
+    console.log(this.searchValue);
+    if(!this.searchValue){
+      this.roles = this.rolesBackup;
+      return;
+    }
+    
+    this.roles.length == 0 ? this.roles = this.rolesBackup : null;
+
+    // this.roles = this.roles.filter(value => value.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1);
+    this.roles = Utils.findValueInCollection(this.roles,this.searchValue);
+  }
+
   async getAllProjects() {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -65,24 +81,6 @@ export class RoleListPage implements OnInit {
         loading.dismiss();// close loading
       }
     );
-  }
-
-  onChangeProject(){
-    this.getRolesByProject(this.project_id);
-  }
-
-  search(){
-    console.log(this.searchValue);
-    if(!this.searchValue){
-      this.roles = this.rolesBackup;
-      return;
-    }
-    if(this.roles.length == 0) {
-      this.roles = this.rolesBackup;
-    }
-
-    // this.roles = this.roles.filter(value => value.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1);
-    this.roles = Utils.findValueInCollection(this.roles,this.searchValue);
   }
 
   async getRolesByProject(project_id: number) {
