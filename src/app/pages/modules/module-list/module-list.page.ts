@@ -14,6 +14,7 @@ import { ResourceService } from "src/app/services/resource.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
+import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-module-list',
@@ -24,7 +25,9 @@ export class ModuleListPage implements OnInit {
 
   public projects: Array<Project> = [];
   public modules: Array<Module> = [];
+  public modulesBackup: Array<Module> = [];
   public project_id: number = 0;
+  public searchValue: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -49,6 +52,21 @@ export class ModuleListPage implements OnInit {
     this.getAllProjects();
   }
 
+  onChangeProject(){
+    this.getModulesByProject(this.project_id);
+  }
+
+  search(){
+    if(!this.searchValue){
+      this.modules = []; 
+      this.modules = JSON.parse(JSON.stringify(this.modulesBackup));
+      return;
+    }
+    this.modules.length == 0 ? this.modules = this.modulesBackup : null;
+
+    this.modules = Utils.findValueInCollection(this.modules,this.searchValue);
+  }
+
   async getAllProjects() {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -68,11 +86,7 @@ export class ModuleListPage implements OnInit {
       }
     );
   }
-
-  onChangeProject(){
-    this.getModulesByProject(this.project_id);
-  }
- 
+  
   async getModulesByProject(project_id: number){
 
     const loading = await this.messageUtils.createLoader();
@@ -81,6 +95,7 @@ export class ModuleListPage implements OnInit {
     this.projectService.getModulesResourcesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
         this.modules = response.result?.modules;
+        this.modulesBackup = JSON.parse(JSON.stringify(this.modules));
         if(this.modules.length == 0){
           this.messageUtils.showToastOK("The current project does not have modules yet.");
         }

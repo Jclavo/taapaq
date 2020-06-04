@@ -22,7 +22,9 @@
       (onChange)="onChangeProject()"
       >
     </ionic-selectable>
-  </ion-item>
+  </ion-item> 
+
+  <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
 
   <ion-list>
     <ion-card *ngFor="let module of modules">
@@ -44,7 +46,7 @@
 
       <ion-card-content>
 
-        <ion-chip *ngFor="let resource of module.resources" color="success">
+        <ion-chip *ngFor="let resource of module?.resources" color="success">
           <ion-label color="dark">{{resource.name}}</ion-label>
           <ion-icon name="close" color="dark" (click)="deleteResource(resource.id,resource.name)"></ion-icon>
         </ion-chip>
