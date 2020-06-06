@@ -11,21 +11,34 @@
 
   <form #form="ngForm" (ngSubmit)="save()" method="post">
 
-    <ion-card>
-      <ion-select [(ngModel)]="project_id" name="project_id" placeholder="Project">
-        <ion-select-option *ngFor="let project of projects" value="{{project.id}}">
-          {{project.name}}
-        </ion-select-option>
-      </ion-select>
-    </ion-card>
-
-    <ion-card>
-      <ion-select [(ngModel)]="project_company.company_id" name="company_id" placeholder="Company">
-        <ion-select-option *ngFor="let company of companies" value="{{company.id}}">
-          {{company.name}}
-        </ion-select-option>
-      </ion-select>
-    </ion-card>
+    <ion-item>
+      <ion-label>Projects</ion-label>
+      <ionic-selectable
+        name="project_id"
+        [(ngModel)]="project_company.project_id"
+        [items]="projects"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        (onChange)="onChangeProject()"
+        >
+      </ionic-selectable>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Companies</ion-label>
+      <ionic-selectable
+        name="company_id"
+        [(ngModel)]="project_company.company_id"
+        [items]="companies"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        >
+      </ionic-selectable>
+    </ion-item>
 
     <ion-row text-center>
       <ion-col col-6>

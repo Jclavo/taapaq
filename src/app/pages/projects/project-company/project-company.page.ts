@@ -25,7 +25,6 @@ export class ProjectCompanyPage implements OnInit {
   public projects: Array<Project> = [];
   public companies: Array<Company> = [];
   public project_company = new ProjectCompany();
-  public project_id: string = "0";
 
   constructor(
     private router: Router,
@@ -44,17 +43,24 @@ export class ProjectCompanyPage implements OnInit {
 
     this.project_company.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
 
-    this.getAllCompanies();
     this.getAllProjects();
+    this.getMissingByProject(this.project_company.project_id);
   }
 
-  async getAllCompanies() {
+  onChangeProject(){
+    this.getMissingByProject(this.project_company.project_id);
+  }
+
+  async getMissingByProject(project_id: number) {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.companyService.getAll().subscribe((response: Response) => {
+    this.companyService.getMissingByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
         this.companies = response.result;
+        if(this.companies.length == 0 ){
+          this.messageUtils.showToastOK("Project has all the companies.");
+        }
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -75,8 +81,6 @@ export class ProjectCompanyPage implements OnInit {
     this.projectService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
-        // Number(this.project_id) > 0 ? this.project_company.project_id = Number(this.project_id) : null;
-        this.project_company.project_id > 0 ? this.project_id = this.project_company.project_id.toString() : null;
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -92,9 +96,7 @@ export class ProjectCompanyPage implements OnInit {
 
   async save(){
 
-    this.project_company.project_id = Number(this.project_id);
-
-    if(this.project_company.project_id == 0 && this.project_company.company_id == 0){
+    if(this.project_company.project_id == 0 || this.project_company.company_id == 0){
       this.messageUtils.showToastError("Select a value.");
       return;
     }

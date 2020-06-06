@@ -109,7 +109,7 @@ export class CompanyService {
   getUserRolesByCompany(company_id: number) {
 
     let response = new Response();
-    let apiURL = this.apiURL + company_id + '/users/roles'
+    let apiURL = this.apiURL + company_id + '/users/roles';
 
     return this.httpClient.get(apiURL).pipe(map(res => {
 
@@ -144,6 +144,31 @@ export class CompanyService {
         response.result = company;
 
       }
+
+      return response;
+
+    }));
+  }
+
+  
+  getMissingByProject(project_id: number): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + 'not/project/' + project_id;
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let company = new Company();
+        company.id = item.id;
+        company.name = item.name;
+        return company;
+
+      });
 
       return response;
 
