@@ -59,10 +59,10 @@ export class ModuleListPage implements OnInit {
   search(){
     if(!this.searchValue){
       this.modules = []; 
-      this.modules = JSON.parse(JSON.stringify(this.modulesBackup));
+      this.modules = Utils.copyDeeperObject(this.modulesBackup);
       return;
     }
-    this.modules.length == 0 ? this.modules = this.modulesBackup : null;
+    this.modules.length == 0 ? this.modules = Utils.copyDeeperObject(this.modulesBackup) : null;
 
     this.modules = Utils.findValueInCollection(this.modules,this.searchValue);
   }
@@ -95,7 +95,7 @@ export class ModuleListPage implements OnInit {
     this.projectService.getModulesResourcesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
         this.modules = response.result?.modules;
-        this.modulesBackup = JSON.parse(JSON.stringify(this.modules));
+        this.modulesBackup = Utils.copyDeeperObject(this.modules);
         if(this.modules.length == 0){
           this.messageUtils.showToastOK("The current project does not have modules yet.");
         }
