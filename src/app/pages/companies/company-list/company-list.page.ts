@@ -10,6 +10,7 @@ import { CompanyService } from "src/app/services/company.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
+import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-company-list',
@@ -19,6 +20,8 @@ import { MessageUtils } from "src/app/utils/message-utils";
 export class CompanyListPage implements OnInit {
 
   public companies: Array<Company> = [];
+  public companiesBackup: Array<Company> = [];
+  public searchValue: string = '';
 
   constructor(
     private companyService: CompanyService,
@@ -35,6 +38,17 @@ export class CompanyListPage implements OnInit {
     this.getAll();
   }
 
+  search(){
+    if(!this.searchValue){
+      this.companies = []; 
+      this.companies = Utils.copyDeeperObject(this.companiesBackup);
+      return;
+    }
+    this.companies.length == 0 ? this.companies = Utils.copyDeeperObject(this.companiesBackup) : null;
+
+    this.companies = Utils.findValueInCollection(this.companies,this.searchValue);
+  }
+
   async getAll() {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -42,6 +56,7 @@ export class CompanyListPage implements OnInit {
     this.companyService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.companies = response.result;
+        this.companiesBackup = Utils.copyDeeperObject(this.companies);
       }
       else {
         this.messageUtils.showToastError(response.message);
