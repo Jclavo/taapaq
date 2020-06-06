@@ -24,6 +24,10 @@ export class Utils {
         });
     }
 
+    static copyDeeperObject(object: any){
+        return JSON.parse(JSON.stringify(object));
+    }
+
 
     //   static searchInCollection(collection: any[], arg: object | null) {
 
