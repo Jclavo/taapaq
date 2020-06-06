@@ -73,7 +73,7 @@ export class RolePermissionPage implements OnInit {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
     
-    this.permissionService.getAllPermissionsByRole(role_id).subscribe((response: Response) => {
+    this.permissionService.getByRole(role_id).subscribe((response: Response) => {
       if (response.status) {
         this.permissions = response.result;
       }else{

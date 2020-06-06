@@ -20,11 +20,11 @@ export class PermissionService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllPermissionsByRole(role_id: number): Observable<Response> {
+  getByRole(role_id: number): Observable<Response> {
     let response = new Response();
-    let apiURL = this.apiURL + 'getAllByRole';
+    let apiURL = this.apiURL + 'roles/' + role_id;
 
-    return this.httpClient.post(apiURL, {'role_id' : role_id}).pipe(map(res => {
+    return this.httpClient.get(apiURL).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -35,7 +35,7 @@ export class PermissionService {
         let permission = new Permission();
         permission.id = item.id;
         permission.name = item.name;
-        permission.roleHasPermission = item.user_has_role;
+        permission.roleHasPermission = item.role_has_permission;
         return permission;
 
       });
