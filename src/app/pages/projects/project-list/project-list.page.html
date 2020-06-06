@@ -9,6 +9,8 @@
 
 <ion-content>
 
+  <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
+
   <ion-list>
     <ion-card *ngFor="let project of projects">
 

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 //Models
 import { Response } from "src/app/models/response.model";
 import { Project } from "src/app/models/project.model";
+import { ProjectCompany } from 'src/app/models/project-company.model';
 
 //Services
 import { ProjectService } from "src/app/services/project.service";
@@ -10,7 +11,7 @@ import { ProjectService } from "src/app/services/project.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
-import { ProjectCompany } from 'src/app/models/project-company.model';
+import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-project-list',
@@ -20,6 +21,9 @@ import { ProjectCompany } from 'src/app/models/project-company.model';
 export class ProjectListPage implements OnInit {
 
   public projects: Array<Project> = [];
+  public projectsBackup: Array<Project> = [];
+  public searchValue: string = '';
+
 
   constructor(
     private projectService: ProjectService,
@@ -36,6 +40,17 @@ export class ProjectListPage implements OnInit {
     this.getProjectsCompanies();
   }
 
+  search(){
+    if(!this.searchValue){
+      this.projects = []; 
+      this.projects = Utils.copyDeeperObject(this.projectsBackup);
+      return;
+    }
+    this.projects.length == 0 ? this.projects = Utils.copyDeeperObject(this.projectsBackup) : null;
+
+    this.projects = Utils.findValueInCollection(this.projects,this.searchValue);
+  }
+
   async getProjectsCompanies() {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -43,6 +58,7 @@ export class ProjectListPage implements OnInit {
     this.projectService.getProjectsCompanies().subscribe((response: Response) => {
       if (response.status) {
         this.projects = response.result;
+        this.projectsBackup = Utils.copyDeeperObject(this.projects);
       }
       else {
         this.messageUtils.showToastError(response.message);
