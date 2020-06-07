@@ -73,10 +73,10 @@ export class ProjectService {
       return response;
 
     }));
-    
+
   }
 
-  assignCompany(project_company: ProjectCompany){
+  assignCompany(project_company: ProjectCompany) {
 
     let response = new Response();
     let apiURL = this.apiURL + 'assignCompany';
@@ -90,7 +90,7 @@ export class ProjectService {
     }));
   }
 
-  removeCompany(project_company: ProjectCompany){
+  removeCompany(project_company: ProjectCompany) {
 
     let response = new Response();
     let apiURL = this.apiURL + 'removeCompany';
@@ -104,7 +104,7 @@ export class ProjectService {
     }));
   }
 
-  getModulesResourcesByProject(project_id: number){
+  getModulesResourcesByProject(project_id: number) {
 
     let response = new Response();
     let apiURL = this.apiURL + project_id + '/modules/resources';
@@ -115,32 +115,32 @@ export class ProjectService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      if(this.resultRAW.result){
+      if (this.resultRAW.result) {
 
         let project = new Project();
         project.id = this.resultRAW.result.id;
         project.name = this.resultRAW.result.name;
 
         project.modules = this.resultRAW.result.modules?.map(responseItem => {
-          
-            let module = new Module();
-            module.id = responseItem.id;
-            module.name = responseItem.name;
-            module.url = responseItem.url;
-            module.project_id = responseItem.project;
 
-            module.resources = responseItem.resources?.map(responseResource => {
+          let module = new Module();
+          module.id = responseItem.id;
+          module.name = responseItem.name;
+          module.url = responseItem.url;
+          module.project_id = responseItem.project;
 
-              let resource = new Resource();
-              resource.id = responseResource.id;
-              resource.name = responseResource.name;
-              resource.module_id = responseResource.module_id;
+          module.resources = responseItem.resources?.map(responseResource => {
 
-              return resource;
+            let resource = new Resource();
+            resource.id = responseResource.id;
+            resource.name = responseResource.name;
+            resource.module_id = responseResource.module_id;
 
-            });
+            return resource;
 
-            return module;
+          });
+
+          return module;
         });
 
         response.result = project;
@@ -151,7 +151,7 @@ export class ProjectService {
 
   }
 
-  getProjectsCompanies(){
+  getProjectsCompanies() {
 
     let response = new Response();
     let apiURL = this.apiURL + 'companies'
@@ -167,13 +167,13 @@ export class ProjectService {
         let project = new Project();
         project.id = responseProjects.id;
         project.name = responseProjects.name;
-        
+
         project.companies = responseProjects.companies.map(responseCompanies => {
 
           let company = new Company();
           company.id = responseCompanies.id;
           company.name = responseCompanies.name;
-          
+
           return company;
         });
 
@@ -181,6 +181,40 @@ export class ProjectService {
 
       });
 
+      return response;
+
+    }));
+  }
+
+  getCompaniesByProject(project_id: number) {
+
+    let response = new Response();
+    let apiURL = this.apiURL + project_id + '/companies'
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      if (this.resultRAW.result) {
+
+        let project = new Project();
+        project.id = this.resultRAW.result?.id;
+        project.name = this.resultRAW.result?.name;
+
+        project.companies = this.resultRAW.result?.companies.map(responseCompanies => {
+
+          let company = new Company();
+          company.id = responseCompanies.id;
+          company.name = responseCompanies.name;
+
+          return company;
+        });
+
+        response.result = project
+
+      }
       return response;
 
     }));
@@ -196,7 +230,7 @@ export class ProjectService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      if(this.resultRAW.result){
+      if (this.resultRAW.result) {
 
         let project = new Project();
         project.id = this.resultRAW.result.id;
