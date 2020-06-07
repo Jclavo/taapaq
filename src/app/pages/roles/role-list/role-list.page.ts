@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 //Models
 import { Response } from "src/app/models/response.model";
@@ -31,6 +32,7 @@ export class RoleListPage implements OnInit {
     private roleService: RoleService,
     private authUtils: AuthUtils,
     private messageUtils: MessageUtils,
+    private activatedRoute: ActivatedRoute,
     private projectService: ProjectService
   ) { }
 
@@ -40,7 +42,9 @@ export class RoleListPage implements OnInit {
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.project_id = this.authUtils.user.project_id;
+    this.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
+    this.project_id == 0 ? this.project_id = this.authUtils.user.project_id : null;
+
     this.getAllProjects();
     this.getRolesByProject(this.project_id);
     

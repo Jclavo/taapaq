@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 //Models
 import { Role } from "src/app/models/role.model";
@@ -29,6 +29,7 @@ export class RolePage implements OnInit {
     private authUtils: AuthUtils,
     private messageUtils: MessageUtils,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private projectService: ProjectService,
   ) { }
  
@@ -38,7 +39,7 @@ export class RolePage implements OnInit {
   ionViewDidEnter(){
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
     
-    this.role.project_id = this.authUtils.user.project_id; // assigned project
+    this.role.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));  // assigned project
     this.getAllProjects();
   }
 
@@ -83,8 +84,8 @@ export class RolePage implements OnInit {
     this.roleService.create(role).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
+        this.router.navigate(['/role-list',this.role.project_id]);
         this.role = new Role(); // clean model
-        this.router.navigate(['/role-list']);
       }else{
         this.messageUtils.showToastError(response.message);
       }

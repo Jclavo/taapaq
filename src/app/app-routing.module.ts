@@ -28,11 +28,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/roles/role-list/role-list.module').then( m => m.RoleListPageModule)
   },
   {
+    path: 'role-list/:project_id',
+    loadChildren: () => import('./pages/roles/role-list/role-list.module').then( m => m.RoleListPageModule)
+  },
+  {
     path: 'role-permission/:id',
     loadChildren: () => import('./pages/roles/role-permission/role-permission.module').then( m => m.RolePermissionPageModule)
   },
   {
-    path: 'role',
+    path: 'role/:project_id',
     loadChildren: () => import('./pages/roles/role/role.module').then( m => m.RolePageModule)
   },
   {
