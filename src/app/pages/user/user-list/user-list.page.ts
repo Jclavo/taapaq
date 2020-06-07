@@ -164,23 +164,18 @@ export class UserListPage implements OnInit {
     
   }
 
-  openSelectRoles(user_id: number){
+  openSelectRoles(user_id: number,project_id: number){
     this.userRole = new UserRole(0,0);
     this.userRole.user_id = user_id;
 
-    if(this.roles.length == 0){
-      this.messageUtils.showToastError('There are no roles in the project.');
-      return;
-    }
-
-    this.roleService.missingToUser(user_id).subscribe((response: Response) => {
+    this.roleService.notInUser(user_id, project_id).subscribe((response: Response) => {
       if (response.status) {
         this.roles = response.result;
         if(this.roles.length > 0){
           this.selectRolesElement.open();
         }
         else{
-          this.messageUtils.showToastOK('User has all the roles.');
+          this.messageUtils.showToastOK('There are not roles to show.');
         }
       }else{
         this.messageUtils.showToastError(response.message);

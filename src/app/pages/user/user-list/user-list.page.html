@@ -12,12 +12,27 @@
   <ion-item [hidden]=true>
     <ion-label><strong>Roles</strong></ion-label>
     <ion-select [(ngModel)]="userRole.role_id" name="role_id" placeholder="Select..." 
-      (ionChange)="assignRole($event)" okText="Add" #selectRoles>
+      (ionChange)="assignRole()" okText="Add" #selectRoles>
       <ion-select-option *ngFor="let role of roles" value="{{role.id}}">
         {{role.name}}
       </ion-select-option>
     </ion-select>
   </ion-item>
+  <!-- <ion-item [hidden]=true>
+    <ion-label>Roles</ion-label>
+    <ionic-selectable
+      name="role_id"
+      [(ngModel)]="userRole.role_id"
+      [items]="roles"
+      itemValueField="id"
+      itemTextField="name"
+      [canSearch]="true"
+      [shouldStoreItemValue]="true"
+      (onChange)="assignRole()"
+      #selectRoles>
+    </ionic-selectable>
+  </ion-item> -->
+
 
   <ion-item [hidden]="!authUtils.user.isSuper">
     <ion-label>Projects</ion-label>
@@ -78,7 +93,7 @@
               <ion-icon name="close" color="dark" (click)="removeRole(user.id,role.id)"></ion-icon>
             </ion-chip>
 
-            <ion-button fill="clear" color="success" (click)="openSelectRoles(user.id)">
+            <ion-button fill="clear" color="success" (click)="openSelectRoles(user.id,project_company.project_id)">
               <ion-icon slot="start" name="add-circle" ></ion-icon>
             </ion-button>
 
