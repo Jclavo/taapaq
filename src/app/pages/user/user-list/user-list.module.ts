@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { UserListPageRoutingModule } from './user-list-routing.module';
 
 import { UserListPage } from './user-list.page';
+import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UserListPageRoutingModule
+    UserListPageRoutingModule,
+    IonicSelectableModule
   ],
   declarations: [UserListPage]
 })

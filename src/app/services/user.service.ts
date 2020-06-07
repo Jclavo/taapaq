@@ -111,6 +111,39 @@ export class UserService {
     }));
   }
 
+  getUserRolesByProjectCompany(project_id: number,company_id: number) {
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'roles/companies/' + company_id + '/projects/' + project_id;
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let user = new User();
+        user.id = item.id;
+        user.name = item.name;
+        user.email = item.email;
+        user.login = item.login;
+
+        user.roles = item.roles.map(itemRole => {
+          let role = new Role();
+          role.id = itemRole.id;
+          role.name = itemRole.name;
+          return role;
+
+        });
+        return user;
+      });
+      return response;
+
+    }));
+  }
+
   create(user: User): Observable<Response> {
     let response = new Response();
 

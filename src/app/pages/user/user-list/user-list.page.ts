@@ -5,11 +5,15 @@ import { Response } from "src/app/models/response.model";
 import { User } from "src/app/models/user.model";
 import { UserRole } from 'src/app/models/user-role.mode';
 import { Role } from "src/app/models/role.model";
+import { Company } from "src/app/models/company.model";
+import { Project } from "src/app/models/project.model";
+import { ProjectCompany } from "src/app/models/project-company.model";
 
 //Services
 import { UserService } from "src/app/services/user.service";
 import { RoleService } from "src/app/services/role.service";
 import { CompanyService } from "src/app/services/company.service";
+import { ProjectService } from "src/app/services/project.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -28,6 +32,9 @@ export class UserListPage implements OnInit {
   public usersBackup: Array<User> = [];
   public roles: Array<Role> = [];
   public rolesMissingToUser: Array<Role> = [];
+  public projects: Array<Project> = [];
+  public companies: Array<Company> = [];
+  public project_company = new ProjectCompany();
   private userRole = new UserRole(0,0);
   public searchValue: string = '';
 
@@ -36,8 +43,9 @@ export class UserListPage implements OnInit {
     private roleService: RoleService,
     private authUtils: AuthUtils,
     private messageUtils: MessageUtils,
-    private companyService: CompanyService
-  ) { }
+    private companyService: CompanyService,
+    private projectService: ProjectService,
+  ) { } 
 
   ngOnInit() {
   }
@@ -45,7 +53,13 @@ export class UserListPage implements OnInit {
   ionViewDidEnter(){
    !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.getUserRolesByCompany(this.authUtils.user.company_id);
+    this.project_company.project_id = this.authUtils.user.project_id;
+    this.project_company.company_id = this.authUtils.user.company_id;
+
+    this.getAllProjects();
+    this.getCompaniesByProject(this.project_company.project_id);
+    this.getUserRolesByCompany(this.project_company.project_id, this.project_company.company_id);
+
   }
 
   search(){
@@ -58,13 +72,65 @@ export class UserListPage implements OnInit {
     this.users = Utils.findValueInCollection(this.users,this.searchValue);
   }
 
-  async getUserRolesByCompany(company_id: number){
+  onChangeProject(){
+    this.getCompaniesByProject(this.project_company.project_id);
+    this.users = [];
+  }
+
+  onChangeCompany(){
+    this.getUserRolesByCompany(this.project_company.project_id, this.project_company.company_id);
+  }
+
+  async getAllProjects() {
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.projectService.getAll().subscribe((response: Response) => {
+      if (response.status) {
+        this.projects = response.result;
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
+  }
+
+  async getCompaniesByProject(project_id: number) {
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.projectService.getCompaniesByProject(project_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.companies = response.result?.companies;
+        if(this.companies.length == 0 ){
+          this.messageUtils.showToastOK("Project does not have companies.");
+        }
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
+  }
+
+  async getUserRolesByCompany(project_id: number,company_id: number){
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
     
-    this.companyService.getUserRolesByCompany(company_id).subscribe((response: Response) => {
+    this.userService.getUserRolesByProjectCompany(project_id, company_id).subscribe((response: Response) => {
       if (response.status) {
-        this.users = response.result?.users;
+        this.users = response.result;
         this.usersBackup = this.users;
       }
       else{
@@ -88,7 +154,7 @@ export class UserListPage implements OnInit {
     this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
-        this.getUserRolesByCompany(this.authUtils.user.company_id);
+        this.getUserRolesByCompany(this.project_company.project_id,this.authUtils.user.company_id);
       }else{
         this.messageUtils.showToastError(response.message);
       }
@@ -131,7 +197,7 @@ export class UserListPage implements OnInit {
     this.userService.assignRole(this.userRole).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
-        this.getUserRolesByCompany(this.authUtils.user.company_id);
+        this.getUserRolesByCompany(this.project_company.project_id, this.authUtils.user.company_id);
       }else{
         this.messageUtils.showToastError(response.message);
       }
@@ -149,7 +215,7 @@ export class UserListPage implements OnInit {
 
     this.userService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getUserRolesByCompany(this.authUtils.user.company_id);
+        this.getUserRolesByCompany(this.project_company.project_id, this.authUtils.user.company_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
