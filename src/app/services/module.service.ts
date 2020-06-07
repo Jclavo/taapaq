@@ -32,6 +32,7 @@ export class ModuleService {
         let module = new Module();
         module.id = this.resultRAW.result.id;
         module.name = this.resultRAW.result.name;
+        module.project_id = this.resultRAW.result.project_id;
 
         response.result = module;
       }
