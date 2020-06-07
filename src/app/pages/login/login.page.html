@@ -6,7 +6,7 @@
 
 <ion-content class="ion-padding">
 
-  <form #form="ngForm" (ngSubmit)="login()" method="post">
+  <form #form="ngForm" (ngSubmit)="login()" (keyup.enter)="login()" method="post">
 
     <ion-card>
       <ion-item>
