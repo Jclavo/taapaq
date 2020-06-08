@@ -16,40 +16,41 @@ export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: 'Users',
-      url: '/user-list',
-      icon: 'people'
-    },
-    {
-      title: 'Roles',
-      url: '/role-list',
-      icon: 'bookmarks'
-    },
-    {
-      title: 'Permissions',
-      url: '/permission-list',
-      icon: 'key'
-    },
-    {
       title: 'Project',
       url: '/project-list',
       icon: 'rocket'
-    },
-    {
-      title: 'Modules',
-      url: '/module-list',
-      icon: 'globe'
     },
     {
       title: 'Companies',
       url: '/company-list',
       icon: 'business'
     },
+    // {
+    //   title: 'Project - Company',
+    //   url: '/project-company',
+    //   icon: 'link'
+    // },
     {
-      title: 'Project - Company',
-      url: '/project-company',
-      icon: 'link'
+      title: 'Modules',
+      url: '/module-list',
+      icon: 'globe'
     },
+    {
+      title: 'Roles',
+      url: '/role-list',
+      icon: 'bookmarks'
+    },
+    // {
+    //   title: 'Permissions',
+    //   url: '/permission-list',
+    //   icon: 'key'
+    // },
+    {
+      title: 'Users',
+      url: '/user-list',
+      icon: 'people'
+    },
+
     // {
     //   title: 'Archived',
     //   url: '/folder/Archived',

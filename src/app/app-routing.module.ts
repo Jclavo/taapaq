@@ -15,14 +15,14 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
-  {
-    path: 'user',
-    loadChildren: () => import('./pages/user/users/users.module').then( m => m.UsersPageModule)
-  },
-  {
-    path: 'user-list',
-    loadChildren: () => import('./pages/user/user-list/user-list.module').then( m => m.UserListPageModule)
-  },
+  // {
+  //   path: 'user',
+  //   loadChildren: () => import('./pages/user/users/users.module').then( m => m.UsersPageModule)
+  // },
+  // {
+  //   path: 'user-list',
+  //   loadChildren: () => import('./pages/user/user-list/user-list.module').then( m => m.UserListPageModule)
+  // },
   {
     path: 'role-list',
     loadChildren: () => import('./pages/roles/role-list/role-list.module').then( m => m.RoleListPageModule)
@@ -86,6 +86,14 @@ const routes: Routes = [
   {
     path: 'project-company/:project_id',
     loadChildren: () => import('./pages/projects/project-company/project-company.module').then( m => m.ProjectCompanyPageModule)
+  },
+  {
+    path: 'user-list',
+    loadChildren: () => import('./pages/users/user-list/user-list.module').then( m => m.UserListPageModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./pages/users/user/user.module').then( m => m.UserPageModule)
   }
 ];
 
