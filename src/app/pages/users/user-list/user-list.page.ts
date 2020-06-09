@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 //Models
 import { Response } from "src/app/models/response.model";
@@ -12,13 +13,13 @@ import { ProjectCompany } from "src/app/models/project-company.model";
 //Services
 import { UserService } from "src/app/services/user.service";
 import { RoleService } from "src/app/services/role.service";
-import { CompanyService } from "src/app/services/company.service";
 import { ProjectService } from "src/app/services/project.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
 import { Utils } from "src/app/utils/utils";
+
 
 @Component({
   selector: 'app-user-list',
@@ -42,8 +43,8 @@ export class UserListPage implements OnInit {
     private userService: UserService,
     private roleService: RoleService,
     private authUtils: AuthUtils,
+    private activatedRoute: ActivatedRoute,
     private messageUtils: MessageUtils,
-    private companyService: CompanyService,
     private projectService: ProjectService,
   ) { } 
 
@@ -53,9 +54,12 @@ export class UserListPage implements OnInit {
   ionViewDidEnter(){
    !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.project_company.project_id = this.authUtils.user.project_id;
-    this.project_company.company_id = this.authUtils.user.company_id;
+    this.project_company.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
+    this.project_company.project_id == 0 ? this.project_company.project_id = this.authUtils.user.project_id : null;
 
+    this.project_company.company_id = Number(this.activatedRoute.snapshot.paramMap.get('company_id'));
+    this.project_company.company_id == 0 ? this.project_company.company_id = this.authUtils.user.company_id : null;
+    
     this.getAllProjects();
     this.getCompaniesByProject(this.project_company.project_id);
     this.getUserRolesByCompany(this.project_company.project_id, this.project_company.company_id);
@@ -75,6 +79,7 @@ export class UserListPage implements OnInit {
   onChangeProject(){
     this.getCompaniesByProject(this.project_company.project_id);
     this.users = [];
+    this.project_company.company_id = 0;
   }
 
   onChangeCompany(){
