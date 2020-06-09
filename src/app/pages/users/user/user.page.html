@@ -1,9 +1,81 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>user</ion-title>
+  <ion-toolbar color="dark">
+    <ion-toolbar color="dark">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>User</ion-title>
+    </ion-toolbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <form #form="ngForm" (ngSubmit)="save(form)" method="post">
+
+    <ion-item [hidden]="!authUtils.user.isSuper">
+      <ion-label>Projects</ion-label>
+      <ionic-selectable
+        name="project_id"
+        [(ngModel)]="user.project_id"
+        [items]="projects"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        (onChange)="onChangeProject()"
+        >
+      </ionic-selectable>
+    </ion-item>
+  
+    <ion-item [hidden]="!authUtils.user.isSuper">
+      <ion-label>Companies</ion-label>
+      <ionic-selectable
+        name="company_id"
+        [(ngModel)]="user.company_id"
+        [items]="companies"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        (onChange)="onChangeCompany()"
+        >
+      </ionic-selectable>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Users</ion-label>
+      <ionic-selectable
+        name="user"
+        [(ngModel)]="user.user_detail_id"
+        [items]="users"
+        itemValueField="id"
+        itemTextField="fullname"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        (onChange)="onChangeUser()"
+        >
+      </ionic-selectable>
+    </ion-item>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.info.identification" type="text" placeholder="Login" name="login" readonly>
+        </ion-input>
+        <ion-icon name="key" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-row text-center>
+      <ion-col col-6>
+        <ion-button expand="full" type="submit" color="dark" [disabled]="!form.valid">Save</ion-button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-button expand="full" color="danger" (click)="form.reset()">Reset
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
 
 </ion-content>
