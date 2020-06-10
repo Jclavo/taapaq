@@ -8,4 +8,16 @@ export class UserDetail{
     fullname: string = '';
     phone: string = '';
     address: string = '';
-}
+
+    setFullname(){
+        if(this.name){
+            this.fullname = this.name;
+        }
+
+        if(this.lastname){
+            this.fullname = this.fullname + ' ' + this.lastname;
+        }
+
+        this.fullname = this.fullname?.trim();
+    }
+} 

@@ -41,6 +41,15 @@ export class UserService {
         user.company_id = this.resultRAW.result.company_project?.company_id;
         user.project_id = this.resultRAW.result.company_project?.project_id;
 
+        user.info.identification = this.resultRAW.result.user_detail?.identification;
+        user.info.email = this.resultRAW.result.user_detail?.email;
+        user.info.name = this.resultRAW.result.user_detail?.name;
+        user.info.lastname = this.resultRAW.result.user_detail?.lastname;
+        // user.info.fullname = user.info.name + ' ' + user.info.lastname;
+        user.info.setFullname();
+        user.info.phone = this.resultRAW.result.user_detail?.phone;
+        user.info.address = this.resultRAW.result.user_detail?.address;
+
         response.result = user;
       }
 
@@ -49,67 +58,67 @@ export class UserService {
     }));
   }
 
-  getAll(): Observable<Response> {
-    let response = new Response();
+  // getAll(): Observable<Response> {
+  //   let response = new Response();
 
-    return this.httpClient.get(this.apiURL).pipe(map(res => {
+  //   return this.httpClient.get(this.apiURL).pipe(map(res => {
 
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
+  //     this.resultRAW = res;
+  //     response.status = this.resultRAW.status;
+  //     response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+  //     response.result = this.resultRAW.result.map(item => {
 
-        let user = new User();
-        user.id = item.id;
-        user.name = item.name;
-        user.email = item.email;
-        user.login = item.login;
+  //       let user = new User();
+  //       user.id = item.id;
+  //       // user.name = item.name;
+  //       // user.email = item.email;
+  //       user.login = item.login;
 
-        return user;
+  //       return user;
 
-      });
+  //     });
 
-      return response;
+  //     return response;
 
-    }));
-  }
+  //   }));
+  // }
 
-  getAllWithRoles(): Observable<Response> {
+  // getAllWithRoles(): Observable<Response> {
 
-    let response = new Response();
-    let apiURL = this.apiURL + 'withRoles';
+  //   let response = new Response();
+  //   let apiURL = this.apiURL + 'withRoles';
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+  //   return this.httpClient.get(apiURL).pipe(map(res => {
 
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
+  //     this.resultRAW = res;
+  //     response.status = this.resultRAW.status;
+  //     response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+  //     response.result = this.resultRAW.result.map(item => {
 
-        let user = new User();
-        user.id = item.id;
-        user.name = item.name;
-        user.email = item.email;
-        user.login = item.login;
+  //       let user = new User();
+  //       user.id = item.id;
+  //       // user.name = item.name;
+  //       // user.email = item.email;
+  //       user.login = item.login;
 
-        user.roles = item.roles.map(itemRole => {
-          let role = new Role();
-          role.id = itemRole.id;
-          role.name = itemRole.name;
-          return role;
+  //       user.roles = item.roles.map(itemRole => {
+  //         let role = new Role();
+  //         role.id = itemRole.id;
+  //         role.name = itemRole.name;
+  //         return role;
 
-        });
+  //       });
 
-        return user;
+  //       return user;
 
-      });
+  //     });
 
-      return response;
+  //     return response;
 
-    }));
-  }
+  //   }));
+  // }
 
   getUserRolesByProjectCompany(project_id: number,company_id: number) {
 
@@ -126,17 +135,25 @@ export class UserService {
 
         let user = new User();
         user.id = item.id;
-        user.name = item.name;
-        user.email = item.email;
         user.login = item.login;
 
-        user.roles = item.roles.map(itemRole => {
+        user.info.identification = item.user_detail?.identification;
+        user.info.email = item.user_detail?.email;
+        user.info.name = item.user_detail?.name;
+        user.info.lastname = item.user_detail?.lastname;
+        // user.info.fullname = user.info?.name + ' ' + user.info?.lastname;
+        user.info.setFullname();
+        user.info.phone = item.user_detail?.phone;
+        user.info.address = item.user_detail?.address;
+
+        user.roles = item.roles?.map(itemRole => {
           let role = new Role();
           role.id = itemRole.id;
           role.name = itemRole.name;
           return role;
 
         });
+
         return user;
       });
       return response;
@@ -156,8 +173,8 @@ export class UserService {
       if (this.resultRAW.data) {
         let user = new User();
         user.id = this.resultRAW.data.id;
-        user.name = this.resultRAW.data.name;
-        user.email = this.resultRAW.data.email;
+        // user.name = this.resultRAW.data.name;
+        // user.email = this.resultRAW.data.email;
         user.login = this.resultRAW.data.login;
       }
 

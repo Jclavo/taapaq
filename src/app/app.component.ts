@@ -92,7 +92,7 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
-    console.log(this.authUtils.user.name);
+    console.log(this.authUtils.user);
   }
 
   closeSession(){
