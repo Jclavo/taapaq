@@ -150,7 +150,7 @@ export class UserService {
         user.roles = item.roles?.map(itemRole => {
           let role = new Role();
           role.id = itemRole.id;
-          role.name = itemRole.name;
+          itemRole.nickname ? role.name = itemRole.nickname : role.name = itemRole.name;
           return role;
 
         });
