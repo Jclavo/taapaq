@@ -50,6 +50,11 @@ export class AppComponent implements OnInit {
       url: '/user-list',
       icon: 'people'
     },
+    {
+      title: 'User Master',
+      url: '/user-detail-list',
+      icon: 'person'
+    },
 
     // {
     //   title: 'Archived',

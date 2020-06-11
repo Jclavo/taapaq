@@ -98,6 +98,14 @@ const routes: Routes = [
   {
     path: 'user/:project_id/:company_id',
     loadChildren: () => import('./pages/users/user/user.module').then( m => m.UserPageModule)
+  },
+  {
+    path: 'user-detail',
+    loadChildren: () => import('./pages/users/user-detail/user-detail.module').then( m => m.UserDetailPageModule)
+  },
+  {
+    path: 'user-detail-list',
+    loadChildren: () => import('./pages/users/user-detail-list/user-detail-list.module').then( m => m.UserDetailListPageModule)
   }
 ];
 

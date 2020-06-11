@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>User Master</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form #form="ngForm" (ngSubmit)="save()" method="post">
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.identification" type="text" placeholder="Identification"
+          name="identification" maxLength="15" required>
+        </ion-input>
+        <ion-icon name="key" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.email" type="email" placeholder="Email" name="email"
+          maxLength="100" required>
+        </ion-input>
+        <ion-icon name="mail" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.name" type="text" placeholder="Name" name="name" maxLength="45"
+          required>
+        </ion-input>
+        <ion-icon name="person" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.lastname" type="text" placeholder="Lastname" name="lastname"
+          maxLength="45" required>
+        </ion-input>
+        <ion-icon name="body" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.phone" type="text" placeholder="Phone" name="phone"
+          maxLength="15" required>
+        </ion-input>
+        <ion-icon name="call" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="user.address" type="text" placeholder="Address" name="address"
+          maxLength="100" required>
+        </ion-input>
+        <ion-icon name="home" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-row text-center>
+      <ion-col col-6>
+        <ion-button expand="full" type="submit" color="dark" [disabled]="!form.valid">Save</ion-button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-button expand="full" color="danger" (click)="form.reset()">Reset
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+</ion-content>

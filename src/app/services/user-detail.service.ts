@@ -51,4 +51,17 @@ export class UserDetailService {
     }));
   }
 
+  create(user: UserDetail): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.post(this.apiURL, user).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+  }
+
 }
