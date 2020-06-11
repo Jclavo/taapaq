@@ -6,10 +6,10 @@
           <ion-list-header><strong>Menu</strong></ion-list-header>
           <ion-note>{{authUtils.user.info.fullname}}</ion-note>
           
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of authUtils.modules; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" color="dark"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+              <ion-label>{{ p.name }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>

@@ -53,6 +53,32 @@ export class ModuleService {
       return response;
 
     }));
-    
+  }
+
+  getByUser(user_id: number): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + 'users/' + user_id;
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result.map(item => {
+
+        let module = new Module();
+        module.id = item.id;
+        module.name = item.name;
+        module.url = item.url;
+        // module.icon = item.icon;
+        module.icon = 'apps'
+        return module;
+
+      });
+
+      return response;
+
+    }));
   }
 }
