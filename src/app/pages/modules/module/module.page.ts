@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Response } from "src/app/models/response.model";
 import { Module } from "src/app/models/module.model";
 import { Project } from "src/app/models/project.model";
+import { Resource } from 'src/app/models/resource.model';
 
 //Services
 import { ProjectService } from "src/app/services/project.service";
@@ -15,7 +16,6 @@ import { ResourceService } from "src/app/services/resource.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
-import { Resource } from 'src/app/models/resource.model';
 
 @Component({
   selector: 'app-module',
