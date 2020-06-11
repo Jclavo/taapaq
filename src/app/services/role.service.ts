@@ -34,7 +34,7 @@ export class RoleService {
 
         let role = new Role();
         role.id = item.id;
-        role.name = item.name;
+        item.nickname ? role.name = item.nickname : role.name = item.name  ;
         return role;
 
       });
@@ -58,7 +58,7 @@ export class RoleService {
       if (this.resultRAW.result) {
         let role = new Role();
         role.id = this.resultRAW.result.id;
-        role.name = this.resultRAW.result.name;
+        this.resultRAW.result.nickname ? role.name = this.resultRAW.result.nickname : role.name = this.resultRAW.result.name  ;
         response.result = role;
       }
 
@@ -137,7 +137,7 @@ export class RoleService {
 
         let role = new Role();
         role.id = item.id;
-        role.name = item.name;
+        item.nickname ? role.name = item.nickname : role.name = item.name;
         return role;
 
       });

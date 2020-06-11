@@ -240,7 +240,7 @@ export class ProjectService {
 
           let role = new Role();
           role.id = item.id;
-          role.name = item.name;
+          item.nickname ? role.name = item.nickname : role.name = item.name  ;
           return role;
         });
 
