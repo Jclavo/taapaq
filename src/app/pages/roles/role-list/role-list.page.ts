@@ -117,7 +117,7 @@ export class RoleListPage implements OnInit {
 
     this.roleService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getRolesByProject(this.authUtils.user.project_id);
+        this.getRolesByProject(this.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
