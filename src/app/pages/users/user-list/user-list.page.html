@@ -72,7 +72,7 @@
 
           <ion-item lines="none">
             <ion-icon name="person-circle" slot="start"></ion-icon>
-            <ion-label>{{ user.login }}</ion-label>
+            <ion-label>{{ user.info.name }}</ion-label>
             <ion-button fill="outline" slot="end" (click)="update(user.id)" color="success">
               <ion-icon name="create"></ion-icon>  
             </ion-button>
@@ -83,7 +83,8 @@
 
           <ion-card-header>
             <ion-card-subtitle>{{ user.info.email }}</ion-card-subtitle>
-            <ion-card-title>{{ user.info.fullname }}</ion-card-title>
+            <ion-card-title>{{ user.login }}</ion-card-title>
+            <!-- <ion-card-title>{{ user.info.fullname }}</ion-card-title> -->
           </ion-card-header>
 
           <ion-card-content>
