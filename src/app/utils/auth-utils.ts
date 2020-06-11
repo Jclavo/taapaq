@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 //Models
 import { User } from "src/app/models/user.model";
 
@@ -12,15 +13,17 @@ export class AuthUtils{
   public isLogged = false;
   public user = new User();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private menuController: MenuController)
+  {}
 
    setLoggedIn(_value) {
     this.isLogged = _value;
   }
 
   isAuthenticated(): boolean {
-    // return this.isLogged;
-    return true;
+    return this.isLogged;
+    // return true;
   }
 
   setUser(_user: User)
@@ -31,6 +34,7 @@ export class AuthUtils{
   closeSession()
   {
     this.setLoggedIn(false);
+    this.menuController.close();
     this.router.navigate(['/login']);
   }
 
