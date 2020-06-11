@@ -159,7 +159,7 @@ export class UserListPage implements OnInit {
     this.userService.removeRole(new UserRole(user_id,role_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
-        this.getUserRolesByCompany(this.project_company.project_id,this.authUtils.user.company_id);
+        this.getUserRolesByCompany(this.project_company.project_id,this.project_company.company_id);
       }else{
         this.messageUtils.showToastError(response.message);
       }
@@ -224,6 +224,26 @@ export class UserListPage implements OnInit {
       error => {
         this.messageUtils.showToastError(error.message);
       }
+    );
+  }
+
+
+  async changeActivatedStatus(user_id: number, index: number){
+
+    if(!await this.messageUtils.showAlertOption('Are you sure to change the activated status?')){
+      this.users[index].activated = !this.users[index].activated;
+      return;
+    }
+
+    this.userService.changeActivatedStatus(user_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
+        this.getUserRolesByCompany(this.project_company.project_id,this.project_company.company_id);
+      }else{
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+     error => { this.messageUtils.showToastError(error.message)}
     );
   }
 

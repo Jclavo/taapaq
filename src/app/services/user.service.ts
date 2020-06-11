@@ -136,15 +136,16 @@ export class UserService {
         let user = new User();
         user.id = item.id;
         user.login = item.login;
+        user.activated = item.activated;
 
         user.info.identification = item.user_detail?.identification;
         user.info.email = item.user_detail?.email;
         user.info.name = item.user_detail?.name;
         user.info.lastname = item.user_detail?.lastname;
-        // user.info.fullname = user.info?.name + ' ' + user.info?.lastname;
         user.info.setFullname();
         user.info.phone = item.user_detail?.phone;
         user.info.address = item.user_detail?.address;
+
 
         user.roles = item.roles?.map(itemRole => {
           let role = new Role();
@@ -217,6 +218,20 @@ export class UserService {
     let apiURL = this.apiURL + 'assignRole';
 
     return this.httpClient.post(apiURL, userRole).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+  }
+
+  changeActivatedStatus(id: number): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + id + '/changeActivatedStatus';
+
+    return this.httpClient.get(apiURL).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

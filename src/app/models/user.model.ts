@@ -7,6 +7,7 @@ export class User{
     // password: string = '';
     // name: string = '';
     // email: string = '';
+    activated: boolean = false;
     isSuper: boolean = true;
 
     company_id: number = 0;

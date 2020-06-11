@@ -67,12 +67,11 @@
   <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
 
   <ion-list>
-      <ion-item *ngFor="let user of users" lines="none">
+      <ion-item *ngFor="let user of users; index as i" lines="none">
         <ion-card style="width: 100% !important;">
 
           <ion-item lines="none">
             <ion-icon name="person-circle" slot="start"></ion-icon>
-            <!-- <ion-label>{{ user.info.name }}</ion-label> -->
             <ion-label>{{ user.login }}</ion-label>
             <ion-button fill="outline" slot="end" (click)="update(user.id)" color="success">
               <ion-icon name="create"></ion-icon>  
@@ -97,6 +96,12 @@
             <ion-button fill="clear" color="success" (click)="openSelectRoles(user.id,project_company.project_id)">
               <ion-icon slot="start" name="add-circle" ></ion-icon>
             </ion-button>
+
+            <ion-item>
+              <ion-label><strong>Activated</strong></ion-label>
+              <ion-toggle [(ngModel)]="user.activated"
+              (click)="changeActivatedStatus(user.id, i)"></ion-toggle>
+            </ion-item>
 
           </ion-card-content>
         </ion-card>
