@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
     providedIn: 'root'
 })
@@ -9,7 +12,8 @@ export class MessageUtils {
     constructor(
         private alertController: AlertController,
         private toastController: ToastController,
-        private loadingController: LoadingController
+        private loadingController: LoadingController,
+        private authUtils: AuthUtils
     ) { }
 
     async showAlert() {
@@ -68,6 +72,12 @@ export class MessageUtils {
             keyboardClose: true,
         });
         toast.present();
+
+        //Logic to check if the message is from 'Unauthenticated'
+        if(customMessage?.toLowerCase().includes('401 unauthorized')){
+            this.authUtils.closeSession();
+        }
+        
     }
 
     createLoader(): Promise<HTMLIonLoadingElement> {
