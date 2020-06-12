@@ -25,7 +25,7 @@ export class AuthUtils{
   constructor(private router: Router,
               private menuController: MenuController,
               private moduleService: ModuleService,
-              private messageUtils: MessageUtils
+              // private messageUtils: MessageUtils
   ){}
 
    setLoggedIn(_value) {
@@ -50,22 +50,22 @@ export class AuthUtils{
     this.router.navigate(['/login']);
   }
 
-  async getModulesByUser(user_id: number){
-    const loading = await this.messageUtils.createLoader();
-    loading.present();// start loading
+  getModulesByUser(user_id: number){
+    // const loading = await this.messageUtils.createLoader();
+    // loading.present();// start loading
 
     this.moduleService.getByUser(user_id).subscribe((response: Response) => {
       if (response.status) {
         this.modules = response.result;
       }
       else {
-        this.messageUtils.showToastError(response.message);
+        // this.messageUtils.showToastError(response.message);
       }
-      loading.dismiss();// close loading
+      // loading.dismiss();// close loading
     },
       error => {
-        this.messageUtils.showToastError(error.message);
-        loading.dismiss();// close loading
+        // this.messageUtils.showToastError(error.message);
+        // loading.dismiss();// close loading
       }
     );
   }
