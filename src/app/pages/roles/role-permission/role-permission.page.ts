@@ -59,12 +59,12 @@ export class RolePermissionPage implements OnInit {
     );
   }
 
-  changePermission(permission_id: number, roleHasPermission: boolean) {
+  changePermission(permission_id: number, roleHasPermission: boolean, indexPermission: number) {
 
     if (roleHasPermission) {
-      this.revokePermissionTo(this.role.id, permission_id);
+      this.revokePermissionTo(this.role.id, permission_id, indexPermission);
     } else {
-      this.givePermissionTo(this.role.id, permission_id);
+      this.givePermissionTo(this.role.id, permission_id, indexPermission);
     }
   }
 
@@ -88,26 +88,28 @@ export class RolePermissionPage implements OnInit {
     );
   }
 
-  givePermissionTo(role_id: number, permission_id: number) {
+  givePermissionTo(role_id: number, permission_id: number, indexPermission: number) {
 
     this.roleService.givePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
       }else{
         this.messageUtils.showToastError(response.message);
+        this.permissions[indexPermission].roleHasPermission = !this.permissions[indexPermission].roleHasPermission;
       }
     },
       error => { this.messageUtils.showToastError(error.message)}
     );
   }
 
-  revokePermissionTo(role_id: number, permission_id: number) {
+  revokePermissionTo(role_id: number, permission_id: number, indexPermission: number) {
 
     this.roleService.revokePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
       }else{
         this.messageUtils.showToastError(response.message);
+        this.permissions[indexPermission].roleHasPermission = !this.permissions[indexPermission].roleHasPermission;
       }
     },
       error => { this.messageUtils.showToastError(error.message)}

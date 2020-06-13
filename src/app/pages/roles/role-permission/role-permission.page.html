@@ -20,10 +20,10 @@
   </ion-card>
 
   <ion-list>
-    <ion-item *ngFor="let permission of permissions">
+    <ion-item *ngFor="let permission of permissions; let i = index">
       <ion-label><strong>{{permission.name}}</strong></ion-label>
       <ion-toggle [(ngModel)]="permission.roleHasPermission"
-        (click)="changePermission(permission.id, permission.roleHasPermission)"></ion-toggle>
+        (click)="changePermission(permission.id, permission.roleHasPermission, i)"></ion-toggle>
     </ion-item>
   </ion-list>
 
