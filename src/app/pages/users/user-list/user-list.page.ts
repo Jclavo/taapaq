@@ -241,6 +241,7 @@ export class UserListPage implements OnInit {
         this.getUserRolesByCompany(this.project_company.project_id,this.project_company.company_id);
       }else{
         this.messageUtils.showToastError(response.message);
+        this.users[index].activated = !this.users[index].activated;
       }
     },
      error => { this.messageUtils.showToastError(error.message)}
