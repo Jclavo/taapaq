@@ -14,6 +14,7 @@ import { PermissionService } from "src/app/services/permission.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
+import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-role-permission',
@@ -24,6 +25,8 @@ export class RolePermissionPage implements OnInit {
 
   public role = new Role();
   public permissions: Array<Permission> = [];
+  public permissionsBackup: Array<Permission> = [];
+  public searchValue: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,6 +48,17 @@ export class RolePermissionPage implements OnInit {
       this.getRoleById(this.role.id);
       this.getAllPermissionsByRole(this.role.id);
     }
+  }
+
+  search(){
+    if(!this.searchValue){
+      this.permissions = Utils.copyDeeperObject(this.permissionsBackup);
+      return;
+    }
+    
+    this.permissions.length == 0 ? this.permissions = Utils.copyDeeperObject(this.permissionsBackup) : null;
+
+    this.permissions = Utils.findValueInCollection(this.permissions,this.searchValue);
   }
 
   getRoleById(role_id: number) {
@@ -76,6 +90,8 @@ export class RolePermissionPage implements OnInit {
     this.permissionService.getByRole(role_id).subscribe((response: Response) => {
       if (response.status) {
         this.permissions = response.result;
+        this.permissionsBackup = Utils.copyDeeperObject(this.permissions);
+        this.search();
       }else{
         this.messageUtils.showToastError(response.message);
       }
@@ -93,9 +109,10 @@ export class RolePermissionPage implements OnInit {
     this.roleService.givePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
+        this.getAllPermissionsByRole(this.role.id);
       }else{
         this.messageUtils.showToastError(response.message);
-        this.permissions[indexPermission].roleHasPermission = !this.permissions[indexPermission].roleHasPermission;
+
       }
     },
       error => { this.messageUtils.showToastError(error.message)}
@@ -107,6 +124,7 @@ export class RolePermissionPage implements OnInit {
     this.roleService.revokePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
+        this.getAllPermissionsByRole(this.role.id);
       }else{
         this.messageUtils.showToastError(response.message);
         this.permissions[indexPermission].roleHasPermission = !this.permissions[indexPermission].roleHasPermission;
