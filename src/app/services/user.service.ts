@@ -64,6 +64,23 @@ export class UserService {
     }));
   }
 
+  logout(): Observable<Response> {
+
+    let apiURL = environment.apiURL + 'logout';
+    let response = new Response();
+
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      return response;
+
+    }));
+  }
+
+
   create(user: User): Observable<Response> {
     let response = new Response();
 

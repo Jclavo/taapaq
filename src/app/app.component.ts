@@ -4,8 +4,15 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+//Models
+import { Response } from "src/app/models/response.model";
+
+//Services
+import { UserService } from "src/app/services/user.service";
+
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
+import { MessageUtils } from "src/app/utils/message-utils";
 
 @Component({
   selector: 'app-root',
@@ -20,32 +27,7 @@ export class AppComponent implements OnInit {
   //     title: 'Project',
   //     url: '/project-list',
   //     icon: 'rocket'
-  //   },
-  //   {
-  //     title: 'Companies',
-  //     url: '/company-list',
-  //     icon: 'business'
-  //   },
-  //   {
-  //     title: 'Modules',
-  //     url: '/module-list',
-  //     icon: 'globe'
-  //   },
-  //   {
-  //     title: 'Roles',
-  //     url: '/role-list',
-  //     icon: 'bookmarks'
-  //   },
-  //   {
-  //     title: 'Users',
-  //     url: '/user-list',
-  //     icon: 'people'
-  //   },
-  //   {
-  //     title: 'User Master',
-  //     url: '/user-detail-list',
-  //     icon: 'person'
-  //   },
+  //   }
   // ];
   public labels = ['Close session'];
 
@@ -54,6 +36,8 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authUtils: AuthUtils,
+    private userService: UserService,
+    private messageUtils: MessageUtils,
   ) {
     //Validate Session
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null;
@@ -68,14 +52,30 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    // const path = window.location.pathname.split('folder/')[1];
-    // if (path !== undefined) {
-    //   this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
-    // }
-    // console.log(this.authUtils.user);
   }
 
   closeSession(){
-    this.authUtils.closeSession();
+    this.logout();
+  }
+
+  async logout(){
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.userService.logout().subscribe((response: Response) => {     
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
+        this.authUtils.closeSession();
+      }
+      else{
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => { 
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
   }
 }
