@@ -12,6 +12,9 @@ import { Role } from "src/app/models/role.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,14 +23,16 @@ export class UserService {
   private apiURL: string = environment.apiURL + 'users/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ){ }
 
   login(user: User): Observable<Response> {
 
     let apiURL = environment.apiURL + 'login';
     let response = new Response();
 
-    return this.httpClient.post(apiURL, user).pipe(map(res => {
+    return this.httpClient.post(apiURL, user, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -37,6 +42,7 @@ export class UserService {
         let user = new User();
         user.id = this.resultRAW.result.id;
         user.login = this.resultRAW.result.login;
+        user.token = this.resultRAW.result.api_token;
 
         user.company_id = this.resultRAW.result.company_project?.company_id;
         user.project_id = this.resultRAW.result.company_project?.project_id;
@@ -58,74 +64,49 @@ export class UserService {
     }));
   }
 
-  // getAll(): Observable<Response> {
-  //   let response = new Response();
+  create(user: User): Observable<Response> {
+    let response = new Response();
 
-  //   return this.httpClient.get(this.apiURL).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, user, this.authUtils.getHeaders()).pipe(map(res => {
 
-  //     this.resultRAW = res;
-  //     response.status = this.resultRAW.status;
-  //     response.message = this.resultRAW.message;
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
 
-  //     response.result = this.resultRAW.result.map(item => {
+      if (this.resultRAW.data) {
+        let user = new User();
+        user.id = this.resultRAW.data.id;
+        // user.name = this.resultRAW.data.name;
+        // user.email = this.resultRAW.data.email;
+        user.login = this.resultRAW.data.login;
+      }
 
-  //       let user = new User();
-  //       user.id = item.id;
-  //       // user.name = item.name;
-  //       // user.email = item.email;
-  //       user.login = item.login;
+      return response;
 
-  //       return user;
+    }));
+  }
 
-  //     });
+  delete(id: number): Observable<Response> {
 
-  //     return response;
+    let response = new Response();
 
-  //   }));
-  // }
+    return this.httpClient.delete(this.apiURL + id, this.authUtils.getHeaders()).pipe(map(res => {
 
-  // getAllWithRoles(): Observable<Response> {
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
 
-  //   let response = new Response();
-  //   let apiURL = this.apiURL + 'withRoles';
-
-  //   return this.httpClient.get(apiURL).pipe(map(res => {
-
-  //     this.resultRAW = res;
-  //     response.status = this.resultRAW.status;
-  //     response.message = this.resultRAW.message;
-
-  //     response.result = this.resultRAW.result.map(item => {
-
-  //       let user = new User();
-  //       user.id = item.id;
-  //       // user.name = item.name;
-  //       // user.email = item.email;
-  //       user.login = item.login;
-
-  //       user.roles = item.roles.map(itemRole => {
-  //         let role = new Role();
-  //         role.id = itemRole.id;
-  //         role.name = itemRole.name;
-  //         return role;
-
-  //       });
-
-  //       return user;
-
-  //     });
-
-  //     return response;
-
-  //   }));
-  // }
+    }));
+    
+  }
 
   getUserRolesByProjectCompany(project_id: number,company_id: number) {
 
     let response = new Response();
     let apiURL = this.apiURL + 'roles/companies/' + company_id + '/projects/' + project_id;
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -162,48 +143,11 @@ export class UserService {
     }));
   }
 
-  create(user: User): Observable<Response> {
-    let response = new Response();
-
-    return this.httpClient.post(this.apiURL, user).pipe(map(res => {
-
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
-
-      if (this.resultRAW.data) {
-        let user = new User();
-        user.id = this.resultRAW.data.id;
-        // user.name = this.resultRAW.data.name;
-        // user.email = this.resultRAW.data.email;
-        user.login = this.resultRAW.data.login;
-      }
-
-      return response;
-
-    }));
-  }
-
-  delete(id: number): Observable<Response> {
-
-    let response = new Response();
-
-    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
-
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
-      return response;
-
-    }));
-    
-  }
-
   removeRole(userRole: UserRole){
     let response = new Response();
     let apiURL = this.apiURL + 'removeRole';
 
-    return this.httpClient.post(apiURL, userRole).pipe(map(res => {
+    return this.httpClient.post(apiURL, userRole, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -217,7 +161,7 @@ export class UserService {
     let response = new Response();
     let apiURL = this.apiURL + 'assignRole';
 
-    return this.httpClient.post(apiURL, userRole).pipe(map(res => {
+    return this.httpClient.post(apiURL, userRole, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -231,7 +175,7 @@ export class UserService {
     let response = new Response();
     let apiURL = this.apiURL + id + '/changeActivatedStatus';
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

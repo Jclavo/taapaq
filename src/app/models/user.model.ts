@@ -4,10 +4,8 @@ import { UserDetail } from "./user-detail";
 export class User{
     id: number = 0;
     login: string = '';
-    // password: string = '';
-    // name: string = '';
-    // email: string = '';
     activated: boolean = false;
+    token: string = '';
     isSuper: boolean = true;
 
     company_id: number = 0;
@@ -16,13 +14,4 @@ export class User{
 
     roles: Array<Role> = [];
     info = new UserDetail();
-
-    // static fromData(_id,_name,_email){
-
-    //     let user = new User();
-    //     user.id = _id;
-    //     user.name = _name;
-    //     user.email = _email;
-    //     return user;
-    // }
 }

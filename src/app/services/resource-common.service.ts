@@ -10,6 +10,9 @@ import { Resource } from "src/app/models/resource.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,12 +22,14 @@ export class ResourceCommonService {
   private apiURL: string = environment.apiURL + 'resource-commons/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
   getAll(): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.get(this.apiURL).pipe(map(res => {
+    return this.httpClient.get(this.apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

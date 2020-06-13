@@ -10,6 +10,9 @@ import { Response } from "src/app/models/response.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,13 +21,15 @@ export class PermissionService {
   private apiURL: string = environment.apiURL + 'permissions/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
   getByRole(role_id: number): Observable<Response> {
     let response = new Response();
     let apiURL = this.apiURL + 'roles/' + role_id;
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -48,7 +53,7 @@ export class PermissionService {
   getAll(): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.get(this.apiURL).pipe(map(res => {
+    return this.httpClient.get(this.apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -71,7 +76,7 @@ export class PermissionService {
   create(permission: Permission): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.post(this.apiURL, permission).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, permission, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

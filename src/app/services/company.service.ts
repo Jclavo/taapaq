@@ -13,6 +13,9 @@ import { Role } from "src/app/models/role.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,12 +24,14 @@ export class CompanyService {
   private apiURL: string = environment.apiURL + 'companies/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
   getAll(): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.get(this.apiURL).pipe(map(res => {
+    return this.httpClient.get(this.apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -49,7 +54,7 @@ export class CompanyService {
   create(company: Company): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.post(this.apiURL, company).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, company, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -63,7 +68,7 @@ export class CompanyService {
 
     let response = new Response();
 
-    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
+    return this.httpClient.delete(this.apiURL + id, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -78,7 +83,7 @@ export class CompanyService {
     let response = new Response();
     let apiURL = this.apiURL + company_id + '/projects'
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -111,7 +116,7 @@ export class CompanyService {
     let response = new Response();
     let apiURL = this.apiURL + company_id + '/users/roles';
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -155,7 +160,7 @@ export class CompanyService {
     let response = new Response();
     let apiURL = this.apiURL + 'not/project/' + project_id;
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

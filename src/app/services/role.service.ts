@@ -11,6 +11,9 @@ import { Response } from "src/app/models/response.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,37 +22,39 @@ export class RoleService {
   private apiURL: string = environment.apiURL + 'roles/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
-  getAll(): Observable<Response> {
-    let response = new Response();
+  // getAll(): Observable<Response> {
+  //   let response = new Response();
 
-    return this.httpClient.get(this.apiURL).pipe(map(res => {
+  //   return this.httpClient.get(this.apiURL).pipe(map(res => {
 
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
+  //     this.resultRAW = res;
+  //     response.status = this.resultRAW.status;
+  //     response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+  //     response.result = this.resultRAW.result.map(item => {
 
-        let role = new Role();
-        role.id = item.id;
-        item.nickname ? role.name = item.nickname : role.name = item.name  ;
-        return role;
+  //       let role = new Role();
+  //       role.id = item.id;
+  //       item.nickname ? role.name = item.nickname : role.name = item.name  ;
+  //       return role;
 
-      });
+  //     });
 
-      return response;
+  //     return response;
 
-    }));
-  }
+  //   }));
+  // }
 
   getById(id: number): Observable<Response> {
 
     let apiURL = this.apiURL + id;
     let response = new Response();
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -70,7 +75,7 @@ export class RoleService {
   create(role: Role): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.post(this.apiURL, role).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, role, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -84,7 +89,7 @@ export class RoleService {
 
     let response = new Response();
 
-    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
+    return this.httpClient.delete(this.apiURL + id, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -99,7 +104,7 @@ export class RoleService {
     let response = new Response();
     let apiURL = this.apiURL + 'givePermissionTo';
 
-    return this.httpClient.post(apiURL, rolePermission ).pipe(map(res => {
+    return this.httpClient.post(apiURL, rolePermission, this.authUtils.getHeaders() ).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -113,7 +118,7 @@ export class RoleService {
     let response = new Response();
     let apiURL = this.apiURL + 'revokePermissionTo';
 
-    return this.httpClient.post(apiURL, rolePermission ).pipe(map(res => {
+    return this.httpClient.post(apiURL, rolePermission, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -127,7 +132,7 @@ export class RoleService {
     let response = new Response();
     let apiURL = this.apiURL + 'not/users/' + user_id + '/projects/' + project_id;
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

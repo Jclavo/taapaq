@@ -10,6 +10,9 @@ import { Module } from '../models/module.model';
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,12 +21,14 @@ export class ModuleService {
   private apiURL: string = environment.apiURL + 'modules/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
   create(module: Module): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.post(this.apiURL, module).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, module, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -45,7 +50,7 @@ export class ModuleService {
 
     let response = new Response();
 
-    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
+    return this.httpClient.delete(this.apiURL + id, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -59,7 +64,7 @@ export class ModuleService {
     let response = new Response();
     let apiURL = this.apiURL + 'users/' + user_id;
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

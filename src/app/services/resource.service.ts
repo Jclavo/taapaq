@@ -10,6 +10,9 @@ import { Resource } from "src/app/models/resource.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,12 +21,14 @@ export class ResourceService {
   private apiURL: string = environment.apiURL + 'resources/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
   create(resource: Resource): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.post(this.apiURL, resource).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, resource, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -37,7 +42,7 @@ export class ResourceService {
 
     let response = new Response();
 
-    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
+    return this.httpClient.delete(this.apiURL + id, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;

@@ -15,6 +15,9 @@ import { Role } from "src/app/models/role.model";
 //Env
 import { environment } from "src/environments/environment";
 
+//Utils
+import { AuthUtils } from "src/app/utils/auth-utils";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,12 +26,14 @@ export class ProjectService {
   private apiURL: string = environment.apiURL + 'projects/';
   private resultRAW: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authUtils: AuthUtils,
+  ) { }
 
   getAll(): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.get(this.apiURL).pipe(map(res => {
+    return this.httpClient.get(this.apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -51,7 +56,7 @@ export class ProjectService {
   create(project: Project): Observable<Response> {
     let response = new Response();
 
-    return this.httpClient.post(this.apiURL, project).pipe(map(res => {
+    return this.httpClient.post(this.apiURL, project, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -65,7 +70,7 @@ export class ProjectService {
 
     let response = new Response();
 
-    return this.httpClient.delete(this.apiURL + id).pipe(map(res => {
+    return this.httpClient.delete(this.apiURL + id, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -81,7 +86,7 @@ export class ProjectService {
     let response = new Response();
     let apiURL = this.apiURL + 'assignCompany';
 
-    return this.httpClient.post(apiURL, project_company).pipe(map(res => {
+    return this.httpClient.post(apiURL, project_company, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -95,7 +100,7 @@ export class ProjectService {
     let response = new Response();
     let apiURL = this.apiURL + 'removeCompany';
 
-    return this.httpClient.post(apiURL, project_company).pipe(map(res => {
+    return this.httpClient.post(apiURL, project_company, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -109,7 +114,7 @@ export class ProjectService {
     let response = new Response();
     let apiURL = this.apiURL + project_id + '/modules/resources';
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -156,7 +161,7 @@ export class ProjectService {
     let response = new Response();
     let apiURL = this.apiURL + 'companies'
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -191,7 +196,7 @@ export class ProjectService {
     let response = new Response();
     let apiURL = this.apiURL + project_id + '/companies'
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
@@ -224,7 +229,7 @@ export class ProjectService {
     let response = new Response();
     let apiURL = this.apiURL + project_id + '/roles';
 
-    return this.httpClient.get(apiURL).pipe(map(res => {
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
