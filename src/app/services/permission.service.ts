@@ -40,7 +40,7 @@ export class PermissionService {
         let permission = new Permission();
         permission.id = item.id;
         permission.name = item.name;
-        permission.roleHasPermission = item.role_has_permission;
+        permission.roleHasPermission = item.role_has_permission ? item.role_has_permission : false;
         return permission;
 
       });
