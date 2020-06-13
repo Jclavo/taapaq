@@ -112,7 +112,7 @@ export class UserService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let user = new User();
         user.id = item.id;

@@ -35,7 +35,7 @@ export class RoleService {
   //     response.status = this.resultRAW.status;
   //     response.message = this.resultRAW.message;
 
-  //     response.result = this.resultRAW.result.map(item => {
+  //     response.result = this.resultRAW.result?.map(item => {
 
   //       let role = new Role();
   //       role.id = item.id;
@@ -138,7 +138,7 @@ export class RoleService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let role = new Role();
         role.id = item.id;

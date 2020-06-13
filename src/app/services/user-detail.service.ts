@@ -34,7 +34,7 @@ export class UserDetailService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let user = new UserDetail();
         user.id = item.id;

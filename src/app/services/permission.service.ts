@@ -35,7 +35,7 @@ export class PermissionService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let permission = new Permission();
         permission.id = item.id;
@@ -59,7 +59,7 @@ export class PermissionService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let permission = new Permission();
         permission.id = item.id;

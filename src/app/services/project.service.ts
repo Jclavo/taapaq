@@ -39,7 +39,7 @@ export class ProjectService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let project = new Project();
         project.id = item.id;
@@ -167,7 +167,7 @@ export class ProjectService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(responseProjects => {
+      response.result = this.resultRAW.result?.map(responseProjects => {
 
         let project = new Project();
         project.id = responseProjects.id;

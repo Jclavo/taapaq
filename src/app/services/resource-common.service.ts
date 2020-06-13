@@ -35,7 +35,7 @@ export class ResourceCommonService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let resource = new Resource();
         resource.id = item.id;

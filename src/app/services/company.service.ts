@@ -37,7 +37,7 @@ export class CompanyService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let company = new Company();
         company.id = item.id;
@@ -166,7 +166,7 @@ export class CompanyService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result.map(item => {
+      response.result = this.resultRAW.result?.map(item => {
 
         let company = new Company();
         company.id = item.id;
