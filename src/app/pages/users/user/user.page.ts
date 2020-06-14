@@ -104,7 +104,7 @@ export class UserPage implements OnInit {
         this.projects = response.result;
       }
       else {
-        this.messageUtils.showToastError(response.message);
+        this.authUtils.user.isSuper ? this.messageUtils.showToastError(response.message) : console.log(response.message);
       }
       loading.dismiss();// close loading
     },
@@ -127,7 +127,7 @@ export class UserPage implements OnInit {
         }
       }
       else {
-        this.messageUtils.showToastError(response.message);
+        this.authUtils.user.isSuper ? this.messageUtils.showToastError(response.message) : console.log(response.message);
       }
       loading.dismiss();// close loading
     },
