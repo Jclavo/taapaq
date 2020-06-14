@@ -39,31 +39,8 @@ export class PermissionService {
 
         let permission = new Permission();
         permission.id = item.id;
-        permission.name = item.name;
+        permission.name = item.nickname ? item.nickname : item.name;
         permission.roleHasPermission = item.role_has_permission ? item.role_has_permission : false;
-        return permission;
-
-      });
-
-      return response;
-
-    }));
-  }
-
-  getAll(): Observable<Response> {
-    let response = new Response();
-
-    return this.httpClient.get(this.apiURL, this.authUtils.getHeaders()).pipe(map(res => {
-
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
-
-      response.result = this.resultRAW.result?.map(item => {
-
-        let permission = new Permission();
-        permission.id = item.id;
-        permission.name = item.name;
         return permission;
 
       });
