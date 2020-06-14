@@ -60,9 +60,9 @@ export class ModuleService {
     }));
   }
 
-  getByUser(user_id: number): Observable<Response> {
+  getByUser(): Observable<Response> {
     let response = new Response();
-    let apiURL = this.apiURL + 'users/' + user_id;
+    let apiURL = this.apiURL + 'user' ;
 
     return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 

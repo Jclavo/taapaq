@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
         this.messageUtils.showToastOK(response.message);
         this.authUtils.setLoggedIn(true);
         this.authUtils.setUser(response.result);
-        this.getModulesByUser(this.authUtils.user.id);
+        this.getModulesByUser();
       }
       else{
         this.messageUtils.showToastError(response.message);
@@ -66,11 +66,11 @@ export class LoginPage implements OnInit {
     );
   }
 
-  async getModulesByUser(user_id: number){
+  async getModulesByUser(){
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.moduleService.getByUser(user_id).subscribe((response: Response) => {
+    this.moduleService.getByUser().subscribe((response: Response) => {
       if (response.status) {
         this.authUtils.modules = response.result;
         if(this.authUtils.modules.length > 0){
