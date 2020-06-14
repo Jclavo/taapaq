@@ -79,51 +79,6 @@ export class CompanyService {
 
   }
 
-  getUserRolesByCompany(company_id: number) {
-
-    let response = new Response();
-    let apiURL = this.apiURL + company_id + '/users/roles';
-
-    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
-
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
-
-      if (this.resultRAW.result) {
-
-        let company = new Company();
-        company.id = this.resultRAW.result.id;
-        company.name = this.resultRAW.result.name;
-
-        company.users = this.resultRAW.result.users.map(responseUser => {
-
-          let user = new User();
-          user.id = responseUser.id;
-          user.login = responseUser.login;
-
-          user.roles = responseUser.roles.map(responseRole => {
-
-            let role = new Role();
-            role.id = responseRole.id;
-            role.name = responseRole.name;
-            return role;
-
-          });
-          return user;
-
-        });
-
-        response.result = company;
-
-      }
-
-      return response;
-
-    }));
-  }
-
-  
   getMissingByProject(project_id: number): Observable<Response> {
     let response = new Response();
     let apiURL = this.apiURL + 'not/project/' + project_id;
