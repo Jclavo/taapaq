@@ -47,13 +47,14 @@ export class ModuleListPage implements OnInit {
     this.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.project_id == 0 ? this.project_id = this.authUtils.user.project_id : null;
     
-    this.getModulesByProject(this.project_id);
-    
     this.getAllProjects();
+
+    this.getModulesResourcesByProject(this.project_id);
+    
   }
 
   onChangeProject(){
-    this.getModulesByProject(this.project_id);
+    this.getModulesResourcesByProject(this.project_id);
   }
 
   search(){
@@ -87,14 +88,14 @@ export class ModuleListPage implements OnInit {
     );
   }
   
-  async getModulesByProject(project_id: number){
+  async getModulesResourcesByProject(project_id: number){
 
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.projectService.getModulesResourcesByProject(project_id).subscribe((response: Response) => {
+    this.moduleService.getResourcesByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
-        this.modules = response.result?.modules;
+        this.modules = response.result;
         this.modulesBackup = Utils.copyDeeperObject(this.modules);
         if(this.modules.length == 0){
           this.messageUtils.showToastOK("The current project does not have modules yet.");
@@ -120,7 +121,7 @@ export class ModuleListPage implements OnInit {
 
     this.moduleService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getModulesByProject(this.project_id);
+        this.getModulesResourcesByProject(this.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
@@ -140,7 +141,7 @@ export class ModuleListPage implements OnInit {
 
     this.resourceService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getModulesByProject(this.project_id);
+        this.getModulesResourcesByProject(this.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);

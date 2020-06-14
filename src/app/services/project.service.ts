@@ -109,53 +109,6 @@ export class ProjectService {
     }));
   }
 
-  getModulesResourcesByProject(project_id: number) {
-
-    let response = new Response();
-    let apiURL = this.apiURL + project_id + '/modules/resources';
-
-    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
-
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
-
-      if (this.resultRAW.result) {
-
-        let project = new Project();
-        project.id = this.resultRAW.result.id;
-        project.name = this.resultRAW.result.name;
-
-        project.modules = this.resultRAW.result.modules?.map(responseItem => {
-
-          let module = new Module();
-          module.id = responseItem.id;
-          module.name = responseItem.name;
-          module.url = responseItem.url;
-          module.project_id = responseItem.project;
-
-          module.resources = responseItem.resources?.map(responseResource => {
-
-            let resource = new Resource();
-            resource.id = responseResource.id;
-            resource.name = responseResource.name;
-            resource.module_id = responseResource.module_id;
-
-            return resource;
-
-          });
-
-          return module;
-        });
-
-        response.result = project;
-      }
-      return response;
-
-    }));
-
-  }
-
   getProjectsCompanies() {
 
     let response = new Response();
