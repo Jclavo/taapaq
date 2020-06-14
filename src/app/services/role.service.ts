@@ -153,4 +153,29 @@ export class RoleService {
   }
 
 
+  getByProject(project_id: number): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + 'projects/' + project_id;
+
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result?.map(item => {
+
+        let role = new Role();
+        role.id = item.id;
+        item.nickname ? role.name = item.nickname : role.name = item.name;
+        return role;
+        
+      });
+
+      return response;
+
+    }));
+  }
+
+
 }

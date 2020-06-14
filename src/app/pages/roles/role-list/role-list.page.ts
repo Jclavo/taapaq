@@ -46,12 +46,12 @@ export class RoleListPage implements OnInit {
     this.project_id == 0 ? this.project_id = this.authUtils.user.project_id : null;
 
     this.getAllProjects();
-    this.getRolesByProject(this.project_id);
+    this.getByProject(this.project_id);
     
   }
 
   onChangeProject(){
-    this.getRolesByProject(this.project_id);
+    this.getByProject(this.project_id);
   }
 
   search(){
@@ -87,14 +87,14 @@ export class RoleListPage implements OnInit {
     );
   }
 
-  async getRolesByProject(project_id: number) {
+  async getByProject(project_id: number) {
 
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.projectService.getRolesByProject(project_id).subscribe((response: Response) => {
+    this.roleService.getByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
-        this.roles = response.result?.roles;
+        this.roles = response.result;
         this.rolesBackup = this.roles;
       }
       else {
@@ -117,7 +117,7 @@ export class RoleListPage implements OnInit {
 
     this.roleService.delete(id).subscribe((response: Response) => {
       if (response.status) {
-        this.getRolesByProject(this.project_id);
+        this.getByProject(this.project_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
