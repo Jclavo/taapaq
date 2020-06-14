@@ -79,38 +79,6 @@ export class CompanyService {
 
   }
 
-  getProjectByCompany(company_id: number) {
-    let response = new Response();
-    let apiURL = this.apiURL + company_id + '/projects'
-
-    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
-
-      this.resultRAW = res;
-      response.status = this.resultRAW.status;
-      response.message = this.resultRAW.message;
-
-      if (this.resultRAW.result) {
-        let company = new Company();
-        company.id = this.resultRAW.result.id;
-        company.name = this.resultRAW.result.name;
-
-        company.projects = this.resultRAW.result.projects.map(responseProject => {
-
-          let project = new Project();
-          project.id = responseProject.id;
-          project.name = responseProject.name;
-          return project;
-
-        });
-
-        response.result = company;
-      }
-
-      return response;
-
-    }));
-  }
-
   getUserRolesByCompany(company_id: number) {
 
     let response = new Response();
