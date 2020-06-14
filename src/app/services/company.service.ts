@@ -81,7 +81,7 @@ export class CompanyService {
 
   getMissingByProject(project_id: number): Observable<Response> {
     let response = new Response();
-    let apiURL = this.apiURL + 'not/project/' + project_id;
+    let apiURL = this.apiURL + 'not/projects/' + project_id;
 
     return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
