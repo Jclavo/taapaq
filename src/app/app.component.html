@@ -4,7 +4,7 @@
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header><strong>Menu</strong></ion-list-header>
-          <ion-note>{{authUtils.user.info.fullname}}</ion-note>
+          <ion-note>{{authUtils.user.info.fullname}} - {{authUtils.user.login}} </ion-note>
           
           <ion-menu-toggle auto-hide="false" *ngFor="let p of authUtils.modules; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
