@@ -124,6 +124,7 @@ export class ModuleListPage implements OnInit {
         this.getModulesResourcesByProject(this.project_id);
       }
       else {
+        this.messageUtils.showToastOK(response.message);
         this.messageUtils.showToastError(response.message);
       }
     },
@@ -141,6 +142,7 @@ export class ModuleListPage implements OnInit {
 
     this.resourceService.delete(id).subscribe((response: Response) => {
       if (response.status) {
+        this.messageUtils.showToastOK(response.message);
         this.getModulesResourcesByProject(this.project_id);
       }
       else {

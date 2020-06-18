@@ -78,6 +78,7 @@ export class CompanyListPage implements OnInit {
 
     this.companyService.delete(id).subscribe((response: Response) => {
       if (response.status) {
+        this.messageUtils.showToastOK(response.message);
         this.getAll();
       }
       else {

@@ -80,6 +80,7 @@ export class ProjectListPage implements OnInit {
 
     this.projectService.delete(id).subscribe((response: Response) => {
       if (response.status) {
+        this.messageUtils.showToastOK(response.message);
         this.getProjectsCompanies();
       }
       else {
