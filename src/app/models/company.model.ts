@@ -1,5 +1,6 @@
 import { Project } from "src/app/models/project.model";
 import { User } from "src/app/models/user.model";
+import { Country } from "src/app/models/country.model";
 
 export class Company{
     id: number = 0;
@@ -8,5 +9,6 @@ export class Company{
 
     projects: Array<Project> = [];
     users: Array<User> = [];
+    country = new Country();
 
 }
