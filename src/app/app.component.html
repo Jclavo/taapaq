@@ -3,7 +3,7 @@
     <ion-menu contentId="main-content" type="overlay" [hidden]="!authUtils.isAuthenticated()">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header><strong>Menu</strong></ion-list-header>
+          <ion-list-header>{{authUtils.user.company.name}} ({{authUtils.user.company.country.name}})</ion-list-header>
           <ion-note>{{authUtils.user.info.fullname}} - {{authUtils.user.login}} </ion-note>
           
           <ion-menu-toggle auto-hide="false" *ngFor="let p of authUtils.modules; let i = index">
