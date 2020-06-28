@@ -48,6 +48,7 @@ export class UserService {
         user.company_id = this.resultRAW.result.company_project?.company_id;
         user.project_id = this.resultRAW.result.company_project?.project_id;
 
+        // User Detail
         user.info.identification = this.resultRAW.result.user_detail?.identification;
         user.info.email = this.resultRAW.result.user_detail?.email;
         user.info.name = this.resultRAW.result.user_detail?.name;
@@ -56,6 +57,15 @@ export class UserService {
         user.info.setFullname();
         user.info.phone = this.resultRAW.result.user_detail?.phone;
         user.info.address = this.resultRAW.result.user_detail?.address;
+
+        //Company
+        user.company.id = this.resultRAW.result.company?.id;
+        user.company.name = this.resultRAW.result.company?.name;
+
+        //Country
+        user.company.country.id = this.resultRAW.result.company?.country?.id;
+        user.company.country.code = this.resultRAW.result.company?.country?.code;
+        user.company.country.name = this.resultRAW.result.company?.country?.name;
 
         response.result = user;
       }
