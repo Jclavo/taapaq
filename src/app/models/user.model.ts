@@ -1,5 +1,6 @@
 import { Role } from "./role.model";
 import { UserDetail } from "./user-detail";
+import { Company } from "src/app/models/company.model";
 
 export class User{
     id: number = 0;
@@ -14,4 +15,5 @@ export class User{
 
     roles: Array<Role> = [];
     info = new UserDetail();
+    company =  new Company();
 }
