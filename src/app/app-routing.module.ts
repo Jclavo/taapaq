@@ -98,6 +98,10 @@ const routes: Routes = [
   {
     path: 'user-detail-list',
     loadChildren: () => import('./pages/users/user-detail-list/user-detail-list.module').then( m => m.UserDetailListPageModule)
+  },
+  {
+    path: 'module-label/:project_id',
+    loadChildren: () => import('./pages/modules/module-label/module-label.module').then( m => m.ModuleLabelPageModule)
   }
 ];
 
