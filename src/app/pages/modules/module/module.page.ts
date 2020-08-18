@@ -27,6 +27,7 @@ export class ModulePage implements OnInit {
   public projects: Array<Project> = [];
   public resourcesCommons: Array<Resource> = [];
   public module = new Module();
+  public modules: Array<Module> = [];
 
   constructor(
     private authUtils: AuthUtils,
@@ -48,6 +49,32 @@ export class ModulePage implements OnInit {
     this.module.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.getAllProjects();
     this.getAlResourcesCommons();
+    this.getLabelsByProject(this.module.project_id);
+  }
+
+  onChangeProject(){
+    this.getLabelsByProject(this.module.project_id);
+  }
+
+  async getLabelsByProject(project_id: number){
+
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.moduleService.getLabelsByProject(project_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.modules = response.result;
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
   }
 
   async getAllProjects() {

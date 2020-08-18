@@ -21,6 +21,7 @@
         itemTextField="name"
         [canSearch]="true"
         [shouldStoreItemValue]="true"
+        (onChange)="onChangeProject()"
         >
       </ionic-selectable>
     </ion-item>
@@ -42,6 +43,20 @@
         <ion-icon name="link" item-start></ion-icon>
       </ion-item>
     </ion-card>
+
+    <ion-item>
+      <ion-label>Parent</ion-label>
+      <ionic-selectable
+        name="parent_id"
+        [(ngModel)]="module.parent_id"
+        [items]="modules"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        >
+      </ionic-selectable>
+    </ion-item>
 
     <ion-card>
         <ion-label>Resources</ion-label>
