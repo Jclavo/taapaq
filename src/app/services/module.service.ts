@@ -126,4 +126,29 @@ export class ModuleService {
     }));
 
   }
+
+  getLabelsByProject(project_id: number) {
+
+    let response = new Response();
+    let apiURL = this.apiURL + 'labels/projects/' + project_id;
+
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result?.map(responseModule => {
+
+        let module = new Module();
+        module.id = responseModule.id;
+        module.name = responseModule.name;
+        return module;
+      });
+
+      return response;
+
+    }));
+
+  }
 }
