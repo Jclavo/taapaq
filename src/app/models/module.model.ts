@@ -9,4 +9,7 @@ export class Module{
     resources: Array<Resource> = [];
     parent_id: number = 0;
     labeled: boolean = false;
+
+    children: Array<Module> = [];
+    open: boolean = false;
 }

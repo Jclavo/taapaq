@@ -23,7 +23,7 @@ export class ModuleService {
   private resultRAW: any;
 
   constructor(private httpClient: HttpClient,
-              private authUtils: AuthUtils,
+    private authUtils: AuthUtils,
   ) { }
 
   create(module: Module): Observable<Response> {
@@ -34,7 +34,7 @@ export class ModuleService {
       this.resultRAW = res;
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
-      if(this.resultRAW.result){
+      if (this.resultRAW.result) {
         let module = new Module();
         module.id = this.resultRAW.result.id;
         module.name = this.resultRAW.result.name;
@@ -63,7 +63,7 @@ export class ModuleService {
 
   getByUser(): Observable<Response> {
     let response = new Response();
-    let apiURL = this.apiURL + 'user' ;
+    let apiURL = this.apiURL + 'user';
 
     return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
@@ -99,13 +99,15 @@ export class ModuleService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result?.map(responseModule => {
+      const mapModulesChildren = (responseModule) => {
 
         let module = new Module();
         module.id = responseModule.id;
         module.name = responseModule.name;
         module.url = responseModule.url;
         module.project_id = responseModule.project_id;
+        module.labeled = responseModule.labeled;
+        module.parent_id = responseModule.parent_id;
 
         module.resources = responseModule.resources?.map(responseResource => {
 
@@ -118,8 +120,13 @@ export class ModuleService {
 
         });
 
+        module.children = responseModule.children?.map(mapModulesChildren);
+
         return module;
-      });
+
+      };
+
+      response.result = this.resultRAW.result?.map(mapModulesChildren);
 
       return response;
 

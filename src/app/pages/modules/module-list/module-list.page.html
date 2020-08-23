@@ -18,39 +18,73 @@
 
   <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
 
-  <ion-list>
-    <ion-card *ngFor="let module of modules">
+  <ng-template #moduleTemplate let-modules="modules">
 
-      <ion-item lines="none">
-        <ion-icon name="rocket" slot="start"></ion-icon>
-        <ion-button fill="outline" slot="end" (click)="update(module.id)" color="success">
-          <ion-icon name="create"></ion-icon>
-        </ion-button>
-        <ion-button fill="outline" slot="end" (click)="delete(module.id,module.name)" color="danger">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-      </ion-item>
+    <div *ngFor="let module of modules">
 
-      <ion-card-header>
-        <ion-card-title>{{ module.name }}</ion-card-title>
-        <ion-card-subtitle>{{ module.url }}</ion-card-subtitle>
-      </ion-card-header>
+      <ion-card *ngIf="!module.labeled">
+        <ion-item lines="none">
+          <ion-icon name="rocket" slot="start"></ion-icon>
+          <ion-button fill="outline" slot="end" (click)="update(module.id)" color="success">
+            <ion-icon name="create"></ion-icon>
+          </ion-button>
+          <ion-button fill="outline" slot="end" (click)="delete(module.id,module.name)" color="danger">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
 
-      <ion-card-content>
+        <ion-card-header>
+          <ion-card-title>{{ module.name }}</ion-card-title>
+          <ion-card-subtitle>{{ module.url }}</ion-card-subtitle>
+        </ion-card-header>
 
-        <ion-chip *ngFor="let resource of module?.resources" color="success">
-          <ion-label color="dark">{{resource.name}}</ion-label>
-          <ion-icon name="close" color="dark" (click)="deleteResource(resource.id,resource.name)"></ion-icon>
-        </ion-chip>
+        <ion-card-content>
 
-        <ion-button fill="clear" color="success" routerLink='/resource/{{project_id}}/{{module.id}}'>
-          <ion-icon slot="start" name="add-circle"></ion-icon>
-        </ion-button>
+          <ion-chip *ngFor="let resource of module?.resources" color="success">
+            <ion-label color="dark">{{resource.name}}</ion-label>
+            <ion-icon name="close" color="dark" (click)="deleteResource(resource.id,resource.name)"></ion-icon>
+          </ion-chip>
 
-      </ion-card-content>
+          <ion-button fill="clear" color="success" routerLink='/resource/{{project_id}}/{{module.id}}'>
+            <ion-icon slot="start" name="add-circle"></ion-icon>
+          </ion-button>
 
-    </ion-card>
-  </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card *ngIf="module?.labeled" (click)="module.open = !module.open "
+        details="false">
+
+        <ion-item lines="none">
+          <ion-icon slot="start" name="arrow-forward" *ngIf="!module.open"></ion-icon>
+          <ion-icon slot="start" name="arrow-down" *ngIf="module.open"></ion-icon>
+          <ion-label>{{ module.name }}</ion-label>
+          <ion-button fill="outline" slot="end" (click)="update(module.id)" color="success">
+            <ion-icon name="create"></ion-icon>
+          </ion-button>
+          <ion-button fill="outline" slot="end" (click)="delete(module.id,module.name)" color="danger">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+      </ion-card>
+
+      <ion-list *ngIf="module.open">
+
+        <div *ngIf="module.open && module?.children.length > 0" >
+          <ng-template [ngTemplateOutlet]="moduleTemplate" [ngTemplateOutletContext]="{ modules: module.children }">
+          </ng-template>
+        </div>
+
+      </ion-list>
+
+      <ion-item-divider *ngIf="module.open"></ion-item-divider>
+    </div>
+  </ng-template>
+
+  <!-- Initiate the recursive template rendering. -->
+  <ng-template [ngTemplateOutlet]="moduleTemplate" [ngTemplateOutletContext]="{ modules: modules }">
+  </ng-template>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="dark">
