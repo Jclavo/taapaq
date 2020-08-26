@@ -71,17 +71,23 @@ export class ModuleService {
       response.status = this.resultRAW.status;
       response.message = this.resultRAW.message;
 
-      response.result = this.resultRAW.result?.map(item => {
+      const mapModulesChildren = (responseModule) => {
 
         let module = new Module();
-        module.id = item.id;
-        module.name = item.name;
-        module.url = item.url;
-        // module.icon = item.icon;
-        module.icon = 'apps'
+        module.id = responseModule.id;
+        module.name = responseModule.name;
+        module.url = responseModule.url;
+        module.project_id = responseModule.project_id;
+        module.labeled = responseModule.labeled;
+        module.parent_id = responseModule.parent_id;
+
+        module.children = responseModule.children?.map(mapModulesChildren);
+
         return module;
 
-      });
+      };
+
+      response.result = this.resultRAW.result?.map(mapModulesChildren);
 
       return response;
 
