@@ -89,6 +89,15 @@ export class ModuleService {
 
       response.result = this.resultRAW.result?.map(mapModulesChildren);
 
+      //Filter only taapaq menu
+      response.result =  response.result.filter(function(module: Module) {
+        return module.name.includes("Taapaq");
+      });
+
+      if(response.result.length > 0){
+        response.result = response.result[0].children;
+      }
+
       return response;
 
     }));
