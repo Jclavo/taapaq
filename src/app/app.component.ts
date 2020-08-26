@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 //Models
 import { Response } from "src/app/models/response.model";
+import { Module } from "src/app/models/module.model";
 
 //Services
 import { UserService } from "src/app/services/user.service";
@@ -77,5 +78,21 @@ export class AppComponent implements OnInit {
         loading.dismiss();// close loading
       }
     );
+  }
+
+  onSubMenu(module: Module){
+
+    this.selectedIndex = module.id;
+
+    if(!module.parent_id){
+
+      for (let index = 0; index < this.authUtils.modules.length; index++) {
+        if(module.id!= this.authUtils.modules[index].id){
+          this.authUtils.modules[index].open = false;
+        }
+      }
+      
+    }
+      
   }
 }
