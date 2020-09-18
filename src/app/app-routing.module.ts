@@ -104,14 +104,27 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modules/module-label/module-label.module').then(m => m.ModuleLabelPageModule)
   },
   {
+    path: 'model-list',
+    loadChildren: () => import('./pages/models/model-list/model-list.module').then( m => m.ModelListPageModule)
+  },
+  {
+    path: 'model-list/:project_id',
+    loadChildren: () => import('./pages/models/model-list/model-list.module').then( m => m.ModelListPageModule)
+  },
+  {
+    path: 'model/:project_id',
+    loadChildren: () => import('./pages/models/model/model.module').then( m => m.ModelPageModule)
+  },
+  {
     path: 'not-found',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
   },
-  {
-    path: '**',
-    redirectTo: 'not-found',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: 'not-found',
+  //   pathMatch: 'full'
+  // },
+
 ];
 
 @NgModule({

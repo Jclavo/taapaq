@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Models List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item [hidden]="!authUtils.user.isSuper">
+    <ion-label>Projects</ion-label>
+    <ionic-selectable name="project_id" [(ngModel)]="project_id" [items]="projects" itemValueField="id"
+      itemTextField="name" [canSearch]="true" [shouldStoreItemValue]="true" (onChange)="onChangeProject()">
+    </ionic-selectable>
+  </ion-item>
+
+  <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
+
+  <ion-list>
+    <ion-card *ngFor="let model of models">
+
+      <ion-item class="ion-activated">
+        <ion-icon name="information-circle" slot="start"></ion-icon>
+        <ion-label>{{model.name}}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="update(model.id)" color="success">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+        <ion-button fill="outline" slot="end" (click)="delete(model.id,model.name)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+    </ion-card>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" routerLink='/model/{{project_id}}'>
+      <ion-icon name="information-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
