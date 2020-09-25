@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Translation List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item [hidden]="!authUtils.user.isSuper">
+    <ion-label>Projects</ion-label>
+    <ionic-selectable name="project_id" [(ngModel)]="project_id" [items]="projects" itemValueField="id"
+      itemTextField="name" [canSearch]="true" [shouldStoreItemValue]="true" (onChange)="onChangeProject()">
+    </ionic-selectable>
+  </ion-item>
+
+  <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
+
+  <ion-list>
+    <ion-card *ngFor="let translation of translations">
+
+      <ion-item class="ion-activated">
+        <ion-icon name="language" slot="start"></ion-icon>
+        <ion-label>{{translation.key}}</ion-label>
+        <ion-button fill="outline" slot="end" (click)="update(translation.id)" color="success">
+          <ion-icon name="create"></ion-icon>  
+        </ion-button>
+        <ion-button fill="outline" slot="end" (click)="delete(translation.id,translation.key)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-card-content *ngIf="translation?.details.length > 0">
+
+        <ion-chip *ngFor="let detail of translation?.details" color="success">
+          <ion-label color="dark">{{detail.locale}}</ion-label>
+          <ion-icon name="close" color="dark" (click)="deleteDetail(detail.id,detail.locale)"></ion-icon>
+        </ion-chip>
+
+        <ion-button fill="clear" color="success" routerLink='/translation-details/{{translation.id}}'>
+          <ion-icon slot="start" name="add-circle"></ion-icon>
+        </ion-button>
+
+      </ion-card-content>
+
+    </ion-card>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark" routerLink='/translation'>
+      <ion-icon name="language"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+
+
+

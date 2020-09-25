@@ -119,6 +119,10 @@ const routes: Routes = [
     path: 'not-found',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
   },
+  {
+    path: 'translation-list',
+    loadChildren: () => import('./pages/translations/translation-list/translation-list.module').then( m => m.TranslationListPageModule)
+  },
   // {
   //   path: '**',
   //   redirectTo: 'not-found',
