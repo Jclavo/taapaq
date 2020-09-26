@@ -16,6 +16,13 @@
     </ionic-selectable>
   </ion-item>
 
+  <ion-item>
+    <ion-label>Models</ion-label>
+    <ionic-selectable name="model_id" [(ngModel)]="model_id" [items]="models" itemValueField="id"
+      itemTextField="name" [canSearch]="true" [shouldStoreItemValue]="true" (onChange)="onChangeModel()">
+    </ionic-selectable>
+  </ion-item>
+
   <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
 
   <ion-list>

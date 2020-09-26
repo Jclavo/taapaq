@@ -44,7 +44,43 @@ export class TranslationService {
         translation.key = responseTranslation.key;
         translation.model_id = responseTranslation.model_id;
 
-        translation.details = responseTranslation.details.map(responseTranslationDetail => {
+        translation.details = responseTranslation?.details?.map(responseTranslationDetail => {
+
+          let detail = new TranslationDetail();
+          detail.id = responseTranslationDetail.id;
+          detail.value = responseTranslationDetail.value;
+          detail.locale = responseTranslationDetail.locale;
+          detail.translation_id = responseTranslationDetail.translation_id;
+
+          return detail;
+        });
+
+        return translation;
+      });
+
+      return response;
+    }));
+  }
+
+  getByModel(project_id: number): Observable<Response> {
+
+    let apiURL = this.apiURL + 'models/' + project_id;
+    let response = new Response();
+
+    return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+
+      response.result = this.resultRAW.result?.map(responseTranslation => {
+
+        let translation = new Translation();
+        translation.id = responseTranslation.id;
+        translation.key = responseTranslation.key;
+        translation.model_id = responseTranslation.model_id;
+
+        translation.details = responseTranslation?.details?.map(responseTranslationDetail => {
 
           let detail = new TranslationDetail();
           detail.id = responseTranslationDetail.id;

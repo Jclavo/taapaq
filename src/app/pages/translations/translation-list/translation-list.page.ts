@@ -5,11 +5,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Response } from "src/app/models/response.model";
 import { Project } from "src/app/models/project.model";
 import { Translation } from "src/app/models/translation.model";
+import { Model } from "src/app/models/model.model";
 // import { TranslationDetail } from "src/app/models/translation-detail.model";
 
 //Services
 import { ProjectService } from "src/app/services/project.service";
 import { TranslationService } from "src/app/services/translation.service";
+import { ModelService } from "src/app/services/model.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -26,8 +28,10 @@ export class TranslationListPage implements OnInit {
   public projects: Array<Project> = [];
   public translations: Array<Translation> = [];
   public translationsBackup: Array<Translation> = [];
+  public models: Array<Model> = [];
 
   public project_id: number = 0;
+  public model_id: number = 0;
   public searchValue: string = '';
 
   constructor(
@@ -36,6 +40,7 @@ export class TranslationListPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private messageUtils: MessageUtils,
     private translationService: TranslationService,
+    private modelService: ModelService
   ) { }
 
   ngOnInit() {
@@ -46,12 +51,20 @@ export class TranslationListPage implements OnInit {
     
     this.getAllProjects();
 
+    this.getModelByProject(this.project_id);
     this.getTranslationsByProject(this.project_id);
+
   }
 
   onChangeProject(){
+    this.getModelByProject(this.project_id);
     this.getTranslationsByProject(this.project_id);
   }
+
+  onChangeModel(){
+    this.getTranslationsByModel(this.model_id);
+  }
+
 
   search(){
     if(!this.searchValue){
@@ -92,11 +105,56 @@ export class TranslationListPage implements OnInit {
     this.translationService.getByProject(project_id).subscribe((response: Response) => {
       if (response.status) {
         this.translations = response.result;
-        console.log(this.translations);
         this.translationsBackup = Utils.copyDeeperObject(this.translations);
         if(this.translations.length == 0){
           this.messageUtils.showToastOK("The current project does not have translations yet.");
         }
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
+  }
+
+  async getTranslationsByModel(model_id: number){
+
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.translationService.getByModel(model_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.translations = response.result;
+        this.translationsBackup = Utils.copyDeeperObject(this.translations);
+        if(this.translations.length == 0){
+          this.messageUtils.showToastOK("The current model does not have translations yet.");
+        }
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
+  }
+
+  async getModelByProject(project_id: number) {
+
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.modelService.getByProject(project_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.models = response.result;
       }
       else {
         this.messageUtils.showToastError(response.message);
