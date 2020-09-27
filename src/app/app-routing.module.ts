@@ -123,6 +123,22 @@ const routes: Routes = [
     path: 'translation-list',
     loadChildren: () => import('./pages/translations/translation-list/translation-list.module').then( m => m.TranslationListPageModule)
   },
+  {
+    path: 'translation-list/:project_id',
+    loadChildren: () => import('./pages/translations/translation-list/translation-list.module').then( m => m.TranslationListPageModule)
+  },
+  {
+    path: 'translation-list/:project_id/:model_id',
+    loadChildren: () => import('./pages/translations/translation-list/translation-list.module').then( m => m.TranslationListPageModule)
+  },
+  {
+    path: 'translation/:project_id',
+    loadChildren: () => import('./pages/translations/translation/translation.module').then( m => m.TranslationPageModule)
+  },
+  {
+    path: 'translation/:project_id/:model_id',
+    loadChildren: () => import('./pages/translations/translation/translation.module').then( m => m.TranslationPageModule)
+  },
   // {
   //   path: '**',
   //   redirectTo: 'not-found',

@@ -43,38 +43,43 @@ export class TranslationListPage implements OnInit {
     private modelService: ModelService
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
     this.project_id = Number(this.activatedRoute.snapshot.paramMap.get('project_id'));
     this.project_id == 0 ? this.project_id = this.authUtils.user.project_id : null;
-    
+    this.model_id = Number(this.activatedRoute.snapshot.paramMap.get('model_id')) ?? 0;
+
     this.getAllProjects();
 
     this.getModelByProject(this.project_id);
     this.getTranslationsByProject(this.project_id);
 
+    this.model_id > 0 ? this.getTranslationsByModel(this.model_id) : null;
+
   }
 
-  onChangeProject(){
+  onChangeProject() {
     this.getModelByProject(this.project_id);
     this.getTranslationsByProject(this.project_id);
   }
 
-  onChangeModel(){
+  onChangeModel() {
     this.getTranslationsByModel(this.model_id);
   }
 
 
-  search(){
-    if(!this.searchValue){
-     this.translations = []; 
-     this.translations = Utils.copyDeeperObject(this.translationsBackup);
+  search() {
+    if (!this.searchValue) {
+      this.translations = [];
+      this.translations = Utils.copyDeeperObject(this.translationsBackup);
       return;
     }
-   this.translations.length == 0 ?this.translations = Utils.copyDeeperObject(this.translationsBackup) : null;
+    this.translations.length == 0 ? this.translations = Utils.copyDeeperObject(this.translationsBackup) : null;
 
-   this.translations = Utils.findValueInCollection(this.translations,this.searchValue);
+    this.translations = Utils.findValueInCollection(this.translations, this.searchValue);
   }
 
   async getAllProjects() {
@@ -97,7 +102,7 @@ export class TranslationListPage implements OnInit {
     );
   }
 
-  async getTranslationsByProject(project_id: number){
+  async getTranslationsByProject(project_id: number) {
 
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -106,7 +111,7 @@ export class TranslationListPage implements OnInit {
       if (response.status) {
         this.translations = response.result;
         this.translationsBackup = Utils.copyDeeperObject(this.translations);
-        if(this.translations.length == 0){
+        if (this.translations.length == 0) {
           this.messageUtils.showToastOK("The current project does not have translations yet.");
         }
       }
@@ -122,7 +127,7 @@ export class TranslationListPage implements OnInit {
     );
   }
 
-  async getTranslationsByModel(model_id: number){
+  async getTranslationsByModel(model_id: number) {
 
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
@@ -131,7 +136,7 @@ export class TranslationListPage implements OnInit {
       if (response.status) {
         this.translations = response.result;
         this.translationsBackup = Utils.copyDeeperObject(this.translations);
-        if(this.translations.length == 0){
+        if (this.translations.length == 0) {
           this.messageUtils.showToastOK("The current model does not have translations yet.");
         }
       }
@@ -168,9 +173,9 @@ export class TranslationListPage implements OnInit {
     );
   }
 
-  async delete(id: number, project: string){
+  async delete(id: number, project: string) {
 
-    if(!await this.messageUtils.showAlertOption('You are sure to delete the project: ', project)){
+    if (!await this.messageUtils.showAlertOption('You are sure to delete the project: ', project)) {
       return;
     }
 

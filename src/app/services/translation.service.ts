@@ -26,6 +26,19 @@ export class TranslationService {
     private authUtils: AuthUtils,
   ) { }
 
+  create(translation: Translation): Observable<Response> {
+    let response = new Response();
+
+    return this.httpClient.post(this.apiURL, translation, this.authUtils.getHeaders()).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+  }
+
   getByProject(project_id: number): Observable<Response> {
 
     let apiURL = this.apiURL + 'models/projects/' + project_id;
@@ -43,6 +56,7 @@ export class TranslationService {
         translation.id = responseTranslation.id;
         translation.key = responseTranslation.key;
         translation.model_id = responseTranslation.model_id;
+        translation.translationable_id = responseTranslation.translationable_id;
 
         translation.details = responseTranslation?.details?.map(responseTranslationDetail => {
 
@@ -79,6 +93,7 @@ export class TranslationService {
         translation.id = responseTranslation.id;
         translation.key = responseTranslation.key;
         translation.model_id = responseTranslation.model_id;
+        translation.translationable_id = responseTranslation.translationable_id;
 
         translation.details = responseTranslation?.details?.map(responseTranslationDetail => {
 
