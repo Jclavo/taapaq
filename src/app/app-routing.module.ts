@@ -139,6 +139,10 @@ const routes: Routes = [
     path: 'translation/:project_id/:model_id',
     loadChildren: () => import('./pages/translations/translation/translation.module').then( m => m.TranslationPageModule)
   },
+  {
+    path: 'translation-detail/:project_id/:model_id/:translation_id',
+    loadChildren: () => import('./pages/translations/translation-detail/translation-detail.module').then( m => m.TranslationDetailPageModule)
+  },
   // {
   //   path: '**',
   //   redirectTo: 'not-found',

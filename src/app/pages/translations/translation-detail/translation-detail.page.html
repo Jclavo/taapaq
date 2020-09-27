@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Translation detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form #form="ngForm" (ngSubmit)="save()" method="post">
+
+    <ion-item>
+      <ion-label>Translation</ion-label>
+      <ionic-selectable
+        name="translation"
+        [(ngModel)]="translationDetail.translation_id"
+        [items]="translations"
+        itemValueField="id"
+        itemTextField="key"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        >
+      </ionic-selectable>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>locales</ion-label>
+      <ionic-selectable
+        name="locale"
+        [(ngModel)]="translationDetail.locale"
+        [items]="locales"
+        itemValueField="code"
+        itemTextField="language"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        >
+      </ionic-selectable>
+    </ion-item>
+
+    <ion-card>
+      <ion-item>
+        <ion-input position="floating" [(ngModel)]="translationDetail.value" type="text" placeholder="Value" name="value"
+          maxLength="45" required>
+        </ion-input>
+        <ion-icon name="book" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-row text-center>
+      <ion-col col-6>
+        <ion-button expand="full" type="submit" color="dark" [disabled]="!form.valid">Save</ion-button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-button expand="full" color="danger" (click)="form.reset()">Reset
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+</ion-content>
