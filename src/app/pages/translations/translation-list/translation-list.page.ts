@@ -6,11 +6,11 @@ import { Response } from "src/app/models/response.model";
 import { Project } from "src/app/models/project.model";
 import { Translation } from "src/app/models/translation.model";
 import { Model } from "src/app/models/model.model";
-// import { TranslationDetail } from "src/app/models/translation-detail.model";
 
 //Services
 import { ProjectService } from "src/app/services/project.service";
 import { TranslationService } from "src/app/services/translation.service";
+import { TranslationDetailService } from "src/app/services/translation-detail.service";
 import { ModelService } from "src/app/services/model.service";
 
 //Utils
@@ -40,10 +40,11 @@ export class TranslationListPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private messageUtils: MessageUtils,
     private translationService: TranslationService,
+    private translationDetailService: TranslationDetailService,
     private modelService: ModelService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewDidEnter() {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
@@ -183,6 +184,26 @@ export class TranslationListPage implements OnInit {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
         this.getTranslationsByProject(this.project_id);
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+      }
+    );
+  }
+
+  async deleteDetail(translationDetail_id: number, value: string, locale: string) {
+
+    if (!await this.messageUtils.showAlertOption('You are sure to delete the translation : ', value + '(' + locale + ')')) {
+      return;
+    }
+
+    this.translationDetailService.delete(translationDetail_id).subscribe((response: Response) => {
+      if (response.status) {
+        this.getTranslationsByModel(this.model_id);
       }
       else {
         this.messageUtils.showToastError(response.message);
