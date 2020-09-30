@@ -75,11 +75,6 @@ export class TranslationPage implements OnInit {
       return;
     }
 
-    if (this.translation.translationable_id == 0) {
-      this.messageUtils.showToastError("Select a translationable ID.");
-      return;
-    }
-
     if (this.translation.id > 0) {
       //update
     } else {
