@@ -56,9 +56,8 @@ export class TranslationListPage implements OnInit {
     this.getAllProjects();
 
     this.getModelByProject(this.project_id);
-    this.getTranslationsByProject(this.project_id);
-
-    this.model_id > 0 ? this.getTranslationsByModel(this.model_id) : null;
+    
+    this.model_id > 0 ? this.getTranslationsByModel(this.model_id) : this.getTranslationsByProject(this.project_id);
 
   }
 
