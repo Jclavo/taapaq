@@ -25,6 +25,10 @@
 
   <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
 
+  <ion-item class="ion-activated" *ngIf="model_id > 0">
+    <ion-label><strong>Model ID :</strong> {{model_id}}</ion-label>
+  </ion-item>
+  
   <ion-list>
     <ion-card *ngFor="let translation of translations">
 
