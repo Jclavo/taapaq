@@ -24,13 +24,16 @@ export class UserService {
   private resultRAW: any;
 
   constructor(private httpClient: HttpClient,
-              private authUtils: AuthUtils,
-  ){ }
+    private authUtils: AuthUtils,
+  ) { }
 
   login(user: User): Observable<Response> {
 
     let apiURL = environment.apiURL + 'login';
     let response = new Response();
+
+    //Encrypt
+    user.password = btoa(user.password);
 
     return this.httpClient.post(apiURL, user, this.authUtils.getHeaders()).pipe(map(res => {
 
@@ -126,10 +129,10 @@ export class UserService {
       return response;
 
     }));
-    
+
   }
 
-  getUserRolesByProjectCompany(project_id: number,company_id: number) {
+  getUserRolesByProjectCompany(project_id: number, company_id: number) {
 
     let response = new Response();
     let apiURL = this.apiURL + 'roles/companies/' + company_id + '/projects/' + project_id;
@@ -171,7 +174,7 @@ export class UserService {
     }));
   }
 
-  removeRole(userRole: UserRole){
+  removeRole(userRole: UserRole) {
     let response = new Response();
     let apiURL = this.apiURL + 'removeRole';
 
@@ -185,7 +188,7 @@ export class UserService {
     }));
   }
 
-  assignRole(userRole: UserRole){
+  assignRole(userRole: UserRole) {
     let response = new Response();
     let apiURL = this.apiURL + 'assignRole';
 

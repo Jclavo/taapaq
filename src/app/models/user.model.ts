@@ -16,4 +16,6 @@ export class User{
     roles: Array<Role> = [];
     info = new UserDetail();
     company =  new Company();
+
+    password: string = '';
 }

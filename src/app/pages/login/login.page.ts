@@ -46,7 +46,7 @@ export class LoginPage implements OnInit {
 
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
-
+    
     this.userService.login(this.user).subscribe((response: Response) => {     
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
