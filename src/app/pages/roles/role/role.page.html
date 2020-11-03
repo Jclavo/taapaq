@@ -21,6 +21,21 @@
       itemTextField="name"
       [canSearch]="true"
       [shouldStoreItemValue]="true"
+      (onChange)="onChangeProject()"
+      >
+    </ionic-selectable>
+  </ion-item>
+
+  <ion-item [hidden]="!authUtils.user.isSuper">
+    <ion-label>Companies</ion-label>
+    <ionic-selectable
+      name="company_id"
+      [(ngModel)]="role.company_id"
+      [items]="companies"
+      itemValueField="id"
+      itemTextField="name"
+      [canSearch]="true"
+      [shouldStoreItemValue]="true"
       >
     </ionic-selectable>
   </ion-item>

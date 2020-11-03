@@ -24,6 +24,21 @@
     </ionic-selectable>
   </ion-item>
 
+  <ion-item [hidden]="!authUtils.user.isSuper">
+    <ion-label>Companies</ion-label>
+    <ionic-selectable
+      name="company_id"
+      [(ngModel)]="company_id"
+      [items]="companies"
+      itemValueField="id"
+      itemTextField="name"
+      [canSearch]="true"
+      [shouldStoreItemValue]="true"
+      (onChange)="onChangeCompany()"
+      >
+    </ionic-selectable>
+  </ion-item>
+
   <ion-searchbar [(ngModel)]="searchValue" (ionChange)="search()"></ion-searchbar>
 
   <ion-list>
@@ -44,7 +59,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="dark" routerLink='/role/{{project_id}}'>
+    <ion-fab-button color="dark" routerLink='/role/{{company_id}}/{{project_id}}'>
       <ion-icon name="bookmark"></ion-icon>
     </ion-fab-button>
   </ion-fab>
