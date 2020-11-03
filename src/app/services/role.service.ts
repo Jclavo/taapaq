@@ -128,9 +128,9 @@ export class RoleService {
     }));
   }
 
-  notInUser(user_id: number,project_id: number): Observable<Response> {
+  notInUser(user_id: number): Observable<Response> {
     let response = new Response();
-    let apiURL = this.apiURL + 'not/users/' + user_id + '/projects/' + project_id;
+    let apiURL = this.apiURL + 'not/users/' + user_id ;
 
     return this.httpClient.get(apiURL, this.authUtils.getHeaders()).pipe(map(res => {
 
