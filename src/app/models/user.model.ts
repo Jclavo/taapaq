@@ -11,7 +11,7 @@ export class User{
 
     company_id: number = 0;
     project_id: number = 0;
-    user_detail_id: number = 0;
+    universal_person_id: number = 0;
 
     roles: Array<Role> = [];
     info = new UserDetail();

@@ -27,7 +27,7 @@ export class UserPage implements OnInit {
   public projects: Array<Project> = [];
   public companies: Array<Company> = [];
   public user = new User();
-  public users: Array<UserDetail> = [];
+  public persons: Array<UserDetail> = [];
 
   constructor(
     private userDetailService: UserDetailService,
@@ -50,7 +50,7 @@ export class UserPage implements OnInit {
 
     this.getAllProjects();
     this.getCompaniesByProject(this.user.project_id);
-    this.getAllUsers();
+    this.getAllPersons();
 
   }
 
@@ -67,20 +67,20 @@ export class UserPage implements OnInit {
     //   return value.id == this.user.user_detail_id; 
     // });
     this.user.login = '';
-    for (let index = 0; index < this.users.length; index++) {
-      if (this.users[index].id == this.user.user_detail_id) {
-        this.user.info.identification = this.users[index].identification;
+    for (let index = 0; index < this.persons.length; index++) {
+      if (this.persons[index].id == this.user.universal_person_id) {
+        this.user.info.identification = this.persons[index].identification;
       }
     }
   }
 
-  async getAllUsers() {
+  async getAllPersons() {
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
     this.userDetailService.getAll().subscribe((response: Response) => {
       if (response.status) {
-        this.users = response.result;
+        this.persons = response.result;
       }
       else {
         this.messageUtils.showToastError(response.message);
