@@ -13,6 +13,15 @@
 
     <ion-card>
       <ion-item>
+        <ion-input position="floating" [(ngModel)]="project.code" type="text" placeholder="Code" 
+          name="code" maxLength="2" required>
+        </ion-input>
+        <ion-icon name="code" item-start></ion-icon>
+      </ion-item>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
         <ion-input position="floating" [(ngModel)]="project.name" type="text" placeholder="Name" 
           name="name" maxLength="45" required>
         </ion-input>

@@ -43,6 +43,7 @@ export class ProjectService {
 
         let project = new Project();
         project.id = item.id;
+        project.code = item.code;
         project.name = item.name;
         return project;
 
@@ -124,6 +125,7 @@ export class ProjectService {
 
         let project = new Project();
         project.id = responseProjects.id;
+        project.code = responseProjects.code;
         project.name = responseProjects.name;
 
         project.companies = responseProjects.companies.map(responseCompanies => {

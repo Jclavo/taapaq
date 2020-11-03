@@ -5,6 +5,7 @@ import { Role } from "src/app/models/role.model";
 export class Project{
 
     id: number = 0;
+    code: string = '';
     name: string = '';
 
     modules: Array<Module> = [];
