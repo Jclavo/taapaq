@@ -5,10 +5,12 @@ import { Router } from '@angular/router';
 import { Response } from "src/app/models/response.model";
 import { Company } from "src/app/models/company.model";
 import { Country } from "src/app/models/country.model";
+import { UserDetail } from "src/app/models/user-detail"
 
 //Services
 import { CompanyService } from "src/app/services/company.service";
 import { CountryService } from "src/app/services/country.service";
+import { UserDetailService } from "src/app/services/user-detail.service";
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
@@ -23,13 +25,15 @@ export class CompanyPage implements OnInit {
 
   public company = new Company();
   public countries: Array<Country> = [];
+  public persons: Array<UserDetail> = [];
 
   constructor(
     private companyService: CompanyService,
     private authUtils: AuthUtils,
     private messageUtils: MessageUtils,
     private router: Router,
-    private countryService: CountryService
+    private countryService: CountryService,
+    private userDetailService: UserDetailService
   ) { }
  
   ngOnInit() {
@@ -39,6 +43,7 @@ export class CompanyPage implements OnInit {
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
     this.getCountries();
+    this.getAllPersons();
   }
 
   save(){
@@ -57,6 +62,26 @@ export class CompanyPage implements OnInit {
     this.countryService.getAll().subscribe((response: Response) => {
       if (response.status) {
         this.countries = response.result;
+      }
+      else {
+        this.messageUtils.showToastError(response.message);
+      }
+      loading.dismiss();// close loading
+    },
+      error => {
+        this.messageUtils.showToastError(error.message);
+        loading.dismiss();// close loading
+      }
+    );
+  }
+
+  async getAllPersons() {
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.userDetailService.getAll().subscribe((response: Response) => {
+      if (response.status) {
+        this.persons = response.result;
       }
       else {
         this.messageUtils.showToastError(response.message);
