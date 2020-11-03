@@ -4,7 +4,7 @@
       <ion-content>
         <ion-list id="inbox-list">
 
-          <ion-list-header>{{authUtils.user.company.name}} ({{authUtils.user.company.country.name}})</ion-list-header>
+          <ion-list-header>{{authUtils.user.company.name}} [{{authUtils.user.company.country.name}}]</ion-list-header>
           <ion-note>{{authUtils.user.info.fullname}} - {{authUtils.user.login}} </ion-note>
 
 
@@ -16,7 +16,7 @@
 
                 <ion-item (click)="selectedIndex = module.id" lines="none" [routerLink]="module.url" routerDirection="root"
                    routerLinkActive="active" [class.selected]="selectedIndex == module.id">
-                  <ion-icon name="apps" slot="start"></ion-icon>
+                  <ion-icon [name]="module.icon" slot="start"></ion-icon>
                   <ion-label>{{ module.name }}</ion-label>
                 </ion-item>
               </ion-menu-toggle>

@@ -80,6 +80,7 @@ export class ModuleService {
         module.project_id = responseModule.project_id;
         module.labeled = responseModule.labeled;
         module.parent_id = responseModule.parent_id;
+        module.icon = responseModule.icon;
 
         module.children = responseModule.children?.map(mapModulesChildren);
 
