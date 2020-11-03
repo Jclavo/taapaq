@@ -16,6 +16,7 @@ export class User{
     roles: Array<Role> = [];
     info = new UserDetail();
     company =  new Company();
-
-    password: string = '';
+   
+    myPassword: string = '';
+    password: string = ''; //this field will be send to the api
 }

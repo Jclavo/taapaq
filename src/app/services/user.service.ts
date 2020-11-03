@@ -33,7 +33,7 @@ export class UserService {
     let response = new Response();
 
     //Encrypt
-    user.password = btoa(user.password);
+    user.password = btoa(user.myPassword);
 
     return this.httpClient.post(apiURL, user, this.authUtils.getHeaders()).pipe(map(res => {
 
