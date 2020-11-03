@@ -95,7 +95,7 @@ export class CompanyService {
 
         let company = new Company();
         company.id = item.id;
-        company.name = item.name;
+        company.name = item.person?.name;
         return company;
 
       });
