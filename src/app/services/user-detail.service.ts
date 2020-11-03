@@ -18,7 +18,7 @@ import { AuthUtils } from "src/app/utils/auth-utils";
 })
 export class UserDetailService {
 
-  private apiURL: string = environment.apiURL + 'user-details/';
+  private apiURL: string = environment.apiURL + 'persons/';
   private resultRAW: any;
 
   constructor(private httpClient: HttpClient,
