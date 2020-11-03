@@ -130,7 +130,7 @@ export class ProjectService {
 
           let company = new Company();
           company.id = responseCompanies.id;
-          company.name = responseCompanies.name;
+          company.name = responseCompanies.person?.name;
 
           return company;
         });
