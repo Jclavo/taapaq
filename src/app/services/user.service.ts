@@ -52,18 +52,18 @@ export class UserService {
         user.project_id = this.resultRAW.result.company_project?.project_id;
 
         // User Detail
-        user.info.identification = this.resultRAW.result.user_detail?.identification;
-        user.info.email = this.resultRAW.result.user_detail?.email;
-        user.info.name = this.resultRAW.result.user_detail?.name;
-        user.info.lastname = this.resultRAW.result.user_detail?.lastname;
+        user.info.identification = this.resultRAW.result.person?.identification;
+        user.info.email = this.resultRAW.result.person?.email;
+        user.info.name = this.resultRAW.result.person?.name;
+        user.info.lastname = this.resultRAW.result.person?.lastname;
         // user.info.fullname = user.info.name + ' ' + user.info.lastname;
         user.info.setFullname();
-        user.info.phone = this.resultRAW.result.user_detail?.phone;
-        user.info.address = this.resultRAW.result.user_detail?.address;
+        user.info.phone = this.resultRAW.result.person?.phone;
+        user.info.address = this.resultRAW.result.person?.address;
 
         //Company
         user.company.id = this.resultRAW.result.company?.id;
-        user.company.name = this.resultRAW.result.company?.name;
+        user.company.name = this.resultRAW.result.company?.person?.name;
 
         //Country
         user.company.country.id = this.resultRAW.result.company?.country?.id;
