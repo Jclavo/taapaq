@@ -75,7 +75,7 @@ export class ModuleService {
 
         let module = new Module();
         module.id = responseModule.id;
-        module.name = responseModule.name;
+        module.name = responseModule.nickname;
         module.url = responseModule.url;
         module.project_id = responseModule.project_id;
         module.labeled = responseModule.labeled;
@@ -91,7 +91,7 @@ export class ModuleService {
 
       //Filter only taapaq menu
       response.result =  response.result.filter(function(module: Module) {
-        return module.name.includes("Taapaq");
+        return module.name.toLowerCase().includes("taapaq".toLowerCase());
       });
 
       if(response.result.length > 0){
