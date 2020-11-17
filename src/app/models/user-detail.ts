@@ -8,6 +8,8 @@ export class UserDetail{
     fullname: string = '';
     phone: string = '';
     address: string = '';
+    country_code: string = '';
+    type_id: number = 0;
 
     setFullname(){
         if(this.name){

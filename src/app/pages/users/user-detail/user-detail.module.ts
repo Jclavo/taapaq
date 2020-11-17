@@ -8,12 +8,15 @@ import { UserDetailPageRoutingModule } from './user-detail-routing.module';
 
 import { UserDetailPage } from './user-detail.page';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    UserDetailPageRoutingModule
+    UserDetailPageRoutingModule,
+    IonicSelectableModule
   ],
   declarations: [UserDetailPage]
 })

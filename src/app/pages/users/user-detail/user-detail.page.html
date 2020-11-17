@@ -11,6 +11,36 @@
 
   <form #form="ngForm" (ngSubmit)="save()" method="post">
 
+    <ion-item>
+      <ion-label>Countries</ion-label>
+      <ionic-selectable
+        name="country_code"
+        [(ngModel)]="user.country_code"
+        [items]="countries"
+        itemValueField="code"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        >
+      </ionic-selectable>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Persons</ion-label>
+      <ionic-selectable
+        name="type_id"
+        [(ngModel)]="user.type_id"
+        [items]="personTypes"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        [shouldStoreItemValue]="true"
+        >
+      </ionic-selectable>
+    </ion-item>
+
+
+
     <ion-card>
       <ion-item>
         <ion-input position="floating" [(ngModel)]="user.identification" type="text" placeholder="Identification"
