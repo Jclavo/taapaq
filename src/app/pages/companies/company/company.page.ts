@@ -4,12 +4,10 @@ import { Router } from '@angular/router';
 //Models
 import { Response } from "src/app/models/response.model";
 import { Company } from "src/app/models/company.model";
-import { Country } from "src/app/models/country.model";
 import { UserDetail } from "src/app/models/user-detail"
 
 //Services
 import { CompanyService } from "src/app/services/company.service";
-import { CountryService } from "src/app/services/country.service";
 import { UserDetailService } from "src/app/services/user-detail.service";
 
 //Utils
@@ -24,7 +22,6 @@ import { MessageUtils } from "src/app/utils/message-utils";
 export class CompanyPage implements OnInit {
 
   public company = new Company();
-  public countries: Array<Country> = [];
   public persons: Array<UserDetail> = [];
 
   constructor(
@@ -32,7 +29,6 @@ export class CompanyPage implements OnInit {
     private authUtils: AuthUtils,
     private messageUtils: MessageUtils,
     private router: Router,
-    private countryService: CountryService,
     private userDetailService: UserDetailService
   ) { }
  
@@ -42,7 +38,6 @@ export class CompanyPage implements OnInit {
   ionViewDidEnter(){
     !this.authUtils.isAuthenticated() ? this.authUtils.closeSession() : null; //It should be at any page to control session
 
-    this.getCountries();
     this.getAllPersons();
   }
 
@@ -53,26 +48,6 @@ export class CompanyPage implements OnInit {
     }else{
       this.create(this.company);
     }
-  }
-
-  async getCountries() {
-    const loading = await this.messageUtils.createLoader();
-    loading.present();// start loading
-
-    this.countryService.getAll().subscribe((response: Response) => {
-      if (response.status) {
-        this.countries = response.result;
-      }
-      else {
-        this.messageUtils.showToastError(response.message);
-      }
-      loading.dismiss();// close loading
-    },
-      error => {
-        this.messageUtils.showToastError(error.message);
-        loading.dismiss();// close loading
-      }
-    );
   }
 
   async getAllPersons() {

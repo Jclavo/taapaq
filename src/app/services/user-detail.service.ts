@@ -6,6 +6,8 @@ import { map } from "rxjs/operators";
 //Models
 import { Response } from "src/app/models/response.model";
 import { UserDetail } from "src/app/models/user-detail";
+import { SearchOptionUser } from "src/app/models/search-option-user.model";
+import { PersonType } from "src/app/models/person-type.model";
 
 //Env
 import { environment } from "src/environments/environment";
@@ -26,9 +28,13 @@ export class UserDetailService {
   ) { }
 
   getAll(): Observable<Response> {
-    let response = new Response();
 
-    return this.httpClient.get(this.apiURL, this.authUtils.getHeaders()).pipe(map(res => {
+    let apiURL = this.apiURL + 'pagination?page=1';
+    let response = new Response();
+    let searchOptionUser = new SearchOptionUser();
+    searchOptionUser.type_id = PersonType.getForJuridical();
+
+    return this.httpClient.post(apiURL, searchOptionUser, this.authUtils.getHeaders()).pipe(map(res => {
 
       this.resultRAW = res;
       response.status = this.resultRAW.status;
