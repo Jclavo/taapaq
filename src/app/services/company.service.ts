@@ -42,8 +42,8 @@ export class CompanyService {
         let company = new Company();
         company.id = item.id;
         company.name = item.person?.name;
-        company.country.name = item.country?.name;
-        company.country.currency = item.country?.currency;
+        company.country.name = item.person?.country?.name;
+        company.country.currency = item.person?.country?.currency;
         return company;
 
       });
