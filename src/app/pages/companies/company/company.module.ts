@@ -8,15 +8,12 @@ import { CompanyPageRoutingModule } from './company-routing.module';
 
 import { CompanyPage } from './company.page';
 
-import { IonicSelectableModule } from 'ionic-selectable';
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     CompanyPageRoutingModule,
-    IonicSelectableModule
   ],
   declarations: [CompanyPage]
 })
