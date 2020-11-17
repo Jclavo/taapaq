@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 //Models
 import { Response } from "src/app/models/response.model";
 import { UserDetail } from "src/app/models/user-detail";
+import { SearchOptionUser } from "src/app/models/search-option-user.model";
+import { PersonType } from "src/app/models/person-type.model";
 
 //Services
 import { UserDetailService } from "src/app/services/user-detail.service";
@@ -11,7 +13,6 @@ import { UserDetailService } from "src/app/services/user-detail.service";
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
 import { MessageUtils } from "src/app/utils/message-utils";
-import { Utils } from "src/app/utils/utils";
 
 @Component({
   selector: 'app-user-detail-list',
@@ -41,10 +42,14 @@ export class UserDetailListPage implements OnInit {
   }
 
   async getAllUsers() {
+
+    let searchOptionUser = new SearchOptionUser();
+    searchOptionUser.type_id = PersonType.getForNatural();
+
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.userDetailService.getAll().subscribe((response: Response) => {
+    this.userDetailService.getAll(searchOptionUser).subscribe((response: Response) => {
       if (response.status) {
         this.users = response.result;
       }

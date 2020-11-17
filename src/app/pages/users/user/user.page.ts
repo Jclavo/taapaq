@@ -7,6 +7,8 @@ import { User } from "src/app/models/user.model";
 import { UserDetail } from "src/app/models/user-detail";
 import { Company } from "src/app/models/company.model";
 import { Project } from "src/app/models/project.model";
+import { SearchOptionUser } from "src/app/models/search-option-user.model";
+import { PersonType } from "src/app/models/person-type.model";
 
 //Services
 import { UserDetailService } from "src/app/services/user-detail.service";
@@ -75,10 +77,14 @@ export class UserPage implements OnInit {
   }
 
   async getAllPersons() {
+
+    let searchOptionUser = new SearchOptionUser();
+    searchOptionUser.type_id = PersonType.getForNatural();
+
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.userDetailService.getAll().subscribe((response: Response) => {
+    this.userDetailService.getAll(searchOptionUser).subscribe((response: Response) => {
       if (response.status) {
         this.persons = response.result;
       }

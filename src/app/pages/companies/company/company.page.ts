@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 //Models
 import { Response } from "src/app/models/response.model";
 import { Company } from "src/app/models/company.model";
-import { UserDetail } from "src/app/models/user-detail"
+import { UserDetail } from "src/app/models/user-detail";
+import { SearchOptionUser } from "src/app/models/search-option-user.model";
+import { PersonType } from "src/app/models/person-type.model";
 
 //Services
 import { CompanyService } from "src/app/services/company.service";
@@ -51,10 +53,14 @@ export class CompanyPage implements OnInit {
   }
 
   async getAllPersons() {
+
+    let searchOptionUser = new SearchOptionUser();
+    searchOptionUser.type_id = PersonType.getForJuridical();
+
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
 
-    this.userDetailService.getAll().subscribe((response: Response) => {
+    this.userDetailService.getAll(searchOptionUser).subscribe((response: Response) => {
       if (response.status) {
         this.persons = response.result;
       }

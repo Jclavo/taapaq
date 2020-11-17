@@ -27,12 +27,10 @@ export class UserDetailService {
               private authUtils: AuthUtils
   ) { }
 
-  getAll(): Observable<Response> {
+  getAll(searchOptionUser: SearchOptionUser): Observable<Response> {
 
     let apiURL = this.apiURL + 'pagination?page=1';
     let response = new Response();
-    let searchOptionUser = new SearchOptionUser();
-    searchOptionUser.type_id = PersonType.getForJuridical();
 
     return this.httpClient.post(apiURL, searchOptionUser, this.authUtils.getHeaders()).pipe(map(res => {
 
