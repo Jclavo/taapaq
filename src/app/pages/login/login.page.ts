@@ -72,7 +72,7 @@ export class LoginPage implements OnInit {
 
     this.moduleService.getByUser().subscribe((response: Response) => {
       if (response.status) {
-        this.authUtils.modules = response.result;
+        this.authUtils.setModules(response.result);
         if(this.authUtils.modules.length > 0){
           this.router.navigate(['/user-list']);
         }else{

@@ -7,6 +7,7 @@ export class User{
     login: string = '';
     activated: boolean = false;
     token: string = '';
+    api_token : string = '';
     isSuper: boolean = true;
 
     company_id: number = 0;
