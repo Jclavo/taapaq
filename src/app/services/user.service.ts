@@ -66,9 +66,9 @@ export class UserService {
         user.company.name = this.resultRAW.result.company?.person?.name;
 
         //Country
-        user.company.country.id = this.resultRAW.result.company?.country?.id;
-        user.company.country.code = this.resultRAW.result.company?.country?.code;
-        user.company.country.name = this.resultRAW.result.company?.country?.name;
+        user.company.country.id = this.resultRAW.result.company?.person?.country?.id;
+        user.company.country.code = this.resultRAW.result.company?.person?.country?.code;
+        user.company.country.name = this.resultRAW.result.company?.person?.country?.name;
 
         response.result = user;
       }
