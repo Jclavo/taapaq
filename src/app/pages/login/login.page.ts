@@ -74,7 +74,8 @@ export class LoginPage implements OnInit {
       if (response.status) {
         this.authUtils.setModules(response.result);
         if(this.authUtils.modules.length > 0){
-          this.router.navigate(['/user-list']);
+          this.router.navigate(['/welcome']);
+
         }else{
           this.messageUtils.showToastError('Your user does not have permissions.');
         }
