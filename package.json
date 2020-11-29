@@ -1,19 +1,23 @@
 {
   "name": "taapaq",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
+  "version": "1.0.0",
+  "author": "@jclavotafur",
   "homepage": "https://ionicframework.com/",
+  "description": "Project to manage",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node serve.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ionic build --prd"
   },
   "private": true,
   "dependencies": {
+    "@angular/cli": "~9.1.5",
     "@angular/common": "~9.1.6",
+    "@angular/compiler-cli": "~9.1.6",
     "@angular/core": "~9.1.6",
     "@angular/forms": "~9.1.6",
     "@angular/platform-browser": "~9.1.6",
@@ -23,9 +27,11 @@
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^5.0.0",
+    "express": "^4.17.1",
     "ionic-selectable": "^4.7.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
+    "typescript": "~3.8.3",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -51,5 +57,8 @@
     "tslint": "~6.1.0",
     "typescript": "~3.8.3"
   },
-  "description": "An Ionic project"
+  "engines": {
+    "node": "12.16.3",
+    "npm": "6.14.4"
+  }
 }
