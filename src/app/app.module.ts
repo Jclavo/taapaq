@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +14,9 @@ import { IonicSelectableModule } from 'ionic-selectable';
 
 //Utils
 import { AuthUtils } from "src/app/utils/auth-utils";
+
+//Interceptors
+import { RequestHttpInterceptor } from "src/app/interceptors/request-http-interceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +32,8 @@ import { AuthUtils } from "src/app/utils/auth-utils";
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AuthUtils
+    AuthUtils,
+    { provide: HTTP_INTERCEPTORS, useClass: RequestHttpInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
