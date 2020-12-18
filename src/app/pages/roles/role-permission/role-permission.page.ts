@@ -50,26 +50,26 @@ export class RolePermissionPage implements OnInit {
     }
   }
 
-  search(){
-    if(!this.searchValue){
+  search() {
+    if (!this.searchValue) {
       this.permissions = Utils.copyDeeperObject(this.permissionsBackup);
       return;
     }
-    
+
     this.permissions.length == 0 ? this.permissions = Utils.copyDeeperObject(this.permissionsBackup) : null;
 
-    this.permissions = Utils.findValueInCollection(this.permissions,this.searchValue);
+    this.permissions = Utils.findValueInCollection(this.permissions, this.searchValue);
   }
 
   getRoleById(role_id: number) {
     this.roleService.getById(role_id).subscribe((response: Response) => {
       if (response.status) {
         this.role = response.result;
-      }else{
+      } else {
         this.messageUtils.showToastError(response.message);
       }
     },
-      error => { this.messageUtils.showToastError(error.message)}
+      error => { this.messageUtils.showToastError(error.message) }
     );
   }
 
@@ -83,39 +83,40 @@ export class RolePermissionPage implements OnInit {
   }
 
   async getAllPermissionsByRole(role_id: number) {
-    
+
     const loading = await this.messageUtils.createLoader();
     loading.present();// start loading
-    
+
     this.permissionService.getByRole(role_id).subscribe((response: Response) => {
       if (response.status) {
         this.permissions = response.result;
         this.permissionsBackup = Utils.copyDeeperObject(this.permissions);
         this.search();
-      }else{
+      } else {
         this.messageUtils.showToastError(response.message);
       }
       loading.dismiss();// close loading
     },
-      error => { 
+      error => {
         this.messageUtils.showToastError(error.message);
         loading.dismiss();// close loading
       }
     );
   }
 
-  givePermissionTo(role_id: number, permission_id: number, indexPermission: number) {
+  async givePermissionTo(role_id: number, permission_id: number, indexPermission: number) {
 
-    this.roleService.givePermissionTo(new RolePermission(role_id, permission_id)).subscribe((response: Response) => {
+    await this.roleService.givePermissionTo(new RolePermission(role_id, permission_id)).toPromise().then((response: Response) => {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
-        this.getAllPermissionsByRole(this.role.id);
-      }else{
+        this.permissions[indexPermission].roleHasPermission = true;
+      } else {
         this.messageUtils.showToastError(response.message);
+        this.permissions[indexPermission].roleHasPermission = !this.permissions[indexPermission].roleHasPermission;
 
       }
     },
-      error => { this.messageUtils.showToastError(error.message)}
+      error => { this.messageUtils.showToastError(error.message) }
     );
   }
 
@@ -125,13 +126,32 @@ export class RolePermissionPage implements OnInit {
       if (response.status) {
         this.messageUtils.showToastOK(response.message);
         this.getAllPermissionsByRole(this.role.id);
-      }else{
+      } else {
         this.messageUtils.showToastError(response.message);
         this.permissions[indexPermission].roleHasPermission = !this.permissions[indexPermission].roleHasPermission;
       }
     },
-      error => { this.messageUtils.showToastError(error.message)}
+      error => { this.messageUtils.showToastError(error.message) }
     );
+  }
+
+  giveAllPermissions(role_id: number) {
+
+    let hasGivenPermissions = false;
+    let permissions = this.permissions;
+
+    for (let index = 0; index < permissions.length; index++) {
+      if (!permissions[index].roleHasPermission) {
+        this.givePermissionTo(role_id, permissions[index].id, index);
+        hasGivenPermissions = true;
+      }
+    }
+
+    if (!hasGivenPermissions) {
+      this.messageUtils.showToastError('There are no permissions to give.');
+    }
+
+
   }
 
 }
