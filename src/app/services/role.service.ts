@@ -114,6 +114,20 @@ export class RoleService {
     }));
   }
 
+  giveAllPermissionTo(rolePermission: RolePermission): Observable<Response> {
+    let response = new Response();
+    let apiURL = this.apiURL + 'giveAllPermissionTo';
+
+    return this.httpClient.post(apiURL, rolePermission, this.authUtils.getHeaders() ).pipe(map(res => {
+
+      this.resultRAW = res;
+      response.status = this.resultRAW.status;
+      response.message = this.resultRAW.message;
+      return response;
+
+    }));
+  }
+
   revokePermissionTo(rolePermission: RolePermission): Observable<Response> {
     let response = new Response();
     let apiURL = this.apiURL + 'revokePermissionTo';

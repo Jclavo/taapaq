@@ -135,23 +135,42 @@ export class RolePermissionPage implements OnInit {
     );
   }
 
-  giveAllPermissions(role_id: number) {
+  // giveAllPermissions(role_id: number) {
 
-    let hasGivenPermissions = false;
-    let permissions = this.permissions;
+  // let hasGivenPermissions = false;
+  // let permissions = this.permissions;
 
-    for (let index = 0; index < permissions.length; index++) {
-      if (!permissions[index].roleHasPermission) {
-        this.givePermissionTo(role_id, permissions[index].id, index);
-        hasGivenPermissions = true;
+  // for (let index = 0; index < permissions.length; index++) {
+  //   if (!permissions[index].roleHasPermission) {
+  //     this.givePermissionTo(role_id, permissions[index].id, index);
+  //     hasGivenPermissions = true;
+  //   }
+  // }
+
+  // if (!hasGivenPermissions) {
+  //   this.messageUtils.showToastError('There are no permissions to give.');
+  // }
+  // }
+
+  async giveAllPermissions(role_id: number) {
+
+    const loading = await this.messageUtils.createLoader();
+    loading.present();// start loading
+
+    this.roleService.giveAllPermissionTo(new RolePermission(role_id, 0)).toPromise().then((response: Response) => {
+      if (response.status) {
+        this.messageUtils.showToastOK(response.message);
+        this.getAllPermissionsByRole(role_id);
+      } else {
+        this.messageUtils.showToastError(response.message);
       }
-    }
-
-    if (!hasGivenPermissions) {
-      this.messageUtils.showToastError('There are no permissions to give.');
-    }
-
-
+      loading.dismiss();// close loading
+    },
+      error => {
+        loading.dismiss();// close loading
+        this.messageUtils.showToastError(error.message);
+      }
+    );
   }
 
 }
